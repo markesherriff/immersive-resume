@@ -1,0 +1,2328 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mark Sherriff — Full-Stack &amp; AI Engineer</title>
+<meta name="description" content="An immersive, scrollytelling resume: skate through Mark Sherriff's career as a full-stack and AI engineer.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=IBM+Plex+Sans:wght@400;600;700&display=swap">
+<style>
+
+    :root{
+      --cream:#fff7e8;
+      --ink:#0c1224;
+      --panel:rgba(12,18,36,.84);
+      --muted:#a9b8d6;
+      --pixel:'Press Start 2P', monospace;
+      --sans:'IBM Plex Sans', system-ui, sans-serif;
+    }
+    *{ box-sizing:border-box; }
+    body{ margin:0; background:var(--ink); }
+    a{ color:inherit; text-decoration:none; }
+    button{ font:inherit; }
+    button:focus-visible, a:focus-visible{ outline:3px solid var(--accent); outline-offset:3px; }
+
+    .page{ position:relative; width:100%; height:100svh; overflow:hidden; background:var(--ink); color:var(--cream); font-family:var(--sans); }
+    .scroller{ position:absolute; inset:0; overflow-y:auto; overflow-x:hidden; outline:none; }
+    .run{ position:relative; }
+    .stage{ position:sticky; top:0; height:100svh; overflow:hidden; background:#7fb1df; }
+    .notch{ clip-path:polygon(6px 0,calc(100% - 6px) 0,100% 6px,100% calc(100% - 6px),calc(100% - 6px) 100%,6px 100%,0 calc(100% - 6px),0 6px); }
+
+    .crt{
+      position:absolute; inset:0; z-index:40; pointer-events:none;
+      background:repeating-linear-gradient(to bottom, rgba(0,0,0,.1) 0 1px, transparent 1px 4px);
+      opacity:.35;
+    }
+
+    .world{ position:absolute; inset:0; display:block; width:100%; height:100%; }
+    .world path, .sprite path{ shape-rendering:crispEdges; }
+    .world.front{ z-index:6; pointer-events:none; }
+
+
+    /* ---------- Wood kit ---------- */
+    :root{
+      --wood-hi:#c99260; --wood:#a8723f; --wood-mid:#8a5a33; --wood-lo:#6b4426; --wood-dark:#3b2414; --wood-ink:#2a170b;
+      --stain:#2f2019; --stain-2:#241810; --stain-line:#4a2f1e; --wood-muted:#d4c1a6;
+    }
+    .wood-frame{
+      border:11px solid var(--wood);
+      box-shadow:inset 0 0 0 3px var(--wood-dark), 8px 10px 0 rgba(40,28,18,.22);
+      clip-path:polygon(
+        8px 0, calc(100% - 12px) 0, 100% 10px, 100% calc(100% - 9px),
+        calc(100% - 10px) 100%, 11px 100%, 0 calc(100% - 12px), 0 9px
+      );
+    }
+    .wood-frame:nth-of-type(even){
+      clip-path:polygon(
+        12px 0, calc(100% - 8px) 0, 100% 12px, 100% calc(100% - 11px),
+        calc(100% - 13px) 100%, 9px 100%, 0 calc(100% - 8px), 0 12px
+      );
+    }
+    .plank{ background:var(--wood-hi); color:var(--wood-ink); }
+    /* ---------- Title screen ---------- */
+    .title-lockup{
+      position:absolute; left:50%; top:9%; z-index:8;
+      width:min(92vw, 1000px);
+      display:flex; flex-direction:column; align-items:center; gap:12px;
+      text-align:center;
+      will-change:transform, opacity;
+    }
+    .title-lockup.hidden{ visibility:hidden; pointer-events:none; }
+    .mission{ display:flex; flex-direction:column; align-items:center; gap:8px; padding:10px 18px; background:var(--panel); }
+    .mission-kicker{ font-family:var(--pixel); font-size:clamp(10px,1.1vw,13px); letter-spacing:4px; color:var(--accent); }
+    .mission-text{ font-family:var(--pixel); font-size:clamp(8px,.8vw,11px); line-height:1.8; color:var(--cream); }
+    .mission-text b{ color:var(--accent); font-weight:400; }
+
+    /* Street sign on the stairs */
+    .sign{ position:absolute; z-index:5; width:280px; transform:translateY(-100%); pointer-events:none; }
+    .sign-board{
+      position:relative;
+      display:flex; flex-direction:column; gap:6px; padding:12px 14px;
+      font-family:var(--pixel); text-align:center;
+    }
+    .sign-kicker{ font-size:12px; color:#7a1f10; letter-spacing:2px; }
+    .sign-rule{ height:3px; background:var(--wood-lo); margin:2px 0; }
+    .sign-main{ font-size:11px; line-height:1.8; }
+    .sign-board.small{ padding:8px 10px; gap:4px; }
+    .sign-board.small .sign-kicker{ font-size:10px; }
+    .sign-board.small .sign-main{ font-size:8px; }
+    .sign-posts{ display:flex; justify-content:space-around; height:70px; }
+    .sign-posts span{ width:6px; height:100%; background:linear-gradient(to right, #b3bbc5 0 2px, #8a929d 2px 4px, #5d646e 4px 6px); }
+    .title{
+      margin:0; font-family:var(--pixel); font-size:clamp(26px,4.8vw,58px); line-height:1.25;
+      color:var(--cream);
+      text-shadow:-3px 0 0 #1b2a4a, 3px 0 0 #1b2a4a, 0 -3px 0 #1b2a4a, 0 3px 0 #1b2a4a, 6px 6px 0 #1b2a4a;
+    }
+    .statement{
+      margin:4px 0 0; max-width:680px; padding:16px 20px;
+      font-size:clamp(14px,1.2vw,17px); line-height:1.55; text-align:left;
+      color:var(--cream); background:var(--panel);
+    }
+    .statement-lead{ font-size:1.18em; font-weight:800; color:var(--cream); }
+    .chips-left{ display:flex; gap:8px; flex-wrap:wrap; }
+    .score-chip{ color:var(--accent); }
+    .read-chip{ display:flex; align-items:center; gap:8px; color:var(--accent); }
+    .read-chip .book{ display:block; }
+    .quick-links{ display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-top:2px; }
+    .qlink{
+      display:flex; align-items:center; min-height:44px; padding:0 14px;
+      font-family:var(--pixel); font-size:clamp(9px,.9vw,11px);
+      color:var(--cream); background:var(--panel); border:2px solid rgba(255,255,255,.18);
+    }
+    .qlink:hover{ color:var(--accent); border-color:var(--accent); }
+    .start-btn{
+      margin-top:4px; min-height:48px; padding:14px 22px;
+      font-family:var(--pixel); font-size:clamp(10px,1.05vw,13px); line-height:1.5;
+      color:#17140f; background:var(--accent); border:0; cursor:pointer;
+      box-shadow:inset -4px -4px 0 rgba(0,0,0,.22);
+      animation:pulse 1.4s steps(2) infinite;
+    }
+    .start-btn:hover{ filter:brightness(1.08); }
+    @keyframes pulse{ 0%,100%{ opacity:1; } 50%{ opacity:.65; } }
+
+    /* ---------- HUD ---------- */
+    .hud{
+      position:absolute; top:0; left:0; right:0; z-index:9;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      padding:16px clamp(12px,3vw,40px);
+      font-family:var(--pixel); font-size:clamp(8px,.85vw,11px);
+    }
+    .chip{ padding:10px 12px; background:var(--panel); color:var(--cream); white-space:nowrap; }
+    .chips{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+    .progress{ flex:1 1 auto; max-width:520px; display:flex; flex-direction:column; gap:8px; }
+    .progress-label{ text-align:center; color:var(--cream); text-shadow:2px 2px 0 #1b2a4a; }
+    .progress-track{ height:16px; padding:3px; background:var(--panel); }
+    .progress-fill{ height:100%; background-color:var(--accent); background-image:repeating-linear-gradient(to right, transparent 0 10px, rgba(0,0,0,.2) 10px 12px); }
+    .hud-actions{ display:flex; gap:8px; }
+    .hud-btn{
+      min-height:44px; padding:0 14px; font-family:var(--pixel); font-size:inherit;
+      color:var(--cream); background:var(--panel); border:2px solid rgba(255,255,255,.18); cursor:pointer; white-space:nowrap;
+    }
+    .hud-btn:hover{ border-color:var(--accent); color:var(--accent); }
+    .controls-hint{
+      position:absolute; left:50%; bottom:18px; transform:translateX(-50%); z-index:9;
+      padding:10px 14px; font-family:var(--pixel); font-size:10px;
+      color:var(--cream); background:var(--panel); white-space:nowrap;
+    }
+
+    /* ---------- Stage cards ---------- */
+    .card{
+      position:absolute; z-index:5;
+      background:var(--stain);
+      color:var(--cream);
+    }
+    .card{ container:stagecard / inline-size; }
+    .card.gone{ visibility:hidden; }
+    .card-head{ position:relative; display:flex; align-items:center; gap:14px; flex-wrap:wrap; padding:14px 22px; border-bottom:3px solid var(--wood-dark); }
+    .card-head .card-title{ color:var(--wood-ink); text-shadow:1px 1px 0 rgba(255,235,205,.35); }
+    .card-head .card-years{ color:#5a220e; }
+    .card-stage{ padding:6px 8px; font-family:var(--pixel); font-size:10px; color:#17140f; background:var(--accent); }
+    .card-title{ margin:0; flex:1 1 auto; font-family:var(--pixel); font-size:clamp(12px,1.2vw,15px); line-height:1.5; }
+    .card-years{ font-family:var(--pixel); font-size:10px; color:var(--accent); }
+    .card-body{ padding:20px 24px 24px; display:flex; flex-direction:column; gap:12px; font-size:16px; line-height:1.5; }
+    .card-grid{ display:grid; grid-template-columns:170px minmax(0,1fr) 190px; gap:24px; align-items:start; }
+    .card-grid.two{ grid-template-columns:170px minmax(0,1fr); }
+    .card-copy{ display:flex; flex-direction:column; gap:10px; min-width:0; }
+    .card-side{ display:flex; flex-direction:column; gap:10px; min-width:0; }
+    .card-side .card-stat{ flex:0 0 auto; }
+    .thumb{
+      width:100%; aspect-ratio:1; padding:10px;
+      display:flex; flex-direction:column; align-items:stretch; gap:10px;
+      color:var(--wood-ink); background:var(--wood); border:0; cursor:pointer;
+      box-shadow:inset 0 0 0 3px var(--wood-dark);
+    }
+    .thumb-screen{
+      flex:1 1 auto; display:flex; align-items:center; justify-content:center;
+      background:repeating-linear-gradient(to bottom, rgba(255,255,255,.05) 0 2px, transparent 2px 5px), #070b17;
+    }
+    .thumb-label{ font-family:var(--pixel); font-size:10px; text-align:center; }
+    .thumb:hover .vs-play, .thumb:focus-visible .vs-play{ transform:scale(1.12); }
+    .thumb:hover .thumb-label{ color:#fff4dc; }
+    .thumb:hover{ background:var(--wood-hi); }
+
+    .lightbox{
+      position:absolute; inset:0; z-index:30;
+      display:flex; align-items:center; justify-content:center; padding:24px;
+      background:rgba(7,11,23,.78);
+    }
+    .lb-panel{ width:min(960px, 100%); background:#10172b; border:3px solid var(--accent); box-shadow:10px 10px 0 rgba(0,0,0,.35); }
+    .lb-head{ display:flex; align-items:center; gap:14px; padding:12px 12px 12px 20px; background:#1d2745; }
+    .lb-title{ flex:1 1 auto; font-family:var(--pixel); font-size:13px; line-height:1.5; }
+    .lb-close{ width:44px; height:44px; font-family:var(--pixel); font-size:14px; color:var(--cream); background:#10172b; border:2px solid rgba(255,255,255,.2); cursor:pointer; }
+    .lb-close:hover{ color:var(--accent); border-color:var(--accent); }
+    .lb-screen{
+      aspect-ratio:16 / 9; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; padding:20px; text-align:center;
+      background:repeating-linear-gradient(to bottom, rgba(255,255,255,.04) 0 2px, transparent 2px 5px), #070b17;
+    }
+    .video-slot{
+      position:relative; width:100%; aspect-ratio:16 / 9;
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
+      background:repeating-linear-gradient(to bottom, rgba(255,255,255,.035) 0 2px, transparent 2px 5px), #070b17;
+      border:3px dashed #3a4a75; text-align:center; padding:12px;
+    }
+    .vs-play{
+      width:56px; height:56px; display:flex; align-items:center; justify-content:center;
+      font-family:var(--pixel); font-size:20px; color:#17140f; background:var(--accent);
+    }
+    .vs-label{ font-family:var(--pixel); font-size:10px; color:var(--cream); }
+    .vs-note{ font-size:13px; color:var(--muted); }
+    .bring-grid{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:12px; }
+    .bring{ display:flex; flex-direction:column; gap:6px; padding:14px 16px; background:var(--stain-2); border:2px solid var(--stain-line); }
+    .bring-title{ font-family:var(--pixel); font-size:10px; line-height:1.6; color:var(--accent); }
+    .bring p{ margin:0; font-size:15px; line-height:1.5; }
+    .card-role{ margin:0; font-size:21px; font-weight:700; line-height:1.3; color:#ffffff; }
+    .card-meta{ margin:-8px 0 0; font-size:14px; color:var(--wood-muted); }
+    .card-list{ margin:0; padding-left:20px; display:flex; flex-direction:column; gap:6px; }
+    .card-list li::marker{ color:var(--accent); }
+    .card-list strong{ color:#ffffff; }
+    .timeline{ margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:14px; }
+    .tl-item{ display:grid; grid-template-columns:120px minmax(0,1fr); gap:16px; align-items:baseline; }
+    .tl-when{ font-family:var(--pixel); font-size:10px; line-height:1.7; color:var(--accent); }
+    .tl-what{ margin:0; }
+    .tl-what strong{ color:#ffffff; }
+    .card-stats{ display:flex; gap:10px; flex-wrap:wrap; }
+    .card-stat{ flex:1 1 140px; display:flex; flex-direction:column; gap:6px; padding:10px 12px; background:var(--stain-2); border:2px solid var(--stain-line); }
+    .k-v{ font-family:var(--pixel); font-size:15px; color:var(--accent); }
+    .k-l{ font-size:13px; line-height:1.3; color:var(--wood-muted); }
+    .tags{ display:flex; flex-wrap:wrap; gap:6px; }
+    .tag{ padding:6px 8px; font-family:var(--pixel); font-size:9px; color:var(--wood-muted); background:var(--stain-2); border:2px solid var(--stain-line); }
+    .land-head{ margin:0; font-family:var(--pixel); font-size:clamp(18px,2vw,24px); line-height:1.4; color:var(--accent); }
+    .card-cta{ display:flex; gap:10px; flex-wrap:wrap; margin-top:4px; }
+    .cta{ display:inline-flex; align-items:center; min-height:44px; padding:0 16px; font-family:var(--pixel); font-size:11px; border:0; cursor:pointer; }
+    .cta.primary{ color:#17140f; background:var(--accent); }
+    .cta.ghost{ color:var(--cream); background:var(--wood-lo); }
+    .cta:hover{ filter:brightness(1.1); }
+
+    /* ---------- Skater ---------- */
+    .rider-wrap{ position:absolute; z-index:7; pointer-events:none; will-change:transform; }
+    .rider-shadow{
+      position:absolute; z-index:6; height:10px; pointer-events:none;
+      background:rgba(30,26,36,.3);
+      clip-path:polygon(12% 0, 88% 0, 100% 30%, 100% 70%, 88% 100%, 12% 100%, 0 70%, 0 30%);
+    }
+    .rider-bob{ position:absolute; inset:0; }
+    .rider-bob.idle{ animation:bob 1.2s steps(2) infinite; }
+    .rider-bob.moving{ animation:jitter .12s steps(2) infinite; }
+    @keyframes bob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-3px); } }
+    @keyframes jitter{ 0%,100%{ transform:translate(0,0); } 50%{ transform:translate(1px,-1px); } }
+    .sprite{ position:absolute; left:0; top:0; display:block; overflow:visible; }
+    .sparks{ position:absolute; width:0; height:0; }
+    .spark{
+      position:absolute; left:0; top:0; width:5px; height:5px;
+      background:#ffd76a; box-shadow:0 0 6px 1px rgba(255,200,90,.8);
+      animation:spark .45s steps(4) infinite;
+    }
+    .spark:nth-child(1){ --dx:-26px; --dy:-10px; }
+    .spark:nth-child(2){ --dx:-18px; --dy:8px; animation-delay:.1s; }
+    .spark:nth-child(3){ --dx:-34px; --dy:-2px; animation-delay:.2s; background:#fff3c4; }
+    .spark:nth-child(4){ --dx:-12px; --dy:-16px; animation-delay:.3s; }
+    @keyframes spark{ 0%{ transform:translate(0,0); opacity:1; } 100%{ transform:translate(var(--dx),var(--dy)); opacity:0; } }
+    .speed-lines{ position:absolute; right:92%; top:28%; width:150px; height:56%; display:flex; flex-direction:column; justify-content:space-around; }
+    .speed-lines span{ display:block; height:4px; background:rgba(255,255,255,.8); animation:streak .3s steps(3) infinite; }
+    .speed-lines span:nth-child(2){ width:70%; margin-left:30%; animation-delay:.1s; }
+    .speed-lines span:nth-child(3){ width:50%; margin-left:50%; animation-delay:.2s; }
+    @keyframes streak{ 0%{ transform:translateX(30px); opacity:0; } 50%{ opacity:1; } 100%{ transform:translateX(-30px); opacity:0; } }
+    .dust{ position:absolute; z-index:6; width:10px; height:10px; background:#f4f0e8; box-shadow:10px 4px 0 -2px #e2ddd2; pointer-events:none; }
+    .pop{
+      position:absolute; z-index:9; transform:translate(-50%, -100%);
+      font-family:var(--pixel); font-size:16px; color:var(--accent);
+      text-shadow:3px 3px 0 #1b2a4a; white-space:nowrap; pointer-events:none;
+    }
+
+    /* ---------- After the run ---------- */
+    .stat-screen{
+      background:radial-gradient(circle at 4px 4px, rgba(255,247,232,.06) 2px, transparent 2px) 0 0/28px 28px, #141b30;
+      padding:clamp(56px,8vw,104px) clamp(20px,6vw,80px);
+      display:flex; flex-direction:column; align-items:center; gap:clamp(28px,4vw,44px);
+    }
+    .lede{ margin:0; max-width:760px; text-align:center; font-size:clamp(17px,1.5vw,20px); line-height:1.5; color:var(--wood-muted); }
+    .bring-grid.wide{ width:100%; max-width:1100px; }
+    .stat-screen h2{ margin:0; text-align:center; font-family:var(--pixel); font-size:clamp(16px,2.6vw,28px); line-height:1.5; color:var(--cream); text-shadow:4px 4px 0 #070b17; }
+    .again-btn{ min-height:48px; padding:14px 20px; font-family:var(--pixel); font-size:12px; color:#17140f; background:var(--accent); border:0; cursor:pointer; box-shadow:inset -4px -4px 0 rgba(0,0,0,.22); }
+
+    .ticker-wrap{ overflow:hidden; background:#070b17; border-top:3px solid var(--accent); border-bottom:3px solid var(--accent); padding:14px 0; }
+    .ticker-track{ display:flex; width:max-content; animation:scrollX 40s linear infinite; }
+    .ticker-seg{ flex:0 0 auto; display:flex; align-items:center; font-family:var(--pixel); font-size:clamp(10px,1.3vw,13px); color:var(--cream); white-space:nowrap; }
+    .ticker-seg span{ flex:0 0 auto; display:flex; align-items:center; }
+    .ticker-seg span::after{ content:""; width:8px; height:8px; margin:0 28px; background:var(--accent); opacity:.6; }
+    .ticker-seg span:nth-child(even){ color:var(--accent); }
+    @keyframes scrollX{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+
+    .credits{ padding:clamp(32px,5vw,52px) 20px clamp(44px,6vw,64px); background:var(--ink); display:flex; flex-direction:column; align-items:center; gap:18px; text-align:center; }
+    .credits-links{ display:flex; flex-wrap:wrap; justify-content:center; gap:10px; }
+    .credits-links a{ display:flex; align-items:center; min-height:44px; padding:0 18px; font-family:var(--pixel); font-size:11px; color:var(--cream); background:#1d2745; }
+    .credits-links a:hover{ color:var(--accent); }
+    .credits-foot{ margin:0; font-size:15px; color:var(--muted); }
+
+    .reduced-motion *{ animation:none !important; transition:none !important; }
+    @media (prefers-reduced-motion:reduce){
+      .page *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; }
+    }
+    @media (max-width:720px){
+      .chips{ display:none; }
+      .hud-play .chip{ display:none; }
+      .hud-btn{ padding:0 10px; }
+      .controls-hint{ font-size:8px; }
+      .title-lockup{ top:6%; gap:8px; }
+      .qlink{ font-size:8px; padding:0 10px; min-height:40px; }
+      .chips-left .read-chip{ display:none; }
+      .statement{ font-size:13px; padding:12px 14px; }
+      .tl-item{ grid-template-columns:minmax(0,1fr); gap:4px; }
+      .card-head{ padding:12px 16px; }
+      .card-body{ padding:14px 16px 18px; font-size:15px; }
+      .card-role{ font-size:18px; }
+      .card-grid, .bring-grid{ grid-template-columns:minmax(0,1fr); }
+    }
+    @container stagecard (max-width: 1000px){
+      .card-grid{ grid-template-columns:150px minmax(0,1fr); }
+      .card-side{ grid-column:1 / -1; flex-direction:row; flex-wrap:wrap; }
+      .card-side .card-stat{ flex:1 1 140px; }
+    }
+    @container stagecard (max-width: 560px){
+      .card-grid, .card-grid.two{ grid-template-columns:minmax(0,1fr); gap:14px; }
+      .thumb{ aspect-ratio:auto; flex-direction:row; align-items:center; padding:8px; }
+      .thumb-screen{ flex:0 0 72px; height:48px; }
+      .thumb-screen .vs-play{ width:36px; height:36px; font-size:12px; }
+    }
+    @media (max-height: 800px){
+      .card-head{ padding:10px 20px; }
+      .card-body{ padding:14px 20px 16px; font-size:15px; gap:10px; }
+      .card-role{ font-size:19px; }
+      .card-list{ gap:4px; }
+    }
+  
+</style>
+</head>
+<body>
+<div id="app">
+<div class="page {{motionClass}}" style="--accent: {{accent}};">
+  <div class="scroller" ref="{{setScroller}}" tabIndex="0" onScroll="{{onScroll}}" onKeyDown="{{onKey}}" onPointerEnter="{{focusStage}}" aria-label="Mark Sherriff, immersive resume. Scroll or use the arrow keys to ride through each stage.">
+
+    <div class="run" style="height: {{runHeight}}px;">
+      <div class="stage">
+        <svg class="world" width="100%" height="100%" aria-hidden="true">
+          <path d="M0 0" data-b-d="{{sky.b0.d}}" fill="{{sky.b0.f}}"></path>
+          <path d="M0 0" data-b-d="{{sky.b1.d}}" fill="{{sky.b1.f}}"></path>
+          <path d="M0 0" data-b-d="{{sky.b2.d}}" fill="{{sky.b2.f}}"></path>
+          <path d="M0 0" data-b-d="{{sky.b3.d}}" fill="{{sky.b3.f}}"></path>
+          <path d="M0 0" data-b-d="{{sky.b4.d}}" fill="{{sky.b4.f}}"></path>
+          <path d="M0 0" data-b-d="{{sky.b5.d}}" fill="{{sky.b5.f}}"></path>
+          <path d="M0 0" data-b-d="{{sky.b6.d}}" fill="{{sky.b6.f}}"></path>
+          <g transform="" data-b-transform="translate(0 {{panS}})">
+          <g transform="" data-b-transform="translate({{sunX}} {{sunY}})">
+            <path d="M0 0" data-b-d="{{sky.s0.d}}" fill="{{sky.s0.f}}"></path>
+            <path d="M0 0" data-b-d="{{sky.s1.d}}" fill="{{sky.s1.f}}"></path>
+            <path d="M0 0" data-b-d="{{sky.s2.d}}" fill="{{sky.s2.f}}"></path>
+            <path d="M0 0" data-b-d="{{sky.s3.d}}" fill="{{sky.s3.f}}"></path>
+            <path d="M0 0" data-b-d="{{sky.s4.d}}" fill="{{sky.s4.f}}"></path>
+          </g>
+          <g transform="" data-b-transform="translate({{cl.k0.x}} {{cl.k0.y}})"><path d="M0 0" data-b-d="{{cl.k0.p0.d}}" fill="{{cl.k0.p0.f}}"></path><path d="M0 0" data-b-d="{{cl.k0.p1.d}}" fill="{{cl.k0.p1.f}}"></path><path d="M0 0" data-b-d="{{cl.k0.p2.d}}" fill="{{cl.k0.p2.f}}"></path><path d="M0 0" data-b-d="{{cl.k0.p3.d}}" fill="{{cl.k0.p3.f}}"></path></g>
+          <g transform="" data-b-transform="translate({{cl.k1.x}} {{cl.k1.y}})"><path d="M0 0" data-b-d="{{cl.k1.p0.d}}" fill="{{cl.k1.p0.f}}"></path><path d="M0 0" data-b-d="{{cl.k1.p1.d}}" fill="{{cl.k1.p1.f}}"></path><path d="M0 0" data-b-d="{{cl.k1.p2.d}}" fill="{{cl.k1.p2.f}}"></path><path d="M0 0" data-b-d="{{cl.k1.p3.d}}" fill="{{cl.k1.p3.f}}"></path></g>
+          <g transform="" data-b-transform="translate({{cl.k2.x}} {{cl.k2.y}})"><path d="M0 0" data-b-d="{{cl.k2.p0.d}}" fill="{{cl.k2.p0.f}}"></path><path d="M0 0" data-b-d="{{cl.k2.p1.d}}" fill="{{cl.k2.p1.f}}"></path><path d="M0 0" data-b-d="{{cl.k2.p2.d}}" fill="{{cl.k2.p2.f}}"></path><path d="M0 0" data-b-d="{{cl.k2.p3.d}}" fill="{{cl.k2.p3.f}}"></path></g>
+          </g>
+          <g transform="" data-b-transform="translate(0 {{panM}})">
+          <path d="M0 0" data-b-d="{{mt.far.base}}" fill="#aec3db"></path>
+          <path d="M0 0" data-b-d="{{mt.far.lit}}" fill="#bfd0e3"></path>
+          <path d="M0 0" data-b-d="{{mt.far.shade}}" fill="#a0b6d0"></path>
+          <path d="M0 0" data-b-d="{{mt.hill.base}}" fill="#8db096"></path>
+          <path d="M0 0" data-b-d="{{mt.hill.lit}}" fill="#9dbea5"></path>
+          <path d="M0 0" data-b-d="{{mt.hill.shade}}" fill="#7fa289"></path>
+          </g>
+          <path d="M0 0" data-b-d="{{cardPosts.pl}}" fill="#b07a48"></path>
+          <path d="M0 0" data-b-d="{{cardPosts.pm}}" fill="#8a5a33"></path>
+          <path d="M0 0" data-b-d="{{cardPosts.pr}}" fill="#5e3a1f"></path>
+          <path d="M0 0" data-b-d="{{cardPosts.pb}}" fill="#79838f"></path>
+          <g opacity="1" data-b-opacity="{{sign.op}}">
+            <path d="M0 0" data-b-d="{{sign.pl}}" fill="#b07a48"></path>
+            <path d="M0 0" data-b-d="{{sign.pm}}" fill="#8a5a33"></path>
+            <path d="M0 0" data-b-d="{{sign.pr}}" fill="#5e3a1f"></path>
+            <path d="M0 0" data-b-d="{{sign.pb}}" fill="#79838f"></path>
+          </g>
+        </svg>
+        <template data-if="sign.show">
+          <div class="sign" style="left: {{sign.left}}px; top: {{sign.top}}px; width: {{sign.w}}px; opacity: {{sign.op}};">
+            <div class="sign-board {{sign.cls}} plank wood-frame">
+              <span class="sign-kicker">IMMERSIVE RESUME</span>
+              <span class="sign-rule"></span>
+              <span class="sign-main">MISSION:<br>GRIND 1,000 STAIRS ↘<br>LAND THE DREAM JOB</span>
+            </div>
+          </div>
+        </template>
+
+        <!-- Stage 1 -->
+        <article class="card wood-frame {{pos.c1.cls}}" ref="{{cardRefs.c1}}" style="left: {{pos.c1.left}}px; top: {{pos.c1.top}}px; width: {{cardW}}px; opacity: {{pos.c1.op}};">
+          <header class="card-head plank">
+            <span class="card-stage">STAGE 1</span>
+            <h3 class="card-title">ORIGIN STORY</h3>
+            <span class="card-years">AGE 9 → 2021</span>
+          </header>
+          <div class="card-body">
+            <div class="card-grid two">
+              <button class="thumb notch" type="button" onClick="{{openV.s1}}" aria-label="Watch the Stage 1 video">
+                <span class="thumb-screen"><span class="vs-play notch">▶</span></span>
+                <span class="thumb-label">WATCH VIDEO</span>
+              </button>
+              <div class="card-copy">
+                <ul class="timeline">
+                  <li class="tl-item"><span class="tl-when">AGE 9</span><p class="tl-what"><strong>Started skateboarding seriously.</strong></p></li>
+                  <li class="tl-item"><span class="tl-when">AGE 14</span><p class="tl-what"><strong>Built my first app.</strong></p></li>
+                  <li class="tl-item"><span class="tl-when">2017–2021</span><p class="tl-what"><strong>Retail Merchandiser, Shoppers Drug Mart</strong> · Toronto. Four years in a fast-paced pharmacy and retail environment while attending high school, then college.</p></li>
+                  <li class="tl-item"><span class="tl-when">2020</span><p class="tl-what"><strong>Computer Programming Diploma</strong> · Humber College, Toronto</p></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Stage 2 -->
+        <article class="card wood-frame {{pos.c2.cls}}" ref="{{cardRefs.c2}}" style="left: {{pos.c2.left}}px; top: {{pos.c2.top}}px; width: {{cardW}}px; opacity: {{pos.c2.op}};">
+          <header class="card-head plank">
+            <span class="card-stage">STAGE 2</span>
+            <h3 class="card-title">FREELANCE</h3>
+            <span class="card-years">2021–2022</span>
+          </header>
+          <div class="card-body">
+            <div class="card-grid">
+              <button class="thumb notch" type="button" onClick="{{openV.s2}}" aria-label="Watch the Stage 2 app demo">
+                <span class="thumb-screen"><span class="vs-play notch">▶</span></span>
+                <span class="thumb-label">WATCH DEMO</span>
+              </button>
+              <div class="card-copy">
+                <p class="card-role">Freelance Flutter Developer</p>
+                <p class="card-meta">Aspire Perspire Nourish Lodging &amp; Concierge · Remote</p>
+                <ul class="card-list">
+                  <li><strong>Sole developer</strong> of a production mobile app for short-term rental clients, shipped internationally to iOS and Android.</li>
+                  <li>Designed the UI/UX and branding; integrated a NoSQL database and third-party APIs.</li>
+                </ul>
+              </div>
+              <div class="card-side">
+                <div class="card-stat"><span class="k-v">−35%</span><span class="k-l">check-in time</span></div>
+                <div class="card-stat"><span class="k-v">−20%</span><span class="k-l">check-out time</span></div>
+                <div class="card-stat"><span class="k-v">52%+</span><span class="k-l">less admin task time</span></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Stage 3 -->
+        <article class="card wood-frame {{pos.c3.cls}}" ref="{{cardRefs.c3}}" style="left: {{pos.c3.left}}px; top: {{pos.c3.top}}px; width: {{cardW}}px; opacity: {{pos.c3.op}};">
+          <header class="card-head plank">
+            <span class="card-stage">STAGE 3</span>
+            <h3 class="card-title">GOODKIND · YC S21</h3>
+            <span class="card-years">2022–2025</span>
+          </header>
+          <div class="card-body">
+            <div class="card-grid">
+              <button class="thumb notch" type="button" onClick="{{openV.s3}}" aria-label="Watch the Stage 3 product demo">
+                <span class="thumb-screen"><span class="vs-play notch">▶</span></span>
+                <span class="thumb-label">WATCH DEMO</span>
+              </button>
+              <div class="card-copy">
+                <p class="card-role">Mobile Engineer, AI Engineer</p>
+                <p class="card-meta">20-person Y Combinator (S21)-backed startup · Toronto, ON / Remote</p>
+                <ul class="card-list">
+                  <li>Early engineer, working daily with the CEO, CTO and COO on product direction and system design.</li>
+                  <li><strong>Owned the Flutter app end-to-end</strong>: architecture, features, releases, App Store and Play Store.</li>
+                  <li><strong>Built the AI chat product from zero to production</strong> in Node.js and TypeScript: full RAG with embeddings, Pinecone retrieval and multi-step LLM tool chains, plus BullMQ / Redis jobs indexing millions of embeddings.</li>
+                </ul>
+              </div>
+              <div class="card-side">
+                <div class="card-stat"><span class="k-v">20+</span><span class="k-l">live customer orgs</span></div>
+                <div class="card-stat"><span class="k-v">~1,500</span><span class="k-l">chat messages / week</span></div>
+                <div class="card-stat"><span class="k-v">2</span><span class="k-l">interns led</span></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Stage 4 -->
+        <article class="card wood-frame {{pos.c4.cls}}" ref="{{cardRefs.c4}}" style="left: {{pos.c4.left}}px; top: {{pos.c4.top}}px; width: {{cardW}}px; opacity: {{pos.c4.op}};">
+          <header class="card-head plank">
+            <span class="card-stage">STAGE 4</span>
+            <h3 class="card-title">NICHE (FORMERLY GOODKIND)</h3>
+            <span class="card-years">2025–2026</span>
+          </header>
+          <div class="card-body">
+            <div class="card-grid">
+              <button class="thumb notch" type="button" onClick="{{openV.s4}}" aria-label="Watch the Stage 4 product demo">
+                <span class="thumb-screen"><span class="vs-play notch">▶</span></span>
+                <span class="thumb-label">WATCH DEMO</span>
+              </button>
+              <div class="card-copy">
+                <p class="card-role">Software Engineer, Full-Stack &amp; AI Engineer</p>
+                <p class="card-meta">Toronto, ON / Remote</p>
+                <ul class="card-list">
+                  <li><strong>Carried the AI chat product and mobile app through the acquisition</strong> into Niche's larger, multi-service codebase.</li>
+                  <li>Delivered a personalized product to 2,000 client institutions on a predominantly Go backend.</li>
+                  <li>Instrumented LLM pipelines with Langfuse (tracing, evals, cost / latency), monitored in Grafana, scheduled workflows in Airflow; expanded into full-stack ownership of the chat frontend.</li>
+                </ul>
+              </div>
+              <div class="card-side">
+                <div class="card-stat"><span class="k-v">2,000</span><span class="k-l">client institutions</span></div>
+                <div class="tags">
+                  <span class="tag">GO</span><span class="tag">LANGFUSE</span><span class="tag">GRAFANA</span><span class="tag">AIRFLOW</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <svg class="world front" width="100%" height="100%" aria-hidden="true">
+          <g transform="" data-b-transform="translate(0 {{panY}})">
+          <path d="M0 0" data-b-d="{{topPath}}" fill="#d6d0c4"></path>
+          <path d="M0 0" data-b-d="{{backEdgePath}}" fill="#aaa498"></path>
+          <path d="M0 0" data-b-d="{{seamPath}}" fill="#b9b3a7"></path>
+          <path d="M0 0" data-b-d="{{riserShadowPath}}" fill="#b9b2a6"></path>
+          <path d="M0 0" data-b-d="{{riserEdgePath}}" fill="#6b665e"></path>
+          <path d="M0 0" data-b-d="{{stairPath}}" fill="#9b958b"></path>
+          <path d="M0 0" data-b-d="{{shade1Path}}" fill="rgba(40,36,48,0.12)"></path>
+          <path d="M0 0" data-b-d="{{shade2Path}}" fill="rgba(40,36,48,0.16)"></path>
+          <path d="M0 0" data-b-d="{{specLightPath}}" fill="#b1ab9f"></path>
+          <path d="M0 0" data-b-d="{{specDarkPath}}" fill="#857f75"></path>
+          <path d="M0 0" data-b-d="{{nosePath}}" fill="#c2bcb1"></path>
+          <path d="M0 0" data-b-d="{{lipPath}}" fill="#6f6b64"></path>
+          <path d="M0 0" data-b-d="{{postBasePath}}" fill="#4d545e"></path>
+          <path d="M0 0" data-b-d="{{postLPath}}" fill="#b3bbc5"></path>
+          <path d="M0 0" data-b-d="{{postMPath}}" fill="#8a929d"></path>
+          <path d="M0 0" data-b-d="{{postRPath}}" fill="#5d646e"></path>
+          <path d="M0 0" data-b-d="{{railUnder}}" fill="#4f5661"></path>
+          <path d="M0 0" data-b-d="{{railLow}}" fill="#8d96a2"></path>
+          <path d="M0 0" data-b-d="{{railBody}}" fill="#bfc6cf"></path>
+          <path d="M0 0" data-b-d="{{railHi}}" fill="#f3f6f9"></path>
+          <path d="M0 0" data-b-d="{{railGlints}}" fill="#ffffff"></path>
+          <path d="M0 0" data-b-d="{{railCap}}" fill="#6f7782"></path>
+          <path d="M0 0" data-b-d="{{railBreaks}}" fill="#525a65"></path>
+          <path d="M0 0" data-b-d="{{pitPath}}" fill="#5f5a53"></path>
+          <path d="M0 0" data-b-d="{{dirtPath}}" fill="#6b4a2a"></path>
+          <path d="M0 0" data-b-d="{{crateWoodPath}}" fill="#9c6b3f"></path>
+          <path d="M0 0" data-b-d="{{crateDarkPath}}" fill="#4f3a24"></path>
+          <path d="M0 0" data-b-d="{{grassPath}}" fill="#5a9c4a"></path>
+          <path d="M0 0" data-b-d="{{grassHiPath}}" fill="#84c766"></path>
+          <path d="M0 0" data-b-d="{{whitePath}}" fill="#f4f7fb"></path>
+          <path d="M0 0" data-b-d="{{inkPath}}" fill="#23262c"></path>
+          <path d="M0 0" data-b-d="{{conePath}}" fill="#e2702a"></path>
+          <path d="M0 0" data-b-d="{{orangePath}}" fill="#b5651f"></path>
+          <path d="M0 0" data-b-d="{{rubblePath}}" fill="#a8a299"></path>
+          </g>
+        </svg>
+
+
+        <!-- Skater -->
+        <div class="rider-shadow" style="left: {{shadow.left}}px; top: {{shadow.top}}px; width: {{shadow.w}}px; opacity: {{shadow.op}}; transform: rotate({{shadow.rot}}deg);"></div>
+        <template data-if="dustOn">
+          <div class="dust" style="left: {{dust.l1}}px; top: {{dust.y}}px; opacity: {{dust.op}}; transform: translateY({{dust.lift}}px);"></div>
+          <div class="dust" style="left: {{dust.l2}}px; top: {{dust.y}}px; opacity: {{dust.op}};"></div>
+          <div class="dust" style="left: {{dust.r1}}px; top: {{dust.y}}px; opacity: {{dust.op}};"></div>
+          <div class="dust" style="left: {{dust.r2}}px; top: {{dust.y}}px; opacity: {{dust.op}}; transform: translateY({{dust.lift}}px);"></div>
+        </template>
+        <div class="rider-wrap" style="left: {{sk.left}}px; top: {{sk.top}}px; width: {{sk.w}}px; height: {{sk.h}}px; transform: rotate({{sk.rot}}deg); transform-origin: {{sk.ox}}px {{sk.oy}}px;">
+          <div class="rider-bob {{sk.cls}}">
+            <template data-if="moving">
+              <div class="speed-lines"><span></span><span></span><span></span></div>
+            </template>
+            <svg class="sprite" width="0" data-b-width="{{sk.w}}" height="0" data-b-height="{{sk.h}}" aria-hidden="true"><g transform="" data-b-transform="scale({{sk.sc}})"><g transform="" data-b-transform="{{sk.boardTf}}"><path d="M0 0" data-b-d="{{board.g0.d}}" fill="{{board.g0.f}}"></path><path d="M0 0" data-b-d="{{board.g1.d}}" fill="{{board.g1.f}}"></path><path d="M0 0" data-b-d="{{board.g2.d}}" fill="{{board.g2.f}}"></path><path d="M0 0" data-b-d="{{board.g3.d}}" fill="{{board.g3.f}}"></path><path d="M0 0" data-b-d="{{board.g4.d}}" fill="{{board.g4.f}}"></path><path d="M0 0" data-b-d="{{board.g5.d}}" fill="{{board.g5.f}}"></path><path d="M0 0" data-b-d="{{board.g6.d}}" fill="{{board.g6.f}}"></path><path d="M0 0" data-b-d="{{board.g7.d}}" fill="{{board.g7.f}}"></path><path d="M0 0" data-b-d="{{board.g8.d}}" fill="{{board.g8.f}}"></path><path d="M0 0" data-b-d="{{board.g9.d}}" fill="{{board.g9.f}}"></path><path d="M0 0" data-b-d="{{board.g10.d}}" fill="{{board.g10.f}}"></path><path d="M0 0" data-b-d="{{board.g11.d}}" fill="{{board.g11.f}}"></path><path d="M0 0" data-b-d="{{board.g12.d}}" fill="{{board.g12.f}}"></path><path d="M0 0" data-b-d="{{board.g13.d}}" fill="{{board.g13.f}}"></path><path d="M0 0" data-b-d="{{board.g14.d}}" fill="{{board.g14.f}}"></path><path d="M0 0" data-b-d="{{board.g15.d}}" fill="{{board.g15.f}}"></path><path d="M0 0" data-b-d="{{board.g16.d}}" fill="{{board.g16.f}}"></path><path d="M0 0" data-b-d="{{board.g17.d}}" fill="{{board.g17.f}}"></path><path d="M0 0" data-b-d="{{board.g18.d}}" fill="{{board.g18.f}}"></path><path d="M0 0" data-b-d="{{board.g19.d}}" fill="{{board.g19.f}}"></path><path d="M0 0" data-b-d="{{board.g20.d}}" fill="{{board.g20.f}}"></path><path d="M0 0" data-b-d="{{board.g21.d}}" fill="{{board.g21.f}}"></path><path d="M0 0" data-b-d="{{board.g22.d}}" fill="{{board.g22.f}}"></path><path d="M0 0" data-b-d="{{board.g23.d}}" fill="{{board.g23.f}}"></path><path d="M0 0" data-b-d="{{board.g24.d}}" fill="{{board.g24.f}}"></path><path d="M0 0" data-b-d="{{board.g25.d}}" fill="{{board.g25.f}}"></path><path d="M0 0" data-b-d="{{board.g26.d}}" fill="{{board.g26.f}}"></path><path d="M0 0" data-b-d="{{board.g27.d}}" fill="{{board.g27.f}}"></path></g><g transform="" data-b-transform="{{sk.riderTf}}"><path d="M0 0" data-b-d="{{rider.g0.d}}" fill="{{rider.g0.f}}"></path><path d="M0 0" data-b-d="{{rider.g1.d}}" fill="{{rider.g1.f}}"></path><path d="M0 0" data-b-d="{{rider.g2.d}}" fill="{{rider.g2.f}}"></path><path d="M0 0" data-b-d="{{rider.g3.d}}" fill="{{rider.g3.f}}"></path><path d="M0 0" data-b-d="{{rider.g4.d}}" fill="{{rider.g4.f}}"></path><path d="M0 0" data-b-d="{{rider.g5.d}}" fill="{{rider.g5.f}}"></path><path d="M0 0" data-b-d="{{rider.g6.d}}" fill="{{rider.g6.f}}"></path><path d="M0 0" data-b-d="{{rider.g7.d}}" fill="{{rider.g7.f}}"></path><path d="M0 0" data-b-d="{{rider.g8.d}}" fill="{{rider.g8.f}}"></path><path d="M0 0" data-b-d="{{rider.g9.d}}" fill="{{rider.g9.f}}"></path><path d="M0 0" data-b-d="{{rider.g10.d}}" fill="{{rider.g10.f}}"></path><path d="M0 0" data-b-d="{{rider.g11.d}}" fill="{{rider.g11.f}}"></path><path d="M0 0" data-b-d="{{rider.g12.d}}" fill="{{rider.g12.f}}"></path><path d="M0 0" data-b-d="{{rider.g13.d}}" fill="{{rider.g13.f}}"></path><path d="M0 0" data-b-d="{{rider.g14.d}}" fill="{{rider.g14.f}}"></path><path d="M0 0" data-b-d="{{rider.g15.d}}" fill="{{rider.g15.f}}"></path><path d="M0 0" data-b-d="{{rider.g16.d}}" fill="{{rider.g16.f}}"></path><path d="M0 0" data-b-d="{{rider.g17.d}}" fill="{{rider.g17.f}}"></path><path d="M0 0" data-b-d="{{rider.g18.d}}" fill="{{rider.g18.f}}"></path><path d="M0 0" data-b-d="{{rider.g19.d}}" fill="{{rider.g19.f}}"></path><path d="M0 0" data-b-d="{{rider.g20.d}}" fill="{{rider.g20.f}}"></path><path d="M0 0" data-b-d="{{rider.g21.d}}" fill="{{rider.g21.f}}"></path><path d="M0 0" data-b-d="{{rider.g22.d}}" fill="{{rider.g22.f}}"></path><path d="M0 0" data-b-d="{{rider.g23.d}}" fill="{{rider.g23.f}}"></path><path d="M0 0" data-b-d="{{rider.g24.d}}" fill="{{rider.g24.f}}"></path><path d="M0 0" data-b-d="{{rider.g25.d}}" fill="{{rider.g25.f}}"></path><path d="M0 0" data-b-d="{{rider.g26.d}}" fill="{{rider.g26.f}}"></path><path d="M0 0" data-b-d="{{rider.g27.d}}" fill="{{rider.g27.f}}"></path><path d="M0 0" data-b-d="{{rider.g28.d}}" fill="{{rider.g28.f}}"></path><path d="M0 0" data-b-d="{{rider.g29.d}}" fill="{{rider.g29.f}}"></path><path d="M0 0" data-b-d="{{rider.g30.d}}" fill="{{rider.g30.f}}"></path><path d="M0 0" data-b-d="{{rider.g31.d}}" fill="{{rider.g31.f}}"></path><path d="M0 0" data-b-d="{{rider.g32.d}}" fill="{{rider.g32.f}}"></path><path d="M0 0" data-b-d="{{rider.g33.d}}" fill="{{rider.g33.f}}"></path><path d="M0 0" data-b-d="{{rider.g34.d}}" fill="{{rider.g34.f}}"></path><path d="M0 0" data-b-d="{{rider.g35.d}}" fill="{{rider.g35.f}}"></path><path d="M0 0" data-b-d="{{rider.g36.d}}" fill="{{rider.g36.f}}"></path><path d="M0 0" data-b-d="{{rider.g37.d}}" fill="{{rider.g37.f}}"></path><path d="M0 0" data-b-d="{{rider.g38.d}}" fill="{{rider.g38.f}}"></path><path d="M0 0" data-b-d="{{rider.g39.d}}" fill="{{rider.g39.f}}"></path><path d="M0 0" data-b-d="{{rider.g40.d}}" fill="{{rider.g40.f}}"></path><path d="M0 0" data-b-d="{{rider.g41.d}}" fill="{{rider.g41.f}}"></path><path d="M0 0" data-b-d="{{rider.g42.d}}" fill="{{rider.g42.f}}"></path><path d="M0 0" data-b-d="{{rider.g43.d}}" fill="{{rider.g43.f}}"></path><path d="M0 0" data-b-d="{{rider.g44.d}}" fill="{{rider.g44.f}}"></path><path d="M0 0" data-b-d="{{rider.g45.d}}" fill="{{rider.g45.f}}"></path><path d="M0 0" data-b-d="{{rider.g46.d}}" fill="{{rider.g46.f}}"></path><path d="M0 0" data-b-d="{{rider.g47.d}}" fill="{{rider.g47.f}}"></path><path d="M0 0" data-b-d="{{rider.g48.d}}" fill="{{rider.g48.f}}"></path><path d="M0 0" data-b-d="{{rider.g49.d}}" fill="{{rider.g49.f}}"></path><path d="M0 0" data-b-d="{{rider.g50.d}}" fill="{{rider.g50.f}}"></path><path d="M0 0" data-b-d="{{rider.g51.d}}" fill="{{rider.g51.f}}"></path><path d="M0 0" data-b-d="{{rider.g52.d}}" fill="{{rider.g52.f}}"></path><path d="M0 0" data-b-d="{{rider.g53.d}}" fill="{{rider.g53.f}}"></path><path d="M0 0" data-b-d="{{rider.g54.d}}" fill="{{rider.g54.f}}"></path><path d="M0 0" data-b-d="{{rider.g55.d}}" fill="{{rider.g55.f}}"></path><path d="M0 0" data-b-d="{{rider.g56.d}}" fill="{{rider.g56.f}}"></path><path d="M0 0" data-b-d="{{rider.g57.d}}" fill="{{rider.g57.f}}"></path><path d="M0 0" data-b-d="{{rider.g58.d}}" fill="{{rider.g58.f}}"></path><path d="M0 0" data-b-d="{{rider.g59.d}}" fill="{{rider.g59.f}}"></path><path d="M0 0" data-b-d="{{rider.g60.d}}" fill="{{rider.g60.f}}"></path><path d="M0 0" data-b-d="{{rider.g61.d}}" fill="{{rider.g61.f}}"></path><path d="M0 0" data-b-d="{{rider.g62.d}}" fill="{{rider.g62.f}}"></path><path d="M0 0" data-b-d="{{rider.g63.d}}" fill="{{rider.g63.f}}"></path></g></g></svg>
+            <template data-if="sparks">
+              <div class="sparks" style="left: {{sk.sparkX}}px; top: {{sk.sparkY}}px;">
+                <span class="spark"></span><span class="spark"></span><span class="spark"></span><span class="spark"></span>
+              </div>
+            </template>
+          </div>
+        </div>
+        <template data-if="popOn">
+          <div class="pop" style="left: {{pop.x}}px; top: {{pop.y}}px; opacity: {{pop.op}};">{{pop.text}}</div>
+        </template>
+
+        <!-- Title screen -->
+        <div class="title-lockup {{titleClass}}" style="opacity: {{titleOpacity}}; transform: translate(-50%, {{titleShift}}px);">
+          <h1 class="title">MARK SHERRIFF</h1>
+          <p class="statement notch"><strong class="statement-lead">Full-stack engineer with 5+ years across mobile, backend, and applied AI.</strong> Joined a 20-person Y Combinator (S21)-backed startup as an early engineer and ended up owning two products end-to-end: the Flutter application and a generative-AI chat system taken from zero to 20+ live customer organizations. Carried both through an acquisition into a much larger engineering organization, picking up a new language and a multi-service codebase to keep them shipping.</p>
+          <div class="quick-links">
+            <a class="qlink notch" href="assets/mark-sherriff-resume.pdf" target="_blank" rel="noopener" download="mark-sherriff-resume.pdf">RESUME (PDF)</a>
+            <a class="qlink notch" href="mailto:markesherriff@gmail.com">EMAIL</a>
+            <a class="qlink notch" href="https://github.com/markesherriff" target="_blank" rel="noopener">GITHUB</a>
+            <a class="qlink notch" href="https://www.linkedin.com/in/mark-sherriff" target="_blank" rel="noopener">LINKEDIN</a>
+            <a class="qlink notch" href="https://mark-sherriff.com" target="_blank" rel="noopener">SITE</a>
+          </div>
+          <button class="start-btn notch" type="button" onClick="{{start}}">PRESS ANY KEY, OR SCROLL TO START</button>
+        </div>
+
+        <template data-if="notPlaying">
+          <div class="hud">
+            <div class="chips-left">
+              <div class="chip notch">PLAYER 1 · READY</div>
+              <div class="chip notch read-chip">
+                <svg class="book" viewBox="0 0 14 12" width="14" height="12" aria-hidden="true"><path d="M1 1h5v1h1v9H7v-1H1z" fill="currentColor"></path><path d="M13 1H8v1H7v9h1v-1h5z" fill="currentColor"></path><path d="M2 3h3v1H2zM2 5h3v1H2zM9 3h3v1H9zM9 5h3v1H9z" fill="#17140f"></path></svg>
+                3 MIN READ
+              </div>
+            </div>
+          </div>
+        </template>
+
+        <template data-if="playing">
+          <div class="hud hud-play">
+            <div class="chip notch">STAIRS {{stairsDone}} / 1000</div>
+            <div class="chip notch score-chip">SCORE {{score}}</div>
+            <div class="progress">
+              <div class="progress-label">{{cpLabel}}</div>
+              <div class="progress-track notch"><div class="progress-fill" style="width: {{pct}}%;"></div></div>
+            </div>
+            <div class="hud-actions">
+              <button class="hud-btn notch" type="button" onClick="{{restart}}">↺ RESTART</button>
+              <button class="hud-btn notch" type="button" onClick="{{skip}}">SKIP ▸</button>
+            </div>
+          </div>
+          <div class="controls-hint notch">PRESS ANY KEY, PRESS ARROWS, OR SCROLL</div>
+        </template>
+      </div>
+    </div>
+
+    <section class="stat-screen">
+      <h2>LANDED THE TRICK. NOW THE JOB.</h2>
+      <p class="lede">I'm a full-stack and AI engineer in Toronto. At a YC-backed startup I owned the mobile app end-to-end and built the AI chat product from zero to production, then carried both through an acquisition into a much larger Go codebase. I like the messy middle — an unfamiliar stack, a direct line to the founders, and shipping until it actually works. That's what I'd bring to {{company}}.</p>
+      <div class="bring-grid wide">
+        <div class="bring notch"><span class="bring-title">END-TO-END OWNERSHIP</span><p>I've taken products from zero to production and kept them shipping: architecture, releases and store distribution.</p></div>
+        <div class="bring notch"><span class="bring-title">APPLIED AI IN PRODUCTION</span><p>RAG, embeddings, vector search and multi-step tool-use chains, with tracing and evaluation built in.</p></div>
+        <div class="bring notch"><span class="bring-title">FAST RAMP-UP</span><p>I picked up Go and a multi-service codebase mid-acquisition and kept delivering.</p></div>
+        <div class="bring notch"><span class="bring-title">CLOSE COLLABORATION</span><p>I've worked daily with founders on product direction and mentored interns through scoping and code review.</p></div>
+      </div>
+      <div class="card-cta">
+        <a class="cta primary notch" href="mailto:markesherriff@gmail.com">GET IN TOUCH</a>
+        <a class="cta ghost notch" href="assets/mark-sherriff-resume.pdf" target="_blank" rel="noopener" download="mark-sherriff-resume.pdf">RESUME (PDF)</a>
+        <button class="cta ghost notch" type="button" onClick="{{restart}}">↺ RIDE IT AGAIN</button>
+      </div>
+    </section>
+
+    <div class="ticker-wrap">
+      <div class="ticker-track">
+        <div class="ticker-seg">
+          <span>NODE.JS</span><span>TYPESCRIPT</span><span>GO</span><span>FLUTTER</span><span>PINECONE</span><span>MONGODB</span>
+          <span>REDIS</span><span>BULLMQ</span><span>AIRFLOW</span><span>GRAFANA</span><span>LANGFUSE</span><span>MYSQL</span>
+        </div>
+        <div class="ticker-seg">
+          <span>NODE.JS</span><span>TYPESCRIPT</span><span>GO</span><span>FLUTTER</span><span>PINECONE</span><span>MONGODB</span>
+          <span>REDIS</span><span>BULLMQ</span><span>AIRFLOW</span><span>GRAFANA</span><span>LANGFUSE</span><span>MYSQL</span>
+        </div>
+      </div>
+    </div>
+
+    <footer class="credits">
+      <div class="credits-links">
+        <a href="mailto:markesherriff@gmail.com">EMAIL</a>
+        <a href="https://github.com/markesherriff" target="_blank" rel="noopener">GITHUB</a>
+        <a href="https://www.linkedin.com/in/mark-sherriff" target="_blank" rel="noopener">LINKEDIN</a>
+        <a href="https://mark-sherriff.com" target="_blank" rel="noopener">MARK-SHERRIFF.COM</a>
+      </div>
+      <p class="credits-foot">Toronto, Ontario — open to full-stack and AI engineering roles.</p>
+    </footer>
+  </div>
+  <template data-if="lb.open">
+    <div class="lightbox" onClick="{{closeVideo}}" onKeyDown="{{onLbKey}}">
+      <div class="lb-panel notch" role="dialog" aria-modal="true" aria-label="{{lb.title}}" onClick="{{stopClick}}">
+        <div class="lb-head">
+          <span class="card-stage">{{lb.stage}}</span>
+          <span class="lb-title">{{lb.title}}</span>
+          <button class="lb-close" type="button" ref="{{lbCloseRef}}" onClick="{{closeVideo}}" aria-label="Close video">✕</button>
+        </div>
+        <div class="lb-screen">
+          <span class="vs-play notch">▶</span>
+          <span class="vs-label">VIDEO COMING SOON</span>
+          <span class="vs-note">{{lb.note}}</span>
+        </div>
+      </div>
+    </div>
+  </template>
+  <div class="crt"></div>
+</div>
+
+</div>
+<script>
+/* ---------------------------------------------------------------------
+ * Tiny standalone runtime for the static export.
+ * Replaces Claude's Design-canvas ("dc-runtime") host with a small,
+ * dependency-free vanilla-JS mount so this page runs anywhere (e.g.
+ * GitHub Pages) with no external runtime script.
+ *
+ * It supports exactly the template features this page's markup uses:
+ *   - {{dotted.path}} interpolation in text nodes and attribute values
+ *   - ref="{{dotted.path}}" — calls the function at that path with the
+ *     DOM node once, right after the node is created/mounted
+ *   - onClick/onKeyDown/onScroll/onPointerEnter="{{dotted.path}}" —
+ *     binds a native listener that always calls the CURRENT function
+ *     at that path in the latest render's values
+ *   - <template data-if="dotted.path">...</template> — conditionally
+ *     mounts/unmounts its content (build-time stand-in for <sc-if>)
+ * All bindings resolve against the plain object returned by the
+ * page's own Component#renderVals(), exactly as before.
+ * ------------------------------------------------------------------ */
+(function () {
+  'use strict';
+
+  // HTML attribute names are case-insensitive and always come back lowercase
+  // from the DOM (node.attributes), regardless of how the source markup was
+  // written (onClick -> onclick), so these keys must be lowercase too.
+  var EVENT_MAP = {
+    onclick: 'click',
+    onkeydown: 'keydown',
+    onscroll: 'scroll',
+    onpointerenter: 'pointerenter'
+  };
+
+  var HOLE_RE = /\{\{\s*([^}]+?)\s*\}\}/g;
+
+  function getPath(obj, path) {
+    var parts = path.split('.');
+    var o = obj;
+    for (var i = 0; i < parts.length; i++) {
+      if (o == null) return undefined;
+      o = o[parts[i]];
+    }
+    return o;
+  }
+
+  function fmt(v) {
+    return v === undefined || v === null ? '' : String(v);
+  }
+
+  function compileTemplateString(str) {
+    var re = new RegExp(HOLE_RE.source, 'g');
+    var parts = [];
+    var last = 0;
+    var m;
+    while ((m = re.exec(str))) {
+      if (m.index > last) parts.push({ lit: str.slice(last, m.index) });
+      parts.push({ expr: m[1] });
+      last = re.lastIndex;
+    }
+    if (last < str.length) parts.push({ lit: str.slice(last) });
+    if (parts.length === 1 && parts[0].lit !== undefined) return null; // no bindings
+    return function (vals) {
+      var out = '';
+      for (var i = 0; i < parts.length; i++) {
+        out += parts[i].lit !== undefined ? parts[i].lit : fmt(getPath(vals, parts[i].expr));
+      }
+      return out;
+    };
+  }
+
+  function mergeInto(target, src) {
+    target.texts.push.apply(target.texts, src.texts);
+    target.attrs.push.apply(target.attrs, src.attrs);
+    target.refs.push.apply(target.refs, src.refs);
+    target.ifs.push.apply(target.ifs, src.ifs);
+  }
+
+  // Walks one DOM subtree (an element or text node), collecting bindings.
+  // <template data-if> nodes are left un-walked (compiled lazily on mount).
+  function compileTree(root) {
+    var out = { texts: [], attrs: [], refs: [], ifs: [] };
+    function walk(node) {
+      if (node.nodeType === 3) { // TEXT_NODE
+        var fn = compileTemplateString(node.data);
+        if (fn) out.texts.push({ node: node, fn: fn });
+        return;
+      }
+      if (node.nodeType !== 1) return; // only elements beyond this point
+      if (node.tagName === 'TEMPLATE' && node.hasAttribute('data-if')) {
+        out.ifs.push({ tpl: node, path: node.getAttribute('data-if'), mounted: null });
+        return;
+      }
+      var attrs = Array.prototype.slice.call(node.attributes);
+      for (var i = 0; i < attrs.length; i++) {
+        var name = attrs[i].name;
+        var value = attrs[i].value;
+        if (name.indexOf('data-b-') === 0) {
+          var realName = name.slice('data-b-'.length);
+          var bfn = compileTemplateString(value);
+          if (bfn) out.attrs.push({ node: node, name: realName, fn: bfn });
+          node.removeAttribute(name);
+          continue;
+        }
+        if (name === 'ref' && /^\{\{.*\}\}$/.test(value.trim())) {
+          out.refs.push({ node: node, path: value.trim().replace(/^\{\{\s*|\s*\}\}$/g, '') });
+          node.removeAttribute('ref');
+          continue;
+        }
+        if (EVENT_MAP[name] && /^\{\{.*\}\}$/.test(value.trim())) {
+          (function (evName, exprPath) {
+            var opts = evName === 'scroll' || evName === 'pointerenter' ? { passive: true } : undefined;
+            node.addEventListener(evName, function (e) {
+              var fn = getPath(window.__CURRENT_VALS__, exprPath);
+              if (typeof fn === 'function') fn(e);
+            }, opts);
+          })(EVENT_MAP[name], value.trim().replace(/^\{\{\s*|\s*\}\}$/g, ''));
+          node.removeAttribute(name);
+          continue;
+        }
+        var afn = compileTemplateString(value);
+        if (afn) out.attrs.push({ node: node, name: name, fn: afn });
+      }
+      var kids = Array.prototype.slice.call(node.childNodes);
+      for (var k = 0; k < kids.length; k++) walk(kids[k]);
+    }
+    walk(root);
+    return out;
+  }
+
+  function invokeRefs(compiled, vals) {
+    for (var i = 0; i < compiled.refs.length; i++) {
+      var r = compiled.refs[i];
+      var fn = getPath(vals, r.path);
+      if (typeof fn === 'function') fn(r.node);
+    }
+  }
+
+  function applyTree(compiled, vals) {
+    var i, b;
+    for (i = 0; i < compiled.texts.length; i++) {
+      b = compiled.texts[i];
+      var tv = b.fn(vals);
+      if (b.node.data !== tv) b.node.data = tv;
+    }
+    for (i = 0; i < compiled.attrs.length; i++) {
+      b = compiled.attrs[i];
+      var av = b.fn(vals);
+      if (b.node.getAttribute(b.name) !== av) b.node.setAttribute(b.name, av);
+    }
+    for (i = 0; i < compiled.ifs.length; i++) {
+      var region = compiled.ifs[i];
+      var cond = !!getPath(vals, region.path);
+      if (cond && !region.mounted) {
+        var frag = region.tpl.content.cloneNode(true);
+        var nodes = Array.prototype.slice.call(frag.childNodes);
+        var sub = { texts: [], attrs: [], refs: [], ifs: [] };
+        for (var n = 0; n < nodes.length; n++) mergeInto(sub, compileTree(nodes[n]));
+        region.tpl.parentNode.insertBefore(frag, region.tpl.nextSibling);
+        region.mounted = { nodes: nodes, compiled: sub };
+        applyTree(sub, vals);
+        invokeRefs(sub, vals);
+      } else if (!cond && region.mounted) {
+        for (var m = 0; m < region.mounted.nodes.length; m++) {
+          if (region.mounted.nodes[m].parentNode) region.mounted.nodes[m].parentNode.removeChild(region.mounted.nodes[m]);
+        }
+        region.mounted = null;
+      } else if (cond && region.mounted) {
+        applyTree(region.mounted.compiled, vals);
+      }
+    }
+  }
+
+  window.__staticRuntime = {
+    compileTree: compileTree,
+    applyTree: applyTree,
+    invokeRefs: invokeRefs,
+    getPath: getPath
+  };
+})();
+
+
+class DCLogic {
+  constructor() {
+    this.state = {};
+    this.props = {};
+  }
+  setState(patch) {
+    Object.assign(this.state, patch);
+    if (window.__scheduleRender) window.__scheduleRender();
+  }
+}
+
+class Component extends DCLogic {
+  constructor(...args) {
+    super(...args);
+    this.state = Object.assign({}, this.state, { W: 1440, H: 900, st: 0, moving: false, cardH: {}, video: null });
+    this.cardEls = {};
+    this.cardRefs = {};
+    ['c1', 'c2', 'c3', 'c4', 'c5'].forEach((id) => {
+      this.cardRefs[id] = (el) => {
+        this.cardEls[id] = el;
+        if (el && this.ro) this.ro.observe(el);
+      };
+    });
+    this.openV = {};
+    ['s1', 's2', 's3', 's4'].forEach((id) => { this.openV[id] = () => this.setState({ video: id }); });
+    this.closeVideo = () => {
+      this.setState({ video: null });
+      if (this.scroller) this.scroller.focus({ preventScroll: true });
+    };
+    this.stopClick = (e) => e.stopPropagation();
+    this.onLbKey = (e) => { if (e.key === 'Escape') { e.preventDefault(); this.closeVideo(); } };
+    this.lbCloseRef = (el) => { if (el) el.focus({ preventScroll: true }); };
+    this.scroller = null;
+    this.raf = null;
+    this.mt = null;
+    this.ro = null;
+    this.geo = null;
+  }
+
+  componentDidMount() {
+    this.measure();
+    this.stopGlide = () => this.cancelGlide();
+    if (this.scroller) {
+      this.scroller.addEventListener('wheel', this.stopGlide, { passive: true });
+      this.scroller.addEventListener('touchstart', this.stopGlide, { passive: true });
+    }
+    if (typeof ResizeObserver !== 'undefined' && this.scroller) {
+      this.ro = new ResizeObserver(() => this.measure());
+      this.ro.observe(this.scroller);
+      Object.keys(this.cardEls).forEach((id) => { if (this.cardEls[id]) this.ro.observe(this.cardEls[id]); });
+    }
+    this.warmT = setTimeout(() => this.warmBoardFrames(), 60);
+  }
+
+  componentWillUnmount() {
+    this.cancelGlide();
+    if (this.scroller && this.stopGlide) {
+      this.scroller.removeEventListener('wheel', this.stopGlide);
+      this.scroller.removeEventListener('touchstart', this.stopGlide);
+    }
+    if (this.ro) this.ro.disconnect();
+    if (this.raf) cancelAnimationFrame(this.raf);
+    clearTimeout(this.mt);
+    clearTimeout(this.warmT);
+  }
+
+  measure() {
+    const el = this.scroller;
+    if (!el) return;
+    const W = el.clientWidth;
+    const H = el.clientHeight;
+    const next = {};
+    if (W > 0 && H > 0 && (W !== this.state.W || H !== this.state.H)) { next.W = W; next.H = H; }
+    const cardH = {};
+    let changed = false;
+    Object.keys(this.cardEls).forEach((id) => {
+      const c = this.cardEls[id];
+      if (!c) return;
+      cardH[id] = c.offsetHeight;
+      if (cardH[id] !== (this.state.cardH || {})[id]) changed = true;
+    });
+    if (changed) next.cardH = cardH;
+    if (Object.keys(next).length) this.setState(next);
+  }
+
+  handleScroll() {
+    if (this.raf) return;
+    this.raf = requestAnimationFrame(() => {
+      this.raf = null;
+      const el = this.scroller;
+      if (!el) return;
+      this.setState({ st: el.scrollTop, moving: true });
+      clearTimeout(this.mt);
+      this.mt = setTimeout(() => this.setState({ moving: false }), 180);
+    });
+  }
+
+  // How fast the glide should run through a given scroll position: full speed
+  // normally, but down to SLOW through a trick so the pop and the rotation are
+  // actually readable, easing in and out at the edges so there is no lurch.
+  glideSpeed(y) {
+    const zones = (this.geo && this.geo.zones) || [];
+    const SLOW = 0.32;
+    const RAMP = 70;
+    let sp = 1;
+    for (let i = 0; i < zones.length; i++) {
+      const d = Math.min(y - (zones[i][0] - RAMP), zones[i][1] + RAMP - y);
+      if (d <= 0) continue;
+      const k = Math.min(1, d / RAMP);
+      sp = Math.min(sp, 1 - (1 - SLOW) * (k * k * (3 - 2 * k)));
+    }
+    return sp;
+  }
+
+  // Slow, eased glide so the ride is visible when jumping between stages. The
+  // path is walked in "time cost" rather than raw pixels, so the glide drops
+  // into slow motion over a jump and picks the pace back up afterwards.
+  scrollToY(y, maxDur) {
+    const el = this.scroller;
+    if (!el) return;
+    this.cancelGlide();
+    const target = Math.max(0, Math.min(y, el.scrollHeight - el.clientHeight));
+    const from = el.scrollTop;
+    const dist = target - from;
+    if (this.props.reduceMotion || Math.abs(dist) < 2) { el.scrollTop = target; return; }
+    const plain = Math.abs(dist);
+    const base = Math.min(maxDur || 4200, Math.max(1000, plain * 1.15));
+    const start = performance.now();
+    const ease = (u) => (u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2);
+
+    // Only worth warping for a hop of a stage or two; a long skip should just go.
+    const zones = (this.geo && this.geo.zones) || [];
+    const lo = Math.min(from, target);
+    const hi = Math.max(from, target);
+    let crossed = 0;
+    for (let i = 0; i < zones.length; i++) { if (zones[i][1] > lo && zones[i][0] < hi) crossed++; }
+
+    if (!crossed || crossed > 2) {
+      const step0 = (now) => {
+        const u = Math.min(1, (now - start) / base);
+        el.scrollTop = from + dist * ease(u);
+        this.glide = u < 1 ? requestAnimationFrame(step0) : null;
+      };
+      this.glide = requestAnimationFrame(step0);
+      return;
+    }
+
+    const N = 192;
+    const cost = new Float64Array(N + 1);
+    let total = 0;
+    for (let i = 0; i < N; i++) {
+      const mid = from + (dist * (i + 0.5)) / N;
+      total += plain / N / this.glideSpeed(mid);
+      cost[i + 1] = total;
+    }
+    // Pace this by speed rather than a flat duration. `total` is already in
+    // "pixels at full speed", so dividing by a cruise rate keeps the ordinary
+    // stretches brisk and lets the trick zones be the only thing eating time —
+    // a flat duration made every stage hop that crossed a trick feel sluggish.
+    const CRUISE = 1.45;
+    const dur = Math.max(700, Math.min(7000, total / CRUISE));
+    // A cubic ease would race through the middle — which is exactly where the
+    // trick is — so the warped path eases in and out at the ends and holds a
+    // steady pace between, letting the slow-motion actually read.
+    const K = 0.16;
+    const pace = (u) => {
+      if (u < K) return (u * u) / (2 * K * (1 - K));
+      if (u > 1 - K) { const v = 1 - u; return 1 - (v * v) / (2 * K * (1 - K)); }
+      return (u - K / 2) / (1 - K);
+    };
+    const step = (now) => {
+      const u = Math.min(1, (now - start) / dur);
+      const want = pace(u) * total;
+      let a = 0;
+      let b = N;
+      while (a < b) { const m = (a + b) >> 1; if (cost[m] < want) a = m + 1; else b = m; }
+      const i = Math.max(1, a);
+      const c0 = cost[i - 1];
+      const c1 = cost[i];
+      const f = c1 > c0 ? (want - c0) / (c1 - c0) : 0;
+      el.scrollTop = from + (dist * (i - 1 + f)) / N;
+      this.glide = u < 1 ? requestAnimationFrame(step) : null;
+    };
+    this.glide = requestAnimationFrame(step);
+  }
+
+  cancelGlide() {
+    if (this.glide) { cancelAnimationFrame(this.glide); this.glide = null; }
+  }
+
+  focusStage() {
+    const el = this.scroller;
+    if (!el) return;
+    const a = document.activeElement;
+    if (a === el) return;
+    if (a && (/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName) || a.isContentEditable)) return;
+    el.focus({ preventScroll: true });
+  }
+
+  handleKey(e) {
+    const g = this.geo;
+    if (!g || e.metaKey || e.ctrlKey || e.altKey) return;
+    const t = e.target;
+    if (t && t !== this.scroller && /^(INPUT|TEXTAREA|SELECT|BUTTON|A)$/.test(t.tagName)) return;
+    const k = e.key;
+    if (this.state.video) { if (k === 'Escape') { e.preventDefault(); this.closeVideo(); } return; }
+    const st = this.scroller ? this.scroller.scrollTop : 0;
+    if (k === 'Home' || k === 'Escape') { e.preventDefault(); this.scrollToY(0); return; }
+    if (st > g.camEnd + 4) return;
+    if (k === 'ArrowLeft' || k === 'ArrowUp' || k === 'PageUp') {
+      e.preventDefault();
+      const prev = g.targets.filter((v) => v < st - 4);
+      this.scrollToY(prev.length ? prev[prev.length - 1] : 0);
+      return;
+    }
+    const forward = k === 'ArrowRight' || k === 'ArrowDown' || k === 'PageDown' || k === ' ' || k === 'Enter' || (k && k.length === 1);
+    if (!forward) return;
+    e.preventDefault();
+    const next = g.targets.find((v) => v > st + 4);
+    this.scrollToY(next !== undefined ? next : g.runHeight);
+  }
+
+  // ---------- Art helpers ----------
+
+  // Rect path in compact form.
+  rp(x, y, w, h) {
+    return 'M' + x + ' ' + y + 'h' + w + 'v' + h + 'h' + -w + 'z';
+  }
+
+  // 16-bit skater: parts are rasterised with 3D-ish lighting, ordered dithering,
+  // contact shadows between parts and a selective outline.
+  skaterArt() {
+    if (this._skater) return this._skater;
+    this._skater = {
+      rider: this.rasterSkater(false),
+      board: this.boardFrame(0, 0),
+      flip: null,
+      shove: null,
+      lazer: null,
+      nf: 16,
+      w: 50, h: 72, pivotX: 24.5, pivotY: 65, truckX: 13.5, truckY: 65, boardCY: 63.5, contact: 69.3
+    };
+    return this._skater;
+  }
+
+  // The rotated trick frames cost ~100ms to rasterise, so they are built just
+  // after the first paint rather than blocking it. Until they exist the board
+  // simply stays in its resting frame; the first trick is thousands of pixels
+  // down the page, so they are always ready in time.
+  warmBoardFrames() {
+    const a = this.skaterArt();
+    if (a.flip) return;
+    const T2 = Math.PI * 2;
+    const flip = [];
+    const shove = [];
+    const lazer = [];
+    for (let i = 0; i < a.nf; i++) {
+      const t = i / a.nf;
+      flip.push(this.boardFrame(0, t * T2));
+      shove.push(this.boardFrame(t * T2, 0));
+      lazer.push(this.boardFrame(t * T2, t * T2));
+    }
+    a.flip = flip;
+    a.shove = shove;
+    a.lazer = lazer;
+  }
+
+  // ---- The board as real 3D geometry --------------------------------------
+  // The deck is a slab, sliced across its width so it projects with genuine
+  // depth; each truck is a hanger plus an axle running across the board; and
+  // there are four wheels, not two. Rotating this in 3D and re-rasterising
+  // gives true pixel-art frames — at any angle the board keeps a real
+  // silhouette (edge-on it is a wide bar with a visible axle and two wheels,
+  // not a sliver), which warping one flat sprite with scale()/rotate() can
+  // never produce.
+  boardModel() {
+    if (this._bmodel) return this._bmodel;
+    const parts = [];
+    for (let z = -5.6; z <= 5.61; z += 0.8) {
+      const zz = Math.round(z * 100) / 100;
+      parts.push({ k: 'k', a: [5.5, 61.6, zz], b: [41.5, 61.6, zz], r: 1.35, ramp: 'wood', mode: 'deck' });
+      parts.push({ k: 'k', a: [5.5, 61.6, zz], b: [1.8, 58.4, zz], r: 1.25, ramp: 'wood', mode: 'deck' });
+      parts.push({ k: 'k', a: [41.5, 61.6, zz], b: [45.2, 58.4, zz], r: 1.25, ramp: 'wood', mode: 'deck' });
+    }
+    [13.5, 33.5].forEach((x) => {
+      parts.push({ k: 'k', a: [x - 1.7, 64, 0], b: [x + 1.7, 64, 0], r: 1.2, ramp: 'metal', mode: '' });
+      parts.push({ k: 'k', a: [x, 64, -4], b: [x, 64, 4], r: 0.8, ramp: 'metal', mode: '' });
+      parts.push({ k: 'c', c: [x, 66.6, -4], r: 2.7, ramp: 'wheel', mode: 'wheel' });
+      parts.push({ k: 'c', c: [x, 66.6, 4], r: 2.7, ramp: 'wheel', mode: 'wheel' });
+    });
+    this._bmodel = parts;
+    return parts;
+  }
+
+  // yaw = spin about the vertical axis (a shove-it); roll = spin about the
+  // board's long axis (a flip). Both turn about the board's own centre.
+  boardFrame(yaw, roll) {
+    const CX = 23.5;
+    const CY = 61.6;
+    const ca = Math.cos(yaw);
+    const sa = Math.sin(yaw);
+    const cb = Math.cos(roll);
+    const sb = Math.sin(roll);
+    const P = (p) => {
+      const x = p[0] - CX;
+      const y = p[1] - CY;
+      const y1 = y * cb - p[2] * sb;
+      const z1 = y * sb + p[2] * cb;
+      return [CX + x * ca + z1 * sa, CY + y1, z1 * ca - x * sa];
+    };
+    // Which way the deck's grip side faces. Turned toward the camera the whole
+    // face reads as grip tape; otherwise grip is just the edge along the top
+    // of the deck (or along the bottom, when the board is upside down).
+    const faceZ = -sb * ca;
+    const grip = faceZ > 0.45 ? 'deckGrip' : (cb >= 0 ? 'deck' : 'deckUnder');
+    const flat = this.boardModel().map((pt) => {
+      if (pt.k === 'c') {
+        const q = P(pt.c);
+        return { k: 'c', c: [q[0], q[1]], r: pt.r, ramp: pt.ramp, mode: pt.mode, d: q[2], ty: q[1] };
+      }
+      const a = P(pt.a);
+      const b = P(pt.b);
+      return {
+        k: 'k',
+        a: [a[0], a[1]],
+        b: [b[0], b[1]],
+        r: pt.r,
+        ramp: pt.ramp,
+        mode: pt.mode === 'deck' ? grip : pt.mode,
+        d: (a[2] + b[2]) / 2,
+        ty: (a[1] + b[1]) / 2
+      };
+    });
+    // Far pieces first. Where depth ties (a deck lying flat-on to camera) the
+    // higher slice paints last, so the grip edge stays one clean line.
+    flat.sort((p, q) => (p.d - q.d) || (q.ty - p.ty));
+    return this.rasterParts(flat, 28);
+  }
+
+  rasterSkater(boardOnly) {
+    const C = (c, r, ramp, mode) => ({ k: 'c', c: c, r: r, ramp: ramp, mode: mode || '' });
+    const K = (a, b, r, ramp, mode) => ({ k: 'k', a: a, b: b, r: r, ramp: ramp, mode: mode || '' });
+    const Pl = (pts, ramp, mode) => ({ k: 'p', pts: pts, ramp: ramp, mode: mode || 'cylX' });
+    const allParts = [
+      C([13.5, 66.6], 2.7, 'wheel', 'wheel'),
+      C([33.5, 66.6], 2.7, 'wheel', 'wheel'),
+      K([11.8, 64], [15.2, 64], 1.2, 'metal'),
+      K([31.8, 64], [35.2, 64], 1.2, 'metal'),
+      K([5.5, 61.6], [41.5, 61.6], 1.35, 'wood', 'deck'),
+      K([5.5, 61.6], [1.8, 58.4], 1.25, 'wood', 'deck'),
+      K([41.5, 61.6], [45.2, 58.4], 1.25, 'wood', 'deck'),
+      K([19.5, 26.5], [12, 31], 3.1, 'hoodie'),
+      K([12, 31], [6.5, 28.8], 2.7, 'hoodie'),
+      K([7.6, 29.2], [6.8, 28.9], 2.9, 'hoodieDark'),
+      C([4.3, 28.3], 2.3, 'skin'),
+      K([20.5, 44], [13.5, 50.5], 3.9, 'jeans'),
+      K([13.5, 50.5], [12.5, 57.4], 3.3, 'jeans'),
+      K([8.6, 58.6], [16.2, 58.6], 2.2, 'shoe', 'shoe'),
+      K([23.5, 20], [23.5, 24.5], 2.3, 'skin'),
+      C([17.8, 22.3], 4.3, 'hoodieDark'),
+      Pl([[17, 23.5], [29, 22.8], [32.3, 29.5], [31.5, 40], [30.5, 45], [17.5, 45], [15.8, 38], [15, 30]], 'hoodie'),
+      Pl([[19.5, 38], [28.5, 38], [27.5, 42.3], [20.5, 42.3]], 'hoodieDark', 'flat'),
+      K([18, 44.4], [30.2, 44.4], 1.6, 'hoodieDark'),
+      K([27.2, 25], [27.4, 30.5], 0.55, 'string'),
+      C([23.2, 31.2], 1.4, 'logo'),
+      K([27, 44], [34.5, 49.5], 3.9, 'jeans'),
+      K([34.5, 49.5], [32.5, 57.4], 3.3, 'jeans'),
+      K([28.8, 58.6], [37.2, 58.6], 2.2, 'shoe', 'shoe'),
+      C([25.2, 15.2], 7, 'skin'),
+      Pl([[17.4, 11.5], [22.2, 10.6], [22.6, 18.8], [19.2, 19.6], [17.2, 15.5]], 'hair'),
+      C([21.6, 16.2], 1.6, 'skin', 'ear'),
+      K([32.2, 16.4], [32.6, 16.7], 1.1, 'skin'),
+      K([27.6, 19.7], [29.8, 19.2], 0.5, 'mouth'),
+      Pl([[17.6, 11.4], [18.6, 7.2], [21.5, 4.6], [25.5, 3.9], [29.5, 5], [32.2, 7.8], [33, 11.2]], 'cap'),
+      K([18.2, 11.2], [12.6, 11.8], 1.35, 'brim'),
+      C([27.6, 7.6], 1.1, 'logo'),
+      K([22.6, 14.2], [26.2, 14.2], 0.6, 'glass'),
+      K([26.4, 14.2], [32.6, 14.2], 1.7, 'glass', 'glass'),
+      K([28.5, 26.5], [35.5, 31.2], 3.1, 'hoodie'),
+      K([35.5, 31.2], [40.5, 33], 2.7, 'hoodie'),
+      K([39.6, 32.7], [40.6, 33], 2.9, 'hoodieDark'),
+      C([43.2, 33.6], 2.3, 'skin')
+    ];
+    const parts = allParts.filter((pt, i) => (boardOnly ? i < 7 : i >= 7));
+    return this.rasterParts(parts, boardOnly ? 28 : 64);
+  }
+
+  // Shared rasteriser: paints a flat part list in array order (so callers sort
+  // far-to-near themselves) and returns run-length-encoded rect paths grouped
+  // into a fixed number of colour slots.
+  rasterParts(parts, slots) {
+    const RAMP = {
+      skin: ['#ffdcb8', '#f2bb8c', '#d6966b', '#ad6f4f', '#5a3326'],
+      hair: ['#7a5438', '#5c3e29', '#442d1e', '#2f1f15', '#150d08'],
+      cap: ['#5877b5', '#40599a', '#2f4478', '#223257', '#0f1428'],
+      brim: ['#3c5591', '#30467c', '#263965', '#1c2a4d', '#0f1428'],
+      logo: ['#ffe089', '#f6c14a', '#dea02a', '#b77d14', '#5e3d0a'],
+      glass: ['#a8e0ff', '#2c3246', '#20253a', '#161a28', '#07080c'],
+      hoodie: ['#ff7462', '#e64b3d', '#bd372d', '#8f2822', '#40110d'],
+      hoodieDark: ['#d64a3e', '#b3382e', '#912b24', '#6f201b', '#3a0f0b'],
+      string: ['#ffffff', '#f3eee5', '#dcd5c7', '#bab2a3', '#6a6356'],
+      jeans: ['#86acdf', '#6389c4', '#4a6ca3', '#36517f', '#141f36'],
+      shoe: ['#ffffff', '#f0ece4', '#d3cdc3', '#aca69a', '#4b463f'],
+      sole: ['#c3c6cc', '#a4a8af', '#878b93', '#666a72', '#2a2c31'],
+      wood: ['#f4bf80', '#dc9f5c', '#c18243', '#98622f', '#4a2d14'],
+      metal: ['#f4f7fa', '#c9d0d8', '#9ea7b1', '#737c87', '#2e333a'],
+      wheel: ['#fffaea', '#f1e5c6', '#dacaa3', '#b7a57f', '#4e4531'],
+      mouth: ['#b05f50', '#914739', '#76352b', '#5a241c', '#2e110c']
+    };
+    const GW = 50;
+    const GH = 72;
+    const OX = 1;
+    const Lv = [-0.45, -0.72, 0.53];
+    const Lm = Math.hypot(Lv[0], Lv[1], Lv[2]);
+    const L = [Lv[0] / Lm, Lv[1] / Lm, Lv[2] / Lm];
+    const N = GW * GH;
+    const own = new Int16Array(N).fill(-1);
+    const qv = new Float32Array(N);
+    const rampOf = new Array(N).fill(null);
+    const ov = new Array(N).fill(null);
+    const inPoly = (pts, x, y) => {
+      let inside = false;
+      for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) {
+        const xi = pts[i][0], yi = pts[i][1], xj = pts[j][0], yj = pts[j][1];
+        if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
+      }
+      return inside;
+    };
+    parts.forEach((pt, zi) => {
+      let minX, maxX, minY, maxY;
+      if (pt.k === 'c') { minX = pt.c[0] - pt.r; maxX = pt.c[0] + pt.r; minY = pt.c[1] - pt.r; maxY = pt.c[1] + pt.r; }
+      else if (pt.k === 'k') {
+        minX = Math.min(pt.a[0], pt.b[0]) - pt.r; maxX = Math.max(pt.a[0], pt.b[0]) + pt.r;
+        minY = Math.min(pt.a[1], pt.b[1]) - pt.r; maxY = Math.max(pt.a[1], pt.b[1]) + pt.r;
+      } else {
+        const xs = pt.pts.map((q) => q[0]);
+        const ys = pt.pts.map((q) => q[1]);
+        minX = Math.min.apply(null, xs); maxX = Math.max.apply(null, xs);
+        minY = Math.min.apply(null, ys); maxY = Math.max.apply(null, ys);
+      }
+      for (let gy = Math.max(0, Math.floor(minY)); gy <= Math.min(GH - 1, Math.ceil(maxY)); gy++) {
+        for (let gx = Math.max(0, Math.floor(minX + OX)); gx <= Math.min(GW - 1, Math.ceil(maxX + OX)); gx++) {
+          const px = gx + 0.5 - OX;
+          const py = gy + 0.5;
+          let I = null;
+          let over = null;
+          let ramp = pt.ramp;
+          if (pt.k === 'c') {
+            const dx = (px - pt.c[0]) / pt.r;
+            const dy = (py - pt.c[1]) / pt.r;
+            const d2 = dx * dx + dy * dy;
+            if (d2 <= 1) {
+              const nz = Math.sqrt(1 - d2);
+              I = dx * L[0] + dy * L[1] + nz * L[2];
+              if (pt.mode === 'wheel' && d2 < 0.17) over = I > 0.55 ? '#a2a8b1' : '#7b818a';
+              if (pt.mode === 'ear') I -= 0.35;
+            }
+          } else if (pt.k === 'k') {
+            const vx = pt.b[0] - pt.a[0];
+            const vy = pt.b[1] - pt.a[1];
+            const len2 = vx * vx + vy * vy || 1;
+            let t = ((px - pt.a[0]) * vx + (py - pt.a[1]) * vy) / len2;
+            t = Math.max(0, Math.min(1, t));
+            const ex = (px - (pt.a[0] + t * vx)) / pt.r;
+            const ey = (py - (pt.a[1] + t * vy)) / pt.r;
+            const d2 = ex * ex + ey * ey;
+            if (d2 <= 1) {
+              const nz = Math.sqrt(1 - d2);
+              I = ex * L[0] + ey * L[1] + nz * L[2];
+              if (pt.mode === 'shoe' && ey > 0.4) ramp = 'sole';
+              if (pt.mode === 'deck' && ey < -0.3) over = I > 0.7 ? '#4a4d57' : '#383a42';
+              if (pt.mode === 'deckUnder' && ey > 0.3) over = I > 0.7 ? '#4a4d57' : '#383a42';
+              if (pt.mode === 'deckGrip') over = I > 0.62 ? '#4a4d57' : '#383a42';
+              if (pt.mode === 'glass') I -= 0.55;
+            }
+          } else if (inPoly(pt.pts, px, py)) {
+            if (pt.mode === 'flat') I = 0.28;
+            else {
+              const u = (px - minX) / Math.max(0.001, maxX - minX);
+              const nx = Math.max(-0.98, Math.min(0.98, 2 * u - 1));
+              const ny = ((py - minY) / Math.max(0.001, maxY - minY)) * 0.5 - 0.35;
+              const nm = Math.hypot(nx, ny, 1);
+              const nzz = Math.sqrt(Math.max(0, 1 - nx * nx)) ;
+              I = (nx * L[0] + ny * L[1] + nzz * L[2]) / Math.max(0.6, nm * 0.8);
+            }
+          }
+          if (I !== null) {
+            const i = gy * GW + gx;
+            own[i] = zi;
+            qv[i] = (0.95 - I) / 0.36;
+            rampOf[i] = ramp;
+            ov[i] = over;
+          }
+        }
+      }
+    });
+    const BAYER = [[0, 2], [3, 1]];
+    const colorAt = new Array(N).fill(null);
+    for (let gy = 0; gy < GH; gy++) {
+      for (let gx = 0; gx < GW; gx++) {
+        const i = gy * GW + gx;
+        if (own[i] < 0) continue;
+        if (ov[i]) { colorAt[i] = ov[i]; continue; }
+        const b = (BAYER[gy % 2][gx % 2] + 0.5) / 4 - 0.5;
+        let idx = Math.floor(qv[i] + 0.5 + b * 0.9);
+        const z = own[i];
+        const nb = [[gx + 1, gy], [gx - 1, gy], [gx, gy + 1], [gx, gy - 1]];
+        for (let n = 0; n < 4; n++) {
+          const x = nb[n][0], y = nb[n][1];
+          if (x < 0 || y < 0 || x >= GW || y >= GH) continue;
+          if (own[y * GW + x] > z) { idx += 1; break; }
+        }
+        idx = Math.max(0, Math.min(3, idx));
+        colorAt[i] = RAMP[rampOf[i]][idx];
+      }
+    }
+    for (let gy = 0; gy < GH; gy++) {
+      for (let gx = 0; gx < GW; gx++) {
+        const i = gy * GW + gx;
+        if (own[i] >= 0) continue;
+        const nb = [[gx, gy + 1, true], [gx + 1, gy, true], [gx, gy - 1, false], [gx - 1, gy, false]];
+        for (let n = 0; n < 4; n++) {
+          const x = nb[n][0], y = nb[n][1];
+          if (x < 0 || y < 0 || x >= GW || y >= GH) continue;
+          const j = y * GW + x;
+          if (own[j] >= 0) {
+            const ramp = RAMP[rampOf[j]];
+            colorAt[i] = nb[n][2] ? ramp[3] : ramp[4];
+            break;
+          }
+        }
+      }
+    }
+    const byColor = {};
+    for (let gy = 0; gy < GH; gy++) {
+      let gx = 0;
+      while (gx < GW) {
+        const c = colorAt[gy * GW + gx];
+        if (!c) { gx++; continue; }
+        let e = gx;
+        while (e + 1 < GW && colorAt[gy * GW + e + 1] === c) e++;
+        byColor[c] = (byColor[c] || '') + this.rp(gx, gy, e - gx + 1, 1);
+        gx = e + 1;
+      }
+    }
+    // Topmost filled row, so callers can tell how much taller a rotated frame
+    // has grown than the resting one.
+    let top = GH;
+    for (let gy = 0; gy < GH && top === GH; gy++) {
+      for (let gx = 0; gx < GW; gx++) { if (colorAt[gy * GW + gx]) { top = gy; break; } }
+    }
+    const groups = { top: top };
+    const keys = Object.keys(byColor);
+    for (let s = 0; s < slots; s++) {
+      groups['g' + s] = s < keys.length ? { d: byColor[keys[s]], f: keys[s] } : { d: 'M0 0z', f: 'none' };
+    }
+    groups.count = keys.length;
+    return groups;
+  }
+
+  // Banded, dithered sky; pixel sun with dithered halo; star field.
+  skyArt(W, H, P) {
+    const key = W + 'x' + H + 'x' + P;
+    if (this._sky && this._skyKey === key) return this._sky;
+    const cols = ['#4f8fd0', '#5a98d4', '#67a2d8', '#76acdc', '#88b8e0', '#9cc4e4', '#b3d2ea'];
+    const n = cols.length;
+    const bandH = Math.max(P * 2, Math.round((0.8 * H) / n / P) * P);
+    const cw = (Math.ceil(W / P) + 1) * P;
+    const ch = (Math.ceil(H / P) + 1) * P;
+    const parts = cols.map(() => []);
+    for (let i = 0; i < n; i++) {
+      const y1 = i === 0 ? 0 : i * bandH + P;
+      const y2 = i === n - 1 ? ch : (i + 1) * bandH;
+      if (y2 > y1) parts[i].push(this.rp(0, y1, cw, y2 - y1));
+    }
+    for (let i = 0; i < n - 1; i++) {
+      const yb = (i + 1) * bandH;
+      for (let c = 0; c * P < cw; c++) {
+        const x = c * P;
+        if (c % 4 === 0) parts[i + 1].push(this.rp(x, yb - P, P, P));
+        parts[c % 2 === 0 ? i : i + 1].push(this.rp(x, yb, P, P));
+      }
+    }
+    const sky = {};
+    cols.forEach((c, i) => { sky['b' + i] = { d: parts[i].join(''), f: c }; });
+
+    const R = Math.max(6, Math.round((Math.min(W, H) * 0.055) / P)) * P;
+    const sunCols = ['#fffef6', '#fff7d6', '#ffeaa8', '#fff3c4', '#e9f1f4'];
+    const sp = sunCols.map(() => []);
+    const ext = R + 6 * P;
+    for (let y = -ext; y < ext; y += P) {
+      for (let x = -ext; x < ext; x += P) {
+        const d = Math.hypot(x + P / 2, y + P / 2);
+        const cx = Math.round(x / P);
+        const cy = Math.round(y / P);
+        const ex = ((cx % 2) + 2) % 2;
+        const ey = ((cy % 2) + 2) % 2;
+        let k = -1;
+        if (d <= R * 0.7) k = 0;
+        else if (d <= R * 0.86) k = (d <= R * 0.78 && ex === ey) ? 0 : 1;
+        else if (d <= R) k = (d <= R * 0.93 && ex === ey) ? 1 : 2;
+        else if (d <= R + 2 * P) k = ex === ey ? 3 : -1;
+        else if (d <= R + 6 * P) k = ex === 0 && ey === 0 ? 4 : -1;
+        if (k >= 0) sp[k].push(this.rp(x, y, P, P));
+      }
+    }
+    sunCols.forEach((c, i) => { sky['s' + i] = { d: sp[i].join(''), f: c }; });
+
+    const starPts = [[0.3, 0.08], [0.44, 0.2], [0.57, 0.06], [0.66, 0.26], [0.78, 0.12], [0.88, 0.3], [0.95, 0.16], [0.52, 0.34], [0.36, 0.3], [0.72, 0.04], [0.84, 0.22], [0.62, 0.14]];
+    let s1 = '';
+    let s2 = '';
+    starPts.forEach((pt, i) => {
+      const x = Math.round((pt[0] * W) / P) * P;
+      const y = Math.round((pt[1] * H) / P) * P;
+      const sq = i % 3 === 0 ? P : Math.max(2, P / 2);
+      const s = this.rp(x, y, sq, sq) + (i % 3 === 0 ? this.rp(x - sq, y, sq, sq) + this.rp(x + sq, y, sq, sq) + this.rp(x, y - sq, sq, sq) + this.rp(x, y + sq, sq, sq) : '');
+      if (i % 2) s1 += s; else s2 += s;
+    });
+    sky.stars1 = s1;
+    sky.stars2 = s2;
+    sky.R = R;
+    this._sky = sky;
+    this._skyKey = key;
+    return sky;
+  }
+
+  // Three pixel cloud shapes, lit from the top with a warm-lavender underside.
+  cloudArt(P) {
+    if (this._clouds && this._cloudP === P) return this._clouds;
+    const defs = [
+      [[10, 7, 6], [18, 5, 7], [27, 6, 6], [34, 8, 5], [5, 9, 4], [22, 9, 6]],
+      [[8, 6, 5], [15, 4, 6], [22, 6, 5], [27, 8, 3.5], [4, 8, 3.5]],
+      [[7, 5, 4], [13, 4, 5], [19, 6, 4], [3, 7, 3]]
+    ];
+    const cols = ['#ffffff', '#f1f5fa', '#dce5ef', '#c6d4e4'];
+    const shapes = defs.map((circles) => {
+      const gw = Math.ceil(Math.max.apply(null, circles.map((c) => c[0] + c[2]))) + 1;
+      const base = Math.max.apply(null, circles.map((c) => c[1])) + 2;
+      const inside = (x, y) => y <= base && circles.some((c) => Math.hypot(x - c[0], y - c[1]) <= c[2]);
+      const out = cols.map(() => []);
+      for (let gx = 0; gx < gw; gx++) {
+        let top = -1;
+        let bot = -1;
+        for (let gy = 0; gy <= base + 1; gy++) {
+          if (inside(gx + 0.5, gy + 0.5)) { if (top < 0) top = gy; bot = gy; }
+        }
+        if (top < 0) continue;
+        for (let gy = top; gy <= bot; gy++) {
+          if (!inside(gx + 0.5, gy + 0.5)) continue;
+          const dep = gy - top;
+          const up = bot - gy;
+          const chk = (gx + gy) % 2 === 0;
+          let k = 1;
+          if (up === 0) k = 3;
+          else if (up === 1) k = chk ? 3 : 2;
+          else if (up === 2) k = 2;
+          else if (up === 3) k = chk ? 2 : 1;
+          else if (dep <= 1) k = 0;
+          else if (dep === 2) k = chk ? 0 : 1;
+          out[k].push(this.rp(gx * P, gy * P, P, P));
+        }
+      }
+      return out.map((a, i) => ({ d: a.join('') || 'M0 0z', f: cols[i] }));
+    });
+    this._clouds = shapes;
+    this._cloudP = P;
+    return shapes;
+  }
+
+  // Tree sprites as runs: [rowFromTop, colStart, width, colorKey].
+  treeArt() {
+    if (this._trees) return this._trees;
+    const big = [
+      '....l....',
+      '...lms...',
+      '..llmss..',
+      '...lms...',
+      '..llmss..',
+      '.lllmmss.',
+      '..llmss..',
+      '.lllmmss.',
+      'llllmmsss',
+      '.llmmmss.',
+      'lllmmmsss',
+      '...sss...',
+      '....t....',
+      '....t....'
+    ];
+    const small = [
+      '..l..',
+      '.lms.',
+      '.lms.',
+      'llmss',
+      '.lms.',
+      'llmss',
+      'lmmss',
+      '.sss.',
+      '..t..'
+    ];
+    const runs = (rows) => {
+      const out = [];
+      rows.forEach((row, r) => {
+        let c = 0;
+        while (c < row.length) {
+          const ch = row[c];
+          if (ch === '.') { c++; continue; }
+          let e = c;
+          while (e + 1 < row.length && row[e + 1] === ch) e++;
+          out.push([r, c, e - c + 1, ch]);
+          c = e + 1;
+        }
+      });
+      return { runs: out, w: rows[0].length, h: rows.length };
+    };
+    this._trees = { big: runs(big), small: runs(small) };
+    return this._trees;
+  }
+
+  renderVals() {
+    const W = this.state.W || 1440;
+    const H = this.state.H || 900;
+    const mobile = W < 720;
+    const r1 = (v) => Math.round(v * 10) / 10;
+    const P = mobile ? 3 : 4;
+    const snap = (v) => Math.round(v / P) * P;
+    const rp = (x, y, w, h) => this.rp(x, y, w, h);
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+    const ease = (u) => u * u * (3 - 2 * u);
+    const j = (a) => (a.length ? a.join('') : 'M0 0z');
+
+    // ---- Skater size and screen spot ----
+    const sc = mobile || H < 800 ? 2 : 2.5;
+    const art = this.skaterArt();
+    const pw = art.w * sc;
+    const ph = art.h * sc;
+    const cx = Math.round(mobile ? W * 0.32 : W * 0.3);
+    const sx = Math.round(cx - art.pivotX * sc);
+
+    // ---- Timeline (scroll px == camera px) ----
+    const signCardW = mobile ? W - 24 : Math.round(Math.min(1100, W - 120));
+    const par = mobile ? 0.8 : 0.75;                      // background signs move slower than the stairs
+    const spacing = Math.round(mobile ? Math.max(W * 1.9, (signCardW + 140) / par) : Math.max(W * 1.2, (signCardW + 380) / par));
+    const hold = spacing * 0.5;
+    const fade = spacing * 0.3;
+    const t0 = Math.round((W / 2 + signCardW / 2) / par + (mobile ? 60 : 120));
+    const careerT = [0, 1, 2, 3].map((i) => Math.round(t0 + i * spacing));
+    const C1 = Math.round(careerT[3] + spacing * 0.6);      // skater reaches the end of the rail
+    const jump = mobile ? 420 : 520;
+    const C2 = C1 + jump;                                     // skater lands
+    const rollOff = mobile ? 700 : 950;
+    const tEnd = C2 + rollOff;
+    // Only the four stages are stops. There is deliberately no checkpoint after
+    // the landing: from the last stage the run carries straight on through the
+    // final trick and off the side of the screen rather than parking him on the
+    // plaza.
+    const targets = careerT.slice();
+    // A broken section of rail sits before each stage; the skater ollies it with a trick.
+    const gapLen = mobile ? 170 : 260;
+    const jumpWin = mobile ? 340 : 460;
+    const OBSTACLES = ['broken', 'chasm', 'panda'];
+    const TRICKS = [
+      { name: 'POP SHUVIT!', kind: 'shove' },
+      { name: 'HUGE OLLIE!', kind: 'ollie', hop: 1.6 },
+      { name: 'KICKFLIP!', kind: 'flip' }
+    ];
+    const gapCams = careerT.slice(1).map((t) => Math.round(t - spacing * 0.35));
+    const camEnd = tEnd;
+    const runHeight = Math.round(camEnd + H);
+    // Exactly the airborne stretch of each jump — from the moment he leaves the
+    // ground to the moment he lands, wind-up and roll-out excluded. The
+    // auto-scroll glide runs slow motion across these so the tricks are
+    // watchable, and is back to normal pace the instant he touches down.
+    const zones = gapCams
+      .map((gc) => [gc - jumpWin * 0.5, gc + jumpWin * 0.5])
+      .concat([[C1, C2]]);
+    this.geo = { camEnd: camEnd, targets: targets, runHeight: runHeight, zones: zones };
+
+    const st = this.state.st || 0;
+    const camX = clamp(st, 0, camEnd);
+
+    // ---- Rail / stair geometry with a camera that stops descending at the rail end ----
+    // Fixed layout: the rail sits low enough that the skater always rides below the tallest card.
+    const cardTop = mobile ? 72 : 84;
+    const hs = Object.values(this.state.cardH || {});
+    const maxCardH = hs.length ? Math.max.apply(null, hs) : (mobile ? 560 : 420);
+    const sBase = Math.min(0.6, (0.4 * H) / W);
+    const railBase = 0.95 * H - sBase * (W - cx);
+    const railNeed = cardTop + maxCardH + 18 + art.pivotY * sc + 5;
+    const railMax = H - 10 - (art.contact - art.pivotY) * sc;
+    const railC = Math.min(Math.max(railBase, railNeed - (mobile ? 30 : 50)), railMax);
+    const s = railC > railBase ? Math.max(0.2, Math.min(sBase, (1.0 * H - railC) / (W - cx))) : sBase;
+    const y0 = railC - s * cx;
+    const camY = s * Math.min(camX, C1);
+    const railY = (x) => y0 + s * (x + camX) - camY;
+    const sw = mobile ? Math.round(clamp(8 / s, 32, 48)) : Math.round(clamp(11 / s, 44, 72));
+    const sh = s * sw;
+    const gap = mobile ? 46 : 68;
+    const dy = mobile ? 14 : 22;
+    const railEndW = C1 + cx;
+    const stairEndW = Math.ceil((railEndW + sw * 0.5) / sw) * sw;
+    const railEnd = railEndW - camX;
+    const stairEnd = stairEndW - camX;
+    const T = (x) => railY(x) + gap;
+    const G = T(stairEnd) + sh;                                // plaza level on screen
+    const tyAt = (b) => (b <= stairEnd + 0.5 ? T(b) : G);
+    const bottom = H + 40;
+
+    // ---- Sky, sun, clouds (static, sunny all day) ----
+    const sky = this.skyArt(W, H, P);
+    const cArt = this.cloudArt(P);
+    // Clouds sit at the edges so they never sit behind the title.
+    const cloudBase = mobile
+      ? [{ x: 0.02, y: 0.025, k: 2 }, { x: 0.72, y: 0.03, k: 2 }]
+      : [{ x: 0.015, y: 0.12, k: 2 }, { x: 0.86, y: 0.05, k: 0 }, { x: 0.85, y: 0.32, k: 2 }];
+    const cl = {};
+    for (let i = 0; i < 3; i++) {
+      const c = cloudBase[i];
+      const sh2 = c ? cArt[c.k] : cArt[2];
+      cl['k' + i] = c
+        ? { x: snap(c.x * W), y: snap(c.y * H), p0: sh2[0], p1: sh2[1], p2: sh2[2], p3: sh2[3] }
+        : { x: -9999, y: -9999, p0: sh2[0], p1: sh2[1], p2: sh2[2], p3: sh2[3] };
+    }
+
+    // ---- Two calm mountain layers ----
+    const TAU = Math.PI * 2;
+    const ridgeV = (x, Lr) => {
+      const u = x + Lr.off;
+      return 0.55 + 0.22 * Math.sin((u * TAU) / Lr.per[0]) + 0.14 * Math.sin((u * TAU) / Lr.per[1] + 1.3) + 0.09 * Math.sin((u * TAU) / Lr.per[2] + 0.4);
+    };
+    const ridgeY = (x, Lr) => snap(Lr.base - Lr.amp * ridgeV(x, Lr));
+    const mountain = (Lr) => {
+      const stp = Lr.step;
+      const n = Math.ceil(W / stp) + 2;
+      const ys = [];
+      for (let i = -1; i <= n + 1; i++) ys.push(ridgeY(i * stp - stp, Lr));
+      const base = ['M' + -stp + ' ' + bottom];
+      const lit = [];
+      const shade = [];
+      for (let i = 1; i <= n; i++) {
+        const x = (i - 1) * stp - stp;
+        const y = ys[i];
+        base.push('V' + y + 'H' + (x + stp));
+        const slope = ys[i + 1] - ys[i - 1];
+        const depth = snap(Lr.face * (0.35 + 0.65 * Math.min(1, Math.abs(slope) / (3 * P))));
+        if (depth <= 0 || slope === 0) continue;
+        const arr = slope < 0 ? lit : shade;
+        arr.push(rp(x, y, stp, depth));
+        if (i % 2 === 0) arr.push(rp(x, y + depth, stp, P));
+      }
+      base.push('V' + bottom + 'Z');
+      return { base: base.join(''), lit: j(lit), shade: j(shade) };
+    };
+    const mt = {
+      far: mountain({ base: 0.66 * H - camY * 0.03, amp: 0.3 * H, off: camX * 0.04, per: [1700, 610, 260], step: 3 * P, face: 0.08 * H }),
+      hill: mountain({ base: 0.82 * H - camY * 0.08, amp: 0.14 * H, off: camX * 0.15 + 1200, per: [900, 380, 150], step: 2 * P, face: 0.05 * H })
+    };
+
+    const gapsOnScreen = gapCams.map((g, i) => {
+      const c = g + cx - camX;
+      return { a: c - gapLen / 2, b: c + gapLen / 2, kind: OBSTACLES[i], cut: OBSTACLES[i] !== 'panda' };
+    }).filter((g) => g.b > -80 && g.a < W + 80);
+    const inGap = (x) => gapsOnScreen.some((g) => x > g.a - 8 && x < g.b + 8);
+    const inCut = (x) => gapsOnScreen.some((g) => g.cut && x > g.a - 8 && x < g.b + 8);
+    const kindAt = (x) => {
+      const g = gapsOnScreen.filter((o) => x > o.a - 8 && x < o.b + 8)[0];
+      return g ? g.kind : '';
+    };
+
+    // ---- Stairs facing the viewer, then a flat plaza ----
+    const phase = ((camX % sw) + sw) % sw;
+    const first = -sw - phase;
+    const steps = Math.ceil(W / sw) + 4;
+    const hash = (a, b) => Math.abs(Math.sin(a * 91.7 + b * 47.3) * 24634.6345) % 1;
+    const stair = ['M' + r1(first) + ' ' + bottom + 'V' + r1(tyAt(first))];
+    const tops = [];
+    const backs = [];
+    const riserEdges = [];
+    const riserShadow = [];
+    const noses = [];
+    const lips = [];
+    const specDark = [];
+    const specLight = [];
+    const seams = [];
+    const band1 = ['M' + r1(first) + ' ' + bottom];
+    const band2 = ['M' + r1(first) + ' ' + bottom];
+    const rubble = [];
+    const pit = [];
+    const dirt = [];
+    const grass = [];
+    const grassHi = [];
+    const crateWood = [];
+    const crateDark = [];
+    const orange = [];
+    const white = [];
+    const ink = [];
+    const cone = [];
+    for (let i = 0; i < steps; i++) {
+      const a = first + i * sw;
+      const b = a + sw;
+      const kindHere = kindAt(a + sw / 2);
+      const broken = kindHere === 'broken';
+      const chasm = kindHere === 'chasm';
+      const drop = (x) => (kindAt(x) === 'broken' ? 34 : 0);
+      const ty = chasm ? bottom : tyAt(b) + drop(a + sw / 2);
+      const ny = kindAt(b + sw / 2) === 'chasm' ? bottom : tyAt(b + sw) + drop(b + sw / 2);
+      const idx = Math.round((a + camX) / sw);
+      stair.push('V' + r1(ty) + 'H' + r1(b));
+      if (broken) {
+        pit.push(rp(r1(a), r1(ty - dy), sw, r1(dy + 8)));
+        rubble.push(rp(r1(a + 6), r1(ty - 6), 12, 9));
+        rubble.push(rp(r1(a + sw - 22), r1(ty - 10), 10, 8));
+        continue;
+      }
+      if (chasm) continue;
+      band1.push('V' + r1(ty + sh + (mobile ? 40 : 70)) + 'H' + r1(b));
+      band2.push('V' + r1(ty + sh + (mobile ? 110 : 170)) + 'H' + r1(b));
+      tops.push(rp(r1(a), r1(ty - dy), sw, dy));
+      backs.push(rp(r1(a), r1(ty - dy), sw, 3));
+      noses.push(rp(r1(a), r1(ty), sw, 5));
+      lips.push(rp(r1(a), r1(ty + 5), sw, 3));
+      if (ny - ty > 1) {
+        riserEdges.push(rp(r1(b - 1), r1(ty - dy), 2, r1(ny - ty + dy)));
+        riserShadow.push(rp(r1(b + 1), r1(ny - dy + 3), 5, r1(dy - 3)));
+      } else if (((idx % 3) + 3) % 3 === 0) {
+        seams.push(rp(r1(b - 1), r1(ty - dy + 3), 2, r1(dy - 3)));
+      }
+      for (let k = 0; k < 5; k++) {
+        const u = Math.floor(hash(idx, k) * (sw - 2));
+        const v = Math.floor(hash(idx, k + 20) * 200);
+        (k % 2 ? specDark : specLight).push(rp(r1(a + u), r1(ty + 12 + v), 2, 2));
+      }
+      const u2 = hash(idx, 40) * (sw - 3);
+      specDark.push(rp(r1(a + u2), r1(ty - dy * (0.3 + hash(idx, 60) * 0.5)), 2, 2));
+    }
+    stair.push('V' + bottom + 'Z');
+    band1.push('V' + bottom + 'Z');
+    band2.push('V' + bottom + 'Z');
+
+    // Set pieces: a chasm's torn edges, a pole jam across the rail, a planter with an overgrown bush.
+    gapsOnScreen.forEach((g) => {
+      const mid = (g.a + g.b) / 2;
+      if (g.kind === 'chasm') {
+        // Torn support posts at both lips — stood up taller above the rail so they
+        // read as a makeshift guard rather than needing a separate fence.
+        [g.a, g.b].forEach((x, side) => {
+          const top = T(x) - dy;
+          const postTop = railY(x) - (mobile ? 30 : 42);
+          for (let k3 = 0; k3 < 7; k3++) {
+            const w2 = 6 + ((k3 * 7) % 13);
+            crateDark.push(rp(r1(side ? x : x - w2), r1(top + 6 + k3 * 26), w2, 12));
+          }
+          crateDark.push(rp(r1(side ? x - 4 : x), r1(postTop), 5, r1(bottom - postTop)));
+          crateDark.push(rp(r1(side ? x - 5 : x - 1), r1(postTop), 7, 5));
+          for (let k4 = 0; k4 < 3; k4++) {
+            const ry = top + 24 + k4 * 58;
+            orange.push(rp(r1(side ? x + 3 : x - 30), r1(ry), 28, 4));
+          }
+        });
+      }
+      if (g.kind === 'broken') {
+        // A lone traffic cone left beside the smashed section.
+        const cxp = g.a - 46;
+        const base = T(cxp) - dy * 0.4;
+        cone.push('M' + r1(cxp + 13) + ' ' + r1(base - 38) + 'L' + r1(cxp + 26) + ' ' + r1(base) + 'L' + r1(cxp) + ' ' + r1(base) + 'z');
+        cone.push(rp(r1(cxp - 4), r1(base), 34, 6));
+        white.push(rp(r1(cxp + 6), r1(base - 23), 14, 7));
+      }
+      if (g.kind === 'panda') {
+        // A panda asleep along the rail, lying at the rail's angle.
+        const ang = Math.atan(s);
+        const ca = Math.cos(ang);
+        const sa = Math.sin(ang);
+        const ox = mid;
+        const oy = railY(mid) - 8;
+        const R = (x, y, w, h) => {
+          const p = (px, py) => [r1(ox + px * ca - py * sa), r1(oy + px * sa + py * ca)];
+          const p1 = p(x, y);
+          const p2 = p(x + w, y);
+          const p3 = p(x + w, y + h);
+          const p4 = p(x, y + h);
+          return 'M' + p1[0] + ' ' + p1[1] + 'L' + p2[0] + ' ' + p2[1] + 'L' + p3[0] + ' ' + p3[1] + 'L' + p4[0] + ' ' + p4[1] + 'z';
+        };
+        white.push(R(-60, -34, 104, 36));
+        white.push(R(-66, -28, 8, 24));
+        white.push(R(40, -46, 44, 42));
+        white.push(R(78, -34, 10, 16));
+        ink.push(R(-6, -36, 26, 40));
+        ink.push(R(42, -56, 16, 13));
+        ink.push(R(68, -56, 16, 13));
+        ink.push(R(48, -38, 13, 11));
+        ink.push(R(66, -38, 13, 11));
+        white.push(R(51, -33, 7, 3));
+        white.push(R(69, -33, 7, 3));
+        ink.push(R(62, -24, 12, 7));
+        ink.push(R(14, -4, 20, 28));
+        ink.push(R(-38, -4, 22, 28));
+        ink.push(R(12, 22, 24, 7));
+        ink.push(R(-40, 22, 26, 7));
+        white.push(R(-70, -16, 10, 10));
+        [[94, -76, 13], [114, -100, 11], [132, -122, 9]].forEach((z) => {
+          white.push(R(z[0], z[1], z[2], 3));
+          white.push(R(z[0], z[1] + z[2] - 3, z[2], 3));
+          white.push(R(z[0] + z[2] / 2 - 2, z[1] + 3, 4, z[2] - 6));
+        });
+      }
+    });
+
+    // ---- Rail: steel tube that ends before the bottom of the stairs ----
+    const xe = Math.min(W + 20, railEnd);
+    let segs = xe <= -20 ? [] : [[-20, xe]];
+    gapsOnScreen.forEach((g) => {
+      if (!g.cut) return;
+      const out = [];
+      segs.forEach((seg) => {
+        if (g.b <= seg[0] || g.a >= seg[1]) { out.push(seg); return; }
+        if (g.a > seg[0]) out.push([seg[0], g.a]);
+        if (g.b < seg[1]) out.push([g.b, seg[1]]);
+      });
+      segs = out;
+    });
+    const stripe = (o1, o2) => j(segs.map((seg) => 'M' + r1(seg[0]) + ' ' + r1(railY(seg[0]) + o1) + 'L' + r1(seg[1]) + ' ' + r1(railY(seg[1]) + o1) +
+      'L' + r1(seg[1]) + ' ' + r1(railY(seg[1]) + o2) + 'L' + r1(seg[0]) + ' ' + r1(railY(seg[0]) + o2) + 'z'));
+    const breaks = [];
+    gapsOnScreen.forEach((g) => {
+      if (!g.cut) return;
+      [g.a, g.b].forEach((x, side) => {
+        const y = railY(x);
+        breaks.push(rp(r1(side ? x - 1 : x - 3), r1(y - 6), 4, 13));
+        breaks.push(rp(r1(side ? x + 3 : x - 8), r1(y - 2), 5, 5));
+      });
+    });
+    const glints = [];
+    const gp = 22;
+    const gph = ((camX % gp) + gp) % gp;
+    for (let x = -gp - gph; x < xe - 6; x += gp) { if (!inCut(x)) glints.push(rp(r1(x), r1(railY(x) - 4), 4, 1)); }
+    const postL = [];
+    const postM = [];
+    const postR = [];
+    const postBase = [];
+    const addPost = (px) => {
+      const topY = railY(px + 3) + 3;
+      const ty = tyAt(Math.ceil((px + 3 + camX) / sw) * sw - camX);
+      const hgt = ty - topY - dy * 0.4;
+      if (hgt <= 0) return;
+      postL.push(rp(r1(px), r1(topY), 2, r1(hgt)));
+      postM.push(rp(r1(px + 2), r1(topY), 2, r1(hgt)));
+      postR.push(rp(r1(px + 4), r1(topY), 2, r1(hgt)));
+      postBase.push(rp(r1(px - 3), r1(topY + hgt - 2), 12, 3));
+    };
+    for (let i = 0; i < steps; i++) {
+      const a = first + i * sw;
+      const idx = Math.round((a + camX) / sw);
+      const px = a + sw / 2 - 3;
+      if (((idx % 5) + 5) % 5 === 0 && px < railEnd - 30 && !inGap(px + 3)) addPost(px);
+    }
+    let railCap = 'M0 0z';
+    if (railEnd > -20 && railEnd < W + 20) {
+      addPost(railEnd - 10);
+      railCap = rp(r1(railEnd - 3), r1(railY(railEnd) - 6), 5, 12);
+    }
+
+    // ---- Skater motion: grind → pop + kickflip → land → roll ----
+    // He starts further left so the title panel stays clear, eases onto the left-third line
+    // as the title fades, then speeds up and rolls off the right of the screen after the landing.
+    const introT = ease(clamp(camX / (W * 0.15), 0, 1));
+    const skStartX = W * (mobile ? 0.16 : 0.12);
+    const skX = skStartX + (cx - skStartX) * introT + Math.max(0, camX - (C2 + 160)) * 1.7;
+    const railRot = (Math.atan(s) * 180) / Math.PI;
+    const onRail = camX < C1;
+    const u = clamp((camX - C1) / jump, 0, 1);
+    const landed = camX >= C2;
+    const moving = !!this.state.moving && camX > 0 && camX < camEnd;
+    const railTopAtC = railY(skX) - 5;
+    const groundContact = G - dy * 0.5;
+    const hop = mobile ? H * 0.16 : H * 0.2;
+
+    let mini = -1;
+    let mu = 0;
+    gapCams.forEach((g, i) => {
+      const d = camX - (g - jumpWin / 2);
+      if (d >= 0 && d <= jumpWin) { mini = i; mu = d / jumpWin; }
+    });
+    const onGapJump = onRail && mini >= 0;
+    const trick = onGapJump ? TRICKS[mini] : null;
+    const miniHop = mobile ? H * 0.13 : H * 0.17;
+
+    // ---- The pop ----------------------------------------------------------
+    // A board doesn't leave the ground level: the tail is snapped down against
+    // it first, so the nose is already pitched up before lift-off, and it
+    // levels out again by the top of the jump. Seen side-on this pitch is a
+    // plain in-plane rotation, so unlike the yaw and roll it needs no
+    // projection. t is jump progress — negative through the wind-up with the
+    // tail still down, 0 at lift-off, 0.5 at the apex.
+    const PRE = 0.22;
+    const popTilt = (t) => {
+      if (t <= -PRE || t >= 0.5) return 0;
+      if (t < 0.12) { const a = (t + PRE) / (PRE + 0.12); return a * a * (3 - 2 * a); }
+      const b = (t - 0.12) / 0.38;
+      return 1 - b * b * (3 - 2 * b);
+    };
+    // The body leads the board: the rider is already rocking back before the
+    // tail is snapped and peaks as the board leaves the ground, then holds
+    // through the board's own peak and levels out with it at the apex.
+    const LEAD = 0.45;
+    const leanTilt = (t) => {
+      if (t <= -LEAD || t >= 0.5) return 0;
+      if (t < 0) { const a = (t + LEAD) / LEAD; return a * a * (3 - 2 * a); }
+      const b = t / 0.5;
+      return 1 - b * b * (3 - 2 * b);
+    };
+    const TILT = { flip: 18, shove: 18, shove360: 18, ollie: 24 };
+    let bPitch = 0;
+    let riderLead = 0;
+    let popT = 1;
+    gapCams.forEach((g, i) => {
+      const t = (camX - (g - jumpWin / 2)) / jumpWin;
+      const mx = TILT[TRICKS[i].kind] || 18;
+      if (t > -LEAD && t < 0.5) {
+        popT = t;
+        bPitch = -mx * popTilt(t);
+        riderLead = -mx * 0.5 * Math.max(0, leanTilt(t) - popTilt(t));
+      }
+    });
+    const uRaw = (camX - C1) / jump;
+    if (uRaw > -LEAD && uRaw < 0.5) {
+      popT = uRaw;
+      bPitch = -26 * popTilt(uRaw);
+      riderLead = -26 * 0.5 * Math.max(0, leanTilt(uRaw) - popTilt(uRaw));
+    }
+    // While the tail is still down the board turns about the tail, so nothing
+    // sinks through the rail; once airborne it turns about its own centre.
+    const pBlend = ease(clamp(popT / 0.15, 0, 1));
+    const pivPX = 4 + (art.pivotX - 4) * pBlend;
+    const pivPY = art.contact + (art.boardCY - art.contact) * pBlend;
+    // His feet stay on the deck: the rider turns about the board's own pivot by
+    // the board's own pitch, so the deck can never climb up through his feet —
+    // which is what a pop actually does, the whole rider pivoting over the
+    // planted tail. The lead term rocks him back a touch further, and always in
+    // the same direction, so any slack leaves the board under him, never above.
+    const riderAng = bPitch + riderLead;
+
+    let pivotY;
+    let rot;
+    if (onRail) {
+      pivotY = railTopAtC - (onGapJump ? miniHop * (trick.hop || 1) * 4 * mu * (1 - mu) : 0);
+      rot = railRot - (onGapJump ? 7 * Math.sin(mu * Math.PI) : 0);
+    } else {
+      const startY = y0 + s * skX - 5;
+      const endY = groundContact - (art.contact - art.pivotY) * sc;
+      pivotY = startY + (endY - startY) * u - hop * 4 * u * (1 - u);
+      rot = railRot * (1 - ease(clamp(u * 1.4, 0, 1)));
+    }
+
+    // Board motion: pick a real rotated pixel-art frame rather than warping the
+    // flat sprite. A flip rolls about the board's long axis (so mid-trick you
+    // see the whole deck face, not a sliver); a shove-it yaws about the
+    // vertical axis (so mid-trick you see it end-on, a wide bar with the axle
+    // and two wheels). The board also drops away from the feet as it goes
+    // round, the way it does when the rider tucks up over it.
+    const NF = art.nf;
+    let frames = null;
+    let fIdx = 0;
+    let bOff = 0;
+    if (onGapJump) {
+      const v = clamp((mu - 0.1) / 0.75, 0, 1);
+      if (trick.kind === 'flip') {
+        frames = art.flip;
+        fIdx = v * NF;
+        bOff = 7 * Math.sin(v * Math.PI);
+      } else if (trick.kind === 'shove') {
+        frames = art.shove;
+        fIdx = (v * NF) / 2;
+        bOff = 4 * Math.sin(v * Math.PI);
+      } else if (trick.kind === 'shove360') {
+        frames = art.shove;
+        fIdx = v * NF;
+        bOff = 5 * Math.sin(v * Math.PI);
+      } else {
+        bOff = 3 * Math.sin(v * Math.PI);
+      }
+    } else if (!onRail && !landed) {
+      // Final trick is a lazer flip: a 360 shove and a flip together.
+      const fu = clamp((u - 0.12) / 0.62, 0, 1);
+      frames = art.lazer;
+      fIdx = fu * NF;
+      bOff = 8 * Math.sin(fu * Math.PI);
+    }
+    const boardArt = frames ? frames[((Math.round(fIdx) % NF) + NF) % NF] : art.board;
+    // A rotated frame is taller than the resting one — mid-flip you see the
+    // whole deck face. Drop the board by however much it grew upward, so its
+    // top edge never climbs past where the resting deck sat under his feet.
+    bOff += Math.max(0, art.board.top - boardArt.top);
+
+    const inAir = (!onRail && !landed) || onGapJump;
+    const sk = {
+      left: Math.round(skX - art.pivotX * sc),
+      top: r1(pivotY - art.pivotY * sc),
+      w: pw,
+      h: ph,
+      sc: sc,
+      rot: r1(rot),
+      ox: r1(art.pivotX * sc),
+      oy: r1(art.pivotY * sc),
+      sparkX: r1(art.truckX * sc),
+      sparkY: r1(art.truckY * sc),
+      boardTf: 'translate(0 ' + r1(bOff) + ')' + (bPitch ? ' rotate(' + r1(bPitch) + ' ' + r1(pivPX) + ' ' + r1(pivPY) + ')' : ''),
+      riderTf: 'rotate(' + r1(riderAng) + ' ' + r1(pivPX) + ' ' + r1(pivPY) + ')',
+      cls: inAir ? 'air' : (moving ? 'moving' : 'idle')
+    };
+    const sparks = moving && onRail && !onGapJump;
+    const airLift = onGapJump ? 4 * mu * (1 - mu) : (inAir ? 4 * u * (1 - u) : 0);
+    const shadowW = Math.round(pw * 0.7 * (1 - 0.45 * airLift));
+    const shadowBase = skX <= stairEnd ? T(skX) + sh * 0.5 : G;
+    // Over a cut section there is no ground left to catch the shadow — it would
+    // be falling into the gap — so it fades out as he crosses and back in on
+    // the far side. The panda sits on intact stairs, so that one keeps its shadow.
+    let shOp = 1;
+    gapsOnScreen.forEach((g) => {
+      if (!g.cut) return;
+      shOp = Math.min(shOp, 1 - clamp(Math.min(skX - g.a, g.b - skX) / 26, 0, 1));
+    });
+    const shadow = {
+      left: Math.round(skX - shadowW / 2),
+      top: Math.round(shadowBase - dy * 0.55),
+      w: shadowW,
+      op: Math.round(shOp * 100) / 100,
+      rot: skX <= stairEnd ? r1(railRot) : 0
+    };
+
+    const since = camX - C2;
+    const dustOn = landed && since < 180;
+    const dp = clamp(since / 180, 0, 1);
+    const dust = {
+      op: Math.round((1 - dp) * 100) / 100,
+      y: Math.round(groundContact - 6),
+      l1: Math.round(skX - 30 - dp * 40),
+      l2: Math.round(skX - 14 - dp * 20),
+      r1: Math.round(skX + 10 + dp * 20),
+      r2: Math.round(skX + 26 + dp * 40),
+      lift: Math.round(-dp * 14)
+    };
+    const TRICK_PTS = [500, 750, 1000];
+    let score = Math.round(1000 * clamp(camX / C1, 0, 1)) * 10;
+    gapCams.forEach((g, i) => { if (camX > g + jumpWin / 2) score += TRICK_PTS[i]; });
+    if (landed) score += 2500;
+    let popOn = landed && since < 420;
+    let popText = 'LAZER FLIP!  +2500';
+    let popAge = since;
+    if (!popOn) {
+      gapCams.forEach((g, i) => {
+        const age = camX - (g + jumpWin / 2);
+        if (age >= 0 && age < 300 && camX < C1) { popOn = true; popText = TRICKS[i].name + '  +' + TRICK_PTS[i]; popAge = age; }
+      });
+    }
+    const pop = {
+      text: popText,
+      op: Math.round(clamp(1.4 - popAge / 260, 0, 1) * 100) / 100,
+      x: Math.round(skX),
+      y: Math.round(pivotY - art.pivotY * sc - 20 - Math.min(popAge, 420) * 0.05)
+    };
+
+    // ---- Stage cards: slide in with the world, hold centred, slide out ----
+    const cardW = signCardW;
+    const skaterTop = (y0 + s * cx - 5) - art.pivotY * sc;
+    // Stage cards are background signs: behind the stairs, in front of the mountains.
+    // They glide with parallax and sit centred when the camera stops on their stage.
+    const pos = {};
+    const cardPL = [];
+    const cardPM = [];
+    const cardPR = [];
+    const cardPB = [];
+    const postBottom = H + 40;
+    careerT.forEach((t, i) => {
+      const id = 'c' + (i + 1);
+      const h = (this.state.cardH || {})[id] || (mobile ? 560 : 420);
+      const left = W / 2 - cardW / 2 + (t - camX) * par;
+      const top = cardTop + (s * Math.min(t, C1) - camY) * par;
+      const center = left + cardW / 2;
+      const visible = left < W + 60 && left + cardW > -60;
+      const active = Math.abs(center - W / 2) < spacing * par * 0.2;
+      pos[id] = {
+        left: Math.round(left),
+        top: Math.round(top),
+        op: 1,
+        cls: (visible ? '' : 'gone') + (active ? ' active' : '')
+      };
+      if (visible) {
+        const px = center - 10;
+        const topY = top + h - 30;
+        cardPM.push(rp(r1(px), r1(topY), 14, r1(postBottom - topY)));
+        cardPR.push(rp(r1(px + 14), r1(topY), 6, r1(postBottom - topY)));
+        cardPB.push(rp(r1(px - 7), r1(top + h - 6), 34, 9));
+      }
+    });
+    const panY = 0;
+
+    // ---- HUD ----
+    const names = ['STAGE 1 · ORIGIN STORY', 'STAGE 2 · FREELANCE', 'STAGE 3 · GOODKIND (YC S21)', 'STAGE 4 · NICHE'];
+    let cp = -1;
+    targets.forEach((t, i) => { if (camX >= t - hold / 2 - fade) cp = i; });
+    let cpLabel = cp < 0 ? 'ROLLING IN…' : names[cp];
+    if (cp === 3 && camX > C1 - 40 && !landed) cpLabel = 'FINAL TRICK…';
+    if (landed) cpLabel = 'LANDED IT · KEEP SCROLLING';
+    const playing = st > 6;
+    const stairsDone = String(Math.round(1000 * clamp(camX / C1, 0, 1))).padStart(4, '0');
+    // The mission board stays a planted sign on every width — on a narrow phone
+    // it just gets narrower and its text smaller, rather than being pulled out
+    // of the scene and stacked into the title.
+    const signW = mobile ? 186 : 280;
+    const signAnchor = mobile ? W * 0.66 : W * 0.8;
+    const signX = signAnchor - camX * par;
+    const signOp = clamp(1 - camX / (W * 0.18), 0, 1);
+    const signShow = signOp > 0 && signX > -300 && signX < W + 300;
+    const boardBottom = (y0 + s * (signAnchor - 92)) - 70 - camY * par;
+    const sPL = [];
+    const sPM = [];
+    const sPR = [];
+    const sPB = [];
+    if (signShow) {
+      const px = signX - 10;
+      const topY = boardBottom - 30;
+      sPM.push(rp(r1(px), r1(topY), 14, r1(postBottom - topY)));
+      sPR.push(rp(r1(px + 14), r1(topY), 6, r1(postBottom - topY)));
+      sPB.push(rp(r1(px - 7), r1(boardBottom - 6), 34, 9));
+    }
+    const sign = {
+      show: signShow,
+      op: Math.round(signOp * 100) / 100,
+      left: Math.round(signX - signW / 2),
+      top: Math.round(boardBottom),
+      w: signW,
+      cls: mobile ? 'small' : '',
+      pl: j(sPL), pm: j(sPM), pr: j(sPR), pb: j(sPB)
+    };
+    const VIDEOS = {
+      s1: { stage: 'STAGE 1', title: 'ORIGIN STORY', note: '[Add video: skating and my first app]' },
+      s2: { stage: 'STAGE 2', title: 'FREELANCE · RENTAL APP DEMO', note: '[Add video: rental app walkthrough]' },
+      s3: { stage: 'STAGE 3', title: 'GOODKIND · PRODUCT DEMO', note: '[Add video: Flutter app and AI chat demo]' },
+      s4: { stage: 'STAGE 4', title: 'NICHE · PRODUCT DEMO', note: '[Add video: chat product at Niche]' }
+    };
+    const vid = this.state.video && VIDEOS[this.state.video];
+    const lb = vid ? Object.assign({ open: true }, vid) : { open: false, stage: '', title: '', note: '' };
+    const titleOpacity = clamp(1 - camX / (W * 0.15), 0, 1);
+
+    return {
+      accent: this.props.accent ?? '#ffc857',
+      company: this.props.company || 'your team',
+      motionClass: this.props.reduceMotion ? 'reduced-motion' : '',
+      setScroller: (el) => { this.scroller = el; },
+      onScroll: () => this.handleScroll(),
+      onKey: (e) => this.handleKey(e),
+      focusStage: () => this.focusStage(),
+      start: () => this.scrollToY(targets[0]),
+      restart: () => this.scrollToY(0, 2600),
+      skip: () => this.scrollToY(runHeight),
+      runHeight: runHeight,
+      sky: sky,
+      sunX: mobile ? snap(W * 0.84) : snap(W * 0.06),
+      sunY: mobile ? snap(H * 0.05) : snap(Math.max(sky.R + 6 * P + 60, Math.min(H * 0.25, skaterTop - sky.R - 6 * P - 16))),
+      cl: cl,
+      mt: mt,
+      stairPath: stair.join(''),
+      topPath: j(tops),
+      backEdgePath: j(backs),
+      riserEdgePath: j(riserEdges),
+      riserShadowPath: j(riserShadow),
+      seamPath: j(seams),
+      shade1Path: band1.join(''),
+      shade2Path: band2.join(''),
+      specDarkPath: j(specDark),
+      specLightPath: j(specLight),
+      nosePath: j(noses),
+      lipPath: j(lips),
+      postLPath: j(postL),
+      postMPath: j(postM),
+      postRPath: j(postR),
+      postBasePath: j(postBase),
+      railUnder: stripe(3, 6),
+      railLow: stripe(1, 3),
+      railBody: stripe(-3, 1),
+      railHi: stripe(-5, -3),
+      railGlints: j(glints),
+      railBreaks: j(breaks),
+      rubblePath: j(rubble),
+      pitPath: j(pit),
+      dirtPath: j(dirt),
+      grassPath: j(grass),
+      grassHiPath: j(grassHi),
+      crateWoodPath: j(crateWood),
+      inkPath: j(ink),
+      conePath: j(cone),
+      crateDarkPath: j(crateDark),
+      orangePath: j(orange),
+      whitePath: j(white),
+      railCap: railCap,
+      shadow: shadow,
+      cardW: cardW,
+      pos: pos,
+      sk: sk,
+      rider: art.rider,
+      board: boardArt,
+      moving: moving,
+      sparks: sparks,
+      dustOn: dustOn,
+      dust: dust,
+      popOn: popOn,
+      pop: pop,
+      titleOpacity: Math.round(titleOpacity * 100) / 100,
+      titleShift: Math.round(-camX * 0.5),
+      titleClass: titleOpacity <= 0 ? 'hidden' : '',
+      playing: playing,
+      notPlaying: !playing,
+      cpLabel: cpLabel,
+      panY: panY,
+      cardPosts: { pl: j(cardPL), pm: j(cardPM), pr: j(cardPR), pb: j(cardPB) },
+      panM: Math.round(panY * 0.45),
+      panS: Math.round(panY * 0.12),
+      cardRefs: this.cardRefs,
+      openV: this.openV,
+      closeVideo: this.closeVideo,
+      stopClick: this.stopClick,
+      onLbKey: this.onLbKey,
+      lbCloseRef: this.lbCloseRef,
+      lb: lb,
+      stairsDone: stairsDone,
+      score: String(score).padStart(6, '0').replace(/(\d)(?=(\d{3})+$)/g, '$1,'),
+      sign: sign,
+      pct: r1((camX / camEnd) * 100)
+    };
+  }
+}
+
+
+(function () {
+  'use strict';
+  var rt = window.__staticRuntime;
+  var appRoot = document.getElementById('app');
+  var compiled = null;
+  var comp = null;
+
+  function doRender() {
+    window.__CURRENT_VALS__ = comp.renderVals();
+    rt.applyTree(compiled, window.__CURRENT_VALS__);
+  }
+  window.__scheduleRender = doRender;
+
+  function boot() {
+    compiled = rt.compileTree(appRoot);
+    comp = new Component();
+    // Honor the OS-level reduced-motion preference automatically; there is
+    // no longer an editor toggle for it once this runs as a static page.
+    try {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        comp.props.reduceMotion = true;
+      }
+    } catch (e) {}
+    doRender();
+    rt.invokeRefs(compiled, window.__CURRENT_VALS__);
+    if (typeof comp.componentDidMount === 'function') comp.componentDidMount();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+})();
+
+</script>
+</body>
+</html>
