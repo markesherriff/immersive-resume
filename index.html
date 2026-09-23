@@ -26,6 +26,19 @@
     .scroller{ position:absolute; inset:0; overflow-y:auto; overflow-x:hidden; outline:none; }
     .run{ position:relative; }
     .stage{ position:sticky; top:0; height:100svh; overflow:hidden; background:#7fb1df; }
+    /* A taste of the real footer, rising out of the ground before the sticky
+       .stage panel above ever lets it show through for real — see the JS
+       comment by `peek` for why this has to be faked in-canvas. */
+    .footer-peek{
+      /* height is set inline per-frame (scaled off viewport height in JS)
+         so a short browser window gets a proportionally shorter curtain
+         instead of a flat px value eating a big share of a small screen. */
+      position:absolute; left:0; right:0; bottom:0; z-index:7;
+      display:flex; align-items:center; justify-content:center; padding:0 24px;
+      background:radial-gradient(circle at 4px 4px, rgba(255,247,232,.06) 2px, transparent 2px) 0 0/28px 28px, #141b30;
+      pointer-events:none;
+    }
+    .footer-peek h2{ margin:0; text-align:center; font-family:var(--pixel); font-size:clamp(17px,2.8vw,30px); line-height:1.5; color:var(--cream); text-shadow:4px 4px 0 #070b17; }
     .notch{ clip-path:polygon(6px 0,calc(100% - 6px) 0,100% 6px,100% calc(100% - 6px),calc(100% - 6px) 100%,6px 100%,0 calc(100% - 6px),0 6px); }
 
     .crt{
@@ -139,6 +152,10 @@
       color:var(--cream); background:var(--panel); border:2px solid rgba(255,255,255,.18); cursor:pointer; white-space:nowrap;
     }
     .hud-btn:hover{ border-color:var(--accent); color:var(--accent); }
+    /* Prev/next stage-stepping buttons: a mobile-only convenience, since there
+       are no arrow keys on a touchscreen and swipe-scrolling stage by stage is
+       fiddly. Hidden on wider screens where the keyboard already does this. */
+    .hud-btn.mini{ display:none; }
     .controls-hint{
       position:absolute; left:50%; bottom:18px; transform:translateX(-50%); z-index:9;
       padding:10px 14px; font-family:var(--pixel); font-size:10px;
@@ -272,12 +289,15 @@
     /* ---------- After the run ---------- */
     .stat-screen{
       background:radial-gradient(circle at 4px 4px, rgba(255,247,232,.06) 2px, transparent 2px) 0 0/28px 28px, #141b30;
-      padding:clamp(56px,8vw,104px) clamp(20px,6vw,80px);
+      /* Top padding is much tighter than the bottom: the footer-peek
+         heading (above, off-screen by now) already reads as this section's
+         title, so the lede should follow close behind it instead of
+         leaving a second gap underneath. */
+      padding:clamp(16px,3vw,32px) clamp(20px,6vw,80px) clamp(56px,8vw,104px);
       display:flex; flex-direction:column; align-items:center; gap:clamp(28px,4vw,44px);
     }
     .lede{ margin:0; max-width:760px; text-align:center; font-size:clamp(17px,1.5vw,20px); line-height:1.5; color:var(--wood-muted); }
     .bring-grid.wide{ width:100%; max-width:1100px; }
-    .stat-screen h2{ margin:0; text-align:center; font-family:var(--pixel); font-size:clamp(16px,2.6vw,28px); line-height:1.5; color:var(--cream); text-shadow:4px 4px 0 #070b17; }
     .again-btn{ min-height:48px; padding:14px 20px; font-family:var(--pixel); font-size:12px; color:#17140f; background:var(--accent); border:0; cursor:pointer; box-shadow:inset -4px -4px 0 rgba(0,0,0,.22); }
 
     .ticker-wrap{ overflow:hidden; background:#070b17; border-top:3px solid var(--accent); border-bottom:3px solid var(--accent); padding:14px 0; }
@@ -299,11 +319,15 @@
       .page *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; }
     }
     @media (max-width:720px){
+      .footer-peek{ padding:0 16px; }
       .chips{ display:none; }
       .hud-play .chip{ display:none; }
       .hud-btn{ padding:0 10px; }
+      .hud-btn.mini{ display:inline-flex; padding:0 10px; min-width:0; }
+      .hud-actions{ gap:6px; }
       .controls-hint{ font-size:8px; }
       .title-lockup{ top:6%; gap:8px; }
+      .start-btn{ font-size:9px; padding:10px 16px; min-height:40px; }
       .qlink{ font-size:8px; padding:0 10px; min-height:40px; }
       .chips-left .read-chip{ display:none; }
       .statement{ font-size:13px; padding:12px 14px; }
@@ -546,6 +570,10 @@
           </g>
         </svg>
 
+        <!-- Footer peek: rises from the ground well before the real footer can show through -->
+        <div class="footer-peek" style="height: {{peek.h}}px; transform: translateY({{peek.ty}}px); opacity: {{peek.op}};">
+          <h2>LANDED THE TRICK. NOW THE JOB.</h2>
+        </div>
 
         <!-- Skater -->
         <div class="rider-shadow" style="left: {{shadow.left}}px; top: {{shadow.top}}px; width: {{shadow.w}}px; opacity: {{shadow.op}}; transform: rotate({{shadow.rot}}deg);"></div>
@@ -583,7 +611,7 @@
             <a class="qlink notch" href="https://www.linkedin.com/in/mark-sherriff" target="_blank" rel="noopener">LINKEDIN</a>
             <a class="qlink notch" href="https://mark-sherriff.com" target="_blank" rel="noopener">SITE</a>
           </div>
-          <button class="start-btn notch" type="button" onClick="{{start}}">PRESS ANY KEY, OR SCROLL TO START</button>
+          <button class="start-btn notch" type="button" onClick="{{start}}">PRESS TO START OR SCROLL</button>
         </div>
 
         <template data-if="notPlaying">
@@ -607,18 +635,21 @@
               <div class="progress-track notch"><div class="progress-fill" style="width: {{pct}}%;"></div></div>
             </div>
             <div class="hud-actions">
+              <button class="hud-btn mini notch" type="button" onClick="{{prevStage}}" aria-label="Previous stage">◂</button>
+              <button class="hud-btn mini notch" type="button" onClick="{{nextStage}}" aria-label="Next stage">▸</button>
               <button class="hud-btn notch" type="button" onClick="{{restart}}">↺ RESTART</button>
               <button class="hud-btn notch" type="button" onClick="{{skip}}">SKIP ▸</button>
             </div>
           </div>
+        </template>
+        <template data-if="hintOn">
           <div class="controls-hint notch">PRESS ANY KEY, PRESS ARROWS, OR SCROLL</div>
         </template>
       </div>
     </div>
 
     <section class="stat-screen">
-      <h2>LANDED THE TRICK. NOW THE JOB.</h2>
-      <p class="lede">I'm a full-stack and AI engineer in Toronto. At a YC-backed startup I owned the mobile app end-to-end and built the AI chat product from zero to production, then carried both through an acquisition into a much larger Go codebase. I like the messy middle — an unfamiliar stack, a direct line to the founders, and shipping until it actually works. That's what I'd bring to {{company}}.</p>
+      <p class="lede">I'm a full-stack and AI engineer in Toronto, and I'd genuinely like to bring that to {{company}}. At a YC-backed startup I owned the mobile app end-to-end and built the AI chat product from zero to production, then carried both through an acquisition into a much larger Go codebase — exactly the kind of ownership I want to keep earning. I do my best work in the messy middle: an unfamiliar stack, a direct line to the people making decisions, and shipping until it actually works. That's the role I'm hoping {{company}} has for me.</p>
       <div class="bring-grid wide">
         <div class="bring notch"><span class="bring-title">END-TO-END OWNERSHIP</span><p>I've taken products from zero to production and kept them shipping: architecture, releases and store distribution.</p></div>
         <div class="bring notch"><span class="bring-title">APPLIED AI IN PRODUCTION</span><p>RAG, embeddings, vector search and multi-step tool-use chains, with tracing and evaluation built in.</p></div>
@@ -946,10 +977,39 @@ class Component extends DCLogic {
       this.raf = null;
       const el = this.scroller;
       if (!el) return;
-      this.setState({ st: el.scrollTop, moving: true });
+      const prevY = this.state.st || 0;
+      const newY = this.applyFinaleBoost(prevY, el.scrollTop, el);
+      this.setState({ st: newY, moving: true });
       clearTimeout(this.mt);
       this.mt = setTimeout(() => this.setState({ moving: false }), 180);
     });
+  }
+
+  // Nothing marks the end of the ride past the last career card, so a
+  // visitor scrolling by hand can stop right there and never notice the
+  // final trick — or the hire-me pitch beneath it — is coming. A continuous
+  // scroll gesture fires a stream of wheel events, and each one cancels any
+  // in-flight glide (see stopGlide below) — so a separate auto-glide here
+  // would get wiped out by the visitor's own very next tick and never be
+  // seen. Instead, starting a little before the skater pops the lazer flip
+  // and through the landing, every bit of forward scroll is amplified in
+  // place, inside this same handler: the skater visibly covers more ground
+  // per wheel tick and the footer starts sliding into view sooner, all
+  // while riding along with the visitor's own continuous scrolling rather
+  // than fighting it.
+  applyFinaleBoost(prevY, newY, el) {
+    if (this.glide || newY <= prevY) return newY;
+    const zones = (this.geo && this.geo.zones) || [];
+    if (!zones.length) return newY;
+    const C2 = zones[zones.length - 1][1];
+    const stage4At = (this.geo.targets && this.geo.targets[3]) || 0;
+    const segLo = Math.max(prevY, stage4At);
+    const segHi = Math.min(newY, C2);
+    if (segHi <= segLo) return newY;
+    const BOOST = 1.5;
+    const boosted = newY + (segHi - segLo) * BOOST;
+    el.scrollTop = boosted;
+    return boosted;
   }
 
   // How fast the glide should run through a given scroll position: full speed
@@ -1596,7 +1656,7 @@ class Component extends DCLogic {
     // ---- Timeline (scroll px == camera px) ----
     const signCardW = mobile ? W - 24 : Math.round(Math.min(1100, W - 120));
     const par = mobile ? 0.8 : 0.75;                      // background signs move slower than the stairs
-    const spacing = Math.round(mobile ? Math.max(W * 1.9, (signCardW + 140) / par) : Math.max(W * 1.2, (signCardW + 380) / par));
+    const spacing = Math.round(mobile ? Math.max(W * 2.2, (signCardW + 140) / par) : Math.max(W * 1.2, (signCardW + 380) / par));
     const hold = spacing * 0.5;
     const fade = spacing * 0.3;
     const t0 = Math.round((W / 2 + signCardW / 2) / par + (mobile ? 60 : 120));
@@ -1604,8 +1664,13 @@ class Component extends DCLogic {
     const C1 = Math.round(careerT[3] + spacing * 0.6);      // skater reaches the end of the rail
     const jump = mobile ? 420 : 520;
     const C2 = C1 + jump;                                     // skater lands
-    const rollOff = mobile ? 700 : 950;
-    const tEnd = C2 + rollOff;
+    // How far past the landing camX itself keeps advancing before capping
+    // out — kept short so the ride wraps up quickly after the trick. The
+    // skater's own roll-off-screen animation does NOT stop here; it rides
+    // the raw scroll (see skX below) through the sticky panel's un-stick
+    // transition instead, so it stays short without freezing the skater
+    // mid-scene while the footer rises in underneath.
+    const tEnd = C2;
     // Only the four stages are stops. There is deliberately no checkpoint after
     // the landing: from the last stage the run carries straight on through the
     // final trick and off the side of the screen rather than parking him on the
@@ -1640,9 +1705,18 @@ class Component extends DCLogic {
     const cardTop = mobile ? 72 : 84;
     const hs = Object.values(this.state.cardH || {});
     const maxCardH = hs.length ? Math.max.apply(null, hs) : (mobile ? 560 : 420);
+    // On a narrow phone the stage-3/4 cards stack into a single tall column and
+    // can run taller than the whole viewport. Requiring the rail to clear the
+    // full height of the tallest one (as on desktop) would push the skater to
+    // the very bottom edge of the screen for the entire ride, so on mobile the
+    // rail only has to clear a bounded share of the viewport instead; the
+    // tallest card's last couple of lines may then sit behind the rail/skater,
+    // which stays fully visible on top of it (z-index), rather than the skater
+    // being crushed off-screen.
+    const railCardH = mobile ? Math.min(maxCardH, H * 0.5) : maxCardH;
     const sBase = Math.min(0.6, (0.4 * H) / W);
     const railBase = 0.95 * H - sBase * (W - cx);
-    const railNeed = cardTop + maxCardH + 18 + art.pivotY * sc + 5;
+    const railNeed = cardTop + railCardH + 18 + art.pivotY * sc + 5;
     const railMax = H - 10 - (art.contact - art.pivotY) * sc;
     const railC = Math.min(Math.max(railBase, railNeed - (mobile ? 30 : 50)), railMax);
     const s = railC > railBase ? Math.max(0.2, Math.min(sBase, (1.0 * H - railC) / (W - cx))) : sBase;
@@ -1665,9 +1739,10 @@ class Component extends DCLogic {
     // ---- Sky, sun, clouds (static, sunny all day) ----
     const sky = this.skyArt(W, H, P);
     const cArt = this.cloudArt(P);
-    // Clouds sit at the edges so they never sit behind the title.
+    // Clouds sit at the edges so they never sit behind the title. On mobile they
+    // (and the sun, below) also need to clear the HUD bar's own vertical space.
     const cloudBase = mobile
-      ? [{ x: 0.02, y: 0.025, k: 2 }, { x: 0.72, y: 0.03, k: 2 }]
+      ? [{ x: 0.02, y: 0.15, k: 2 }, { x: 0.72, y: 0.16, k: 2 }]
       : [{ x: 0.015, y: 0.12, k: 2 }, { x: 0.86, y: 0.05, k: 0 }, { x: 0.85, y: 0.32, k: 2 }];
     const cl = {};
     for (let i = 0; i < 3; i++) {
@@ -1921,12 +1996,18 @@ class Component extends DCLogic {
     // as the title fades, then speeds up and rolls off the right of the screen after the landing.
     const introT = ease(clamp(camX / (W * 0.15), 0, 1));
     const skStartX = W * (mobile ? 0.16 : 0.12);
-    const skX = skStartX + (cx - skStartX) * introT + Math.max(0, camX - (C2 + 160)) * 1.7;
+    // Ride the raw scroll (not the camX that caps at camEnd) so the drift
+    // off the edge of the screen keeps going through the sticky panel's
+    // whole un-stick transition, all the way to runHeight, regardless of
+    // how short camEnd's own runway is.
+    const rollX = Math.min(st, runHeight);
+    const rollStart = C2 + 160;
+    const skX = skStartX + (cx - skStartX) * introT + Math.max(0, rollX - rollStart) * 1.7;
     const railRot = (Math.atan(s) * 180) / Math.PI;
     const onRail = camX < C1;
     const u = clamp((camX - C1) / jump, 0, 1);
     const landed = camX >= C2;
-    const moving = !!this.state.moving && camX > 0 && camX < camEnd;
+    const moving = !!this.state.moving && st > 0 && st < runHeight;
     const railTopAtC = railY(skX) - 5;
     const groundContact = G - dy * 0.5;
     const hop = mobile ? H * 0.16 : H * 0.2;
@@ -2002,7 +2083,11 @@ class Component extends DCLogic {
       pivotY = railTopAtC - (onGapJump ? miniHop * (trick.hop || 1) * 4 * mu * (1 - mu) : 0);
       rot = railRot - (onGapJump ? 7 * Math.sin(mu * Math.PI) : 0);
     } else {
-      const startY = y0 + s * skX - 5;
+      // The fixed on-screen anchor the skater rides at pre-drift — not skX,
+      // which now starts sliding rightward mid-flip; using the live
+      // (already-drifting) skX here would warp the jump's vertical arc by
+      // however far it's drifted, instead of tracking a stable takeoff height.
+      const startY = y0 + s * cx - 5;
       const endY = groundContact - (art.contact - art.pivotY) * sc;
       pivotY = startY + (endY - startY) * u - hop * 4 * u * (1 - u);
       rot = railRot * (1 - ease(clamp(u * 1.4, 0, 1)));
@@ -2103,17 +2188,49 @@ class Component extends DCLogic {
     let popOn = landed && since < 420;
     let popText = 'LAZER FLIP!  +2500';
     let popAge = since;
+    // Shorter-lived than the final landing's callout: the next stage's card is
+    // often only a few hundred px further on (especially on a narrow phone,
+    // where every card runs taller), and this one needs to be fully gone well
+    // before that card is front and centre, not still fading over it.
+    const popWin = mobile ? 130 : 300;
+    const popFade = mobile ? 110 : 260;
     if (!popOn) {
       gapCams.forEach((g, i) => {
         const age = camX - (g + jumpWin / 2);
-        if (age >= 0 && age < 300 && camX < C1) { popOn = true; popText = TRICKS[i].name + '  +' + TRICK_PTS[i]; popAge = age; }
+        if (age >= 0 && age < popWin && camX < C1) { popOn = true; popText = TRICKS[i].name + '  +' + TRICK_PTS[i]; popAge = age; }
       });
     }
     const pop = {
       text: popText,
-      op: Math.round(clamp(1.4 - popAge / 260, 0, 1) * 100) / 100,
+      op: Math.round(clamp(1.4 - popAge / popFade, 0, 1) * 100) / 100,
       x: Math.round(skX),
       y: Math.round(pivotY - art.pivotY * sc - 20 - Math.min(popAge, 420) * 0.05)
+    };
+
+    // ---- Footer peek --------------------------------------------------
+    // .stage (above, in the CSS) is a sticky panel that fills the whole
+    // viewport for as long as its .run parent is being scrolled through —
+    // nothing below it in the document can show through until that
+    // parent's full height has passed. So this heading is drawn here, as a
+    // curtain rising up from the bottom of this same canvas, growing
+    // continuously from the moment stage 4 is reached through to the
+    // landing — it's the only copy of this heading on the page; the real
+    // .stat-screen section below just starts straight into the body copy.
+    // Anchored to the actual ground line (G, the plaza level on screen) —
+    // not just a fraction of H. A flat H-ratio still breaks on a short,
+    // narrow phone (e.g. an iPhone SE at 375×667): the ground already sits
+    // close to the bottom edge there, so even a modest ratio-based curtain
+    // reaches high enough to swallow the landing spot, leaving the skater
+    // standing on top of the heading text instead of the ground. Sizing
+    // off the real gap between the ground and the bottom edge keeps the
+    // curtain from ever growing tall enough to reach that high.
+    const groundGap = Math.max(40, H - G);
+    const peekH = Math.round(clamp(groundGap * 0.55, mobile ? 70 : 90, mobile ? 140 : 200));
+    const peekT = clamp((camX - targets[3]) / (C2 - targets[3]), 0, 1);
+    const peek = {
+      h: peekH,
+      ty: Math.round(peekH * (1 - peekT)),
+      op: Math.round(clamp(peekT * 2, 0, 1) * 100) / 100
     };
 
     // ---- Stage cards: slide in with the world, hold centred, slide out ----
@@ -2152,7 +2269,12 @@ class Component extends DCLogic {
     const panY = 0;
 
     // ---- HUD ----
-    const names = ['STAGE 1 · ORIGIN STORY', 'STAGE 2 · FREELANCE', 'STAGE 3 · GOODKIND (YC S21)', 'STAGE 4 · NICHE'];
+    // The full subtitle is also the active stage card's own heading right below,
+    // so on a narrow phone the HUD label just needs the stage number to stay on
+    // one line and clear of the sky graphics.
+    const names = mobile
+      ? ['STAGE 1', 'STAGE 2', 'STAGE 3', 'STAGE 4']
+      : ['STAGE 1 · ORIGIN STORY', 'STAGE 2 · FREELANCE', 'STAGE 3 · GOODKIND (YC S21)', 'STAGE 4 · NICHE'];
     let cp = -1;
     targets.forEach((t, i) => { if (camX >= t - hold / 2 - fade) cp = i; });
     let cpLabel = cp < 0 ? 'ROLLING IN…' : names[cp];
@@ -2210,10 +2332,23 @@ class Component extends DCLogic {
       start: () => this.scrollToY(targets[0]),
       restart: () => this.scrollToY(0, 2600),
       skip: () => this.scrollToY(runHeight),
+      // Same "jump to the next/previous stop" logic as the arrow keys, exposed
+      // as tappable buttons for touch screens, where there is no keyboard and
+      // swipe-scrolling the whole ride stage by stage is fiddly.
+      prevStage: () => {
+        const stNow = this.scroller ? this.scroller.scrollTop : 0;
+        const prev = targets.filter((v) => v < stNow - 4);
+        this.scrollToY(prev.length ? prev[prev.length - 1] : 0);
+      },
+      nextStage: () => {
+        const stNow = this.scroller ? this.scroller.scrollTop : 0;
+        const next = targets.find((v) => v > stNow + 4);
+        this.scrollToY(next !== undefined ? next : runHeight);
+      },
       runHeight: runHeight,
       sky: sky,
       sunX: mobile ? snap(W * 0.84) : snap(W * 0.06),
-      sunY: mobile ? snap(H * 0.05) : snap(Math.max(sky.R + 6 * P + 60, Math.min(H * 0.25, skaterTop - sky.R - 6 * P - 16))),
+      sunY: mobile ? snap(H * 0.17) : snap(Math.max(sky.R + 6 * P + 60, Math.min(H * 0.25, skaterTop - sky.R - 6 * P - 16))),
       cl: cl,
       mt: mt,
       stairPath: stair.join(''),
@@ -2262,11 +2397,19 @@ class Component extends DCLogic {
       dust: dust,
       popOn: popOn,
       pop: pop,
+      peek: peek,
       titleOpacity: Math.round(titleOpacity * 100) / 100,
       titleShift: Math.round(-camX * 0.5),
       titleClass: titleOpacity <= 0 ? 'hidden' : '',
       playing: playing,
       notPlaying: !playing,
+      // The controls hint sits 18px above .stage's own bottom edge — once
+      // he's landed and the footer starts peeking out of that same edge,
+      // it ends up sandwiched between the fake heading and the real one.
+      // Guidance on how to keep scrolling stops being useful right as the
+      // landing happens anyway, so drop it there instead of leaving it to
+      // linger through the reveal.
+      hintOn: playing && !landed,
       cpLabel: cpLabel,
       panY: panY,
       cardPosts: { pl: j(cardPL), pm: j(cardPM), pr: j(cardPR), pb: j(cardPB) },
