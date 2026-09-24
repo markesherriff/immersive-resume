@@ -58,7 +58,7 @@
       --stain:#2f2019; --stain-2:#241810; --stain-line:#4a2f1e; --wood-muted:#d4c1a6;
     }
     .wood-frame{
-      border:8px solid var(--wood);
+      border:8px solid var(--wood-hi);
       box-shadow:inset 0 0 0 3px var(--wood-dark), 8px 10px 0 rgba(40,28,18,.22);
       clip-path:polygon(
         8px 0, calc(100% - 12px) 0, 100% 10px, 100% calc(100% - 9px),
@@ -223,7 +223,6 @@
     .land-head{ margin:0; font-family:var(--pixel); font-size:clamp(18px,2vw,24px); line-height:1.4; color:var(--accent); }
     .card-cta{ display:flex; gap:10px; flex-wrap:wrap; margin-top:4px; }
     .cta{ display:inline-flex; align-items:center; min-height:44px; padding:0 16px; font-family:var(--pixel); font-size:11px; border:0; cursor:pointer; }
-    .cta.primary{ color:#17140f; background:var(--accent); }
     .cta.ghost{ color:var(--cream); background:var(--wood-lo); }
     .cta:hover{ filter:brightness(1.1); }
 
@@ -270,10 +269,10 @@
          heading (above, off-screen by now) already reads as this section's
          title, so the lede should follow close behind it instead of
          leaving a second gap underneath. */
-      padding:clamp(16px,3vw,32px) clamp(20px,6vw,80px) clamp(56px,8vw,104px);
+      padding:clamp(6px,1.2vw,14px) clamp(20px,6vw,80px) clamp(56px,8vw,104px);
       display:flex; flex-direction:column; align-items:center; gap:clamp(28px,4vw,44px);
     }
-    .lede{ margin:0; max-width:760px; text-align:center; font-size:clamp(17px,1.5vw,20px); line-height:1.5; color:var(--wood-muted); }
+    .lede{ margin:0; max-width:960px; text-align:center; font-size:clamp(17px,1.5vw,20px); line-height:1.5; color:var(--wood-muted); }
     .bring-grid.wide{ width:100%; max-width:1100px; }
     .again-btn{ min-height:48px; padding:14px 20px; font-family:var(--pixel); font-size:12px; color:#17140f; background:var(--accent); border:0; cursor:pointer; box-shadow:inset -4px -4px 0 rgba(0,0,0,.22); }
 
@@ -284,12 +283,6 @@
     .ticker-seg span::after{ content:""; width:8px; height:8px; margin:0 28px; background:var(--accent); opacity:.6; }
     .ticker-seg span:nth-child(even){ color:var(--accent); }
     @keyframes scrollX{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
-
-    .credits{ padding:clamp(32px,5vw,52px) 20px clamp(44px,6vw,64px); background:var(--ink); display:flex; flex-direction:column; align-items:center; gap:18px; text-align:center; }
-    .credits-links{ display:flex; flex-wrap:wrap; justify-content:center; gap:10px; }
-    .credits-links a{ display:flex; align-items:center; min-height:44px; padding:0 18px; font-family:var(--pixel); font-size:11px; color:var(--cream); background:#1d2745; }
-    .credits-links a:hover{ color:var(--accent); }
-    .credits-foot{ margin:0; font-size:15px; color:var(--muted); }
 
     .reduced-motion *{ animation:none !important; transition:none !important; }
     @media (prefers-reduced-motion:reduce){
@@ -317,7 +310,14 @@
       .card-head{ padding:12px 16px; }
       .card-body{ padding:14px 16px 18px; font-size:15px; }
       .card-role{ font-size:18px; }
-      .bring-grid{ grid-template-columns:minmax(0,1fr); }
+      .stat-screen{ padding-bottom:28px; gap:16px; }
+      .lede{ font-size:14px; }
+      .bring-grid{ gap:8px; }
+      .bring{ padding:10px 12px; gap:3px; }
+      .bring-title{ font-size:9px; }
+      .bring p{ font-size:12px; line-height:1.35; }
+      .card-cta{ gap:6px; }
+      .cta{ min-height:36px; padding:0 10px; font-size:9px; }
     }
     @media (max-height: 800px){
       .card-head{ padding:10px 20px; }
@@ -569,7 +569,7 @@
     </div>
 
     <section class="stat-screen">
-      <p class="lede">I'm a full-stack and AI engineer in Toronto, and I'd genuinely like to bring that to {{company}}. At a YC-backed startup I owned the mobile app end-to-end and built the AI chat product from zero to production, then carried both through an acquisition into a much larger Go codebase — exactly the kind of ownership I want to keep earning. I do my best work in the messy middle: an unfamiliar stack, a direct line to the people making decisions, and shipping until it actually works. That's the role I'm hoping {{company}} has for me.</p>
+      <p class="lede">I'm a full-stack and AI engineer in Toronto, and I'd like to bring that to {{company}}. I owned a mobile app and an AI chat product end-to-end at a YC-backed startup, carried both through an acquisition, and do my best work in the messy middle — unfamiliar stack, direct line to decision-makers, shipping until it works.</p>
       <div class="bring-grid wide">
         <div class="bring notch"><span class="bring-title">END-TO-END OWNERSHIP</span><p>I've taken products from zero to production and kept them shipping: architecture, releases and store distribution.</p></div>
         <div class="bring notch"><span class="bring-title">APPLIED AI IN PRODUCTION</span><p>RAG, embeddings, vector search and multi-step tool-use chains, with tracing and evaluation built in.</p></div>
@@ -577,8 +577,10 @@
         <div class="bring notch"><span class="bring-title">CLOSE COLLABORATION</span><p>I've worked daily with founders on product direction and mentored interns through scoping and code review.</p></div>
       </div>
       <div class="card-cta">
-        <a class="cta primary notch" href="mailto:markesherriff@gmail.com">GET IN TOUCH</a>
         <a class="cta ghost notch" href="assets/mark-sherriff-resume.pdf" target="_blank" rel="noopener" download="mark-sherriff-resume.pdf">RESUME (PDF)</a>
+        <a class="cta ghost notch" href="mailto:markesherriff@gmail.com">EMAIL</a>
+        <a class="cta ghost notch" href="https://github.com/markesherriff" target="_blank" rel="noopener">GITHUB</a>
+        <a class="cta ghost notch" href="https://www.linkedin.com/in/mark-sherriff" target="_blank" rel="noopener">LINKEDIN</a>
         <button class="cta ghost notch" type="button" onClick="{{restart}}">↺ RIDE IT AGAIN</button>
       </div>
     </section>
@@ -595,17 +597,6 @@
         </div>
       </div>
     </div>
-
-    <footer class="credits">
-      <div class="credits-links">
-        <a href="assets/mark-sherriff-resume.pdf" target="_blank" rel="noopener" download="mark-sherriff-resume.pdf">RESUME (PDF)</a>
-        <a href="mailto:markesherriff@gmail.com">EMAIL</a>
-        <a href="https://github.com/markesherriff" target="_blank" rel="noopener">GITHUB</a>
-        <a href="https://www.linkedin.com/in/mark-sherriff" target="_blank" rel="noopener">LINKEDIN</a>
-        <a href="https://mark-sherriff.com" target="_blank" rel="noopener">MARK-SHERRIFF.COM</a>
-      </div>
-      <p class="credits-foot">Toronto, Ontario — open to full-stack and AI engineering roles.</p>
-    </footer>
   </div>
   <div class="crt"></div>
 </div>
@@ -1597,7 +1588,7 @@ class Component extends DCLogic {
 
     // ---- Rail / stair geometry with a camera that stops descending at the rail end ----
     // Fixed layout: the rail sits low enough that the skater always rides below the tallest card.
-    const cardTop = mobile ? 72 : 84;
+    const cardTop = mobile ? 44 : 84;
     const hs = Object.values(this.state.cardH || {});
     const maxCardH = hs.length ? Math.max.apply(null, hs) : (mobile ? 560 : 420);
     // On a narrow phone the stage-3/4 cards stack into a single tall column and
@@ -1608,7 +1599,7 @@ class Component extends DCLogic {
     // tallest card's last couple of lines may then sit behind the rail/skater,
     // which stays fully visible on top of it (z-index), rather than the skater
     // being crushed off-screen.
-    const railCardH = mobile ? Math.min(maxCardH, H * 0.5) : maxCardH;
+    const railCardH = mobile ? Math.min(maxCardH, H * 0.62) : maxCardH;
     const sBase = Math.min(0.6, (0.4 * H) / W);
     const railBase = 0.95 * H - sBase * (W - cx);
     const railNeed = cardTop + railCardH + 18 + art.pivotY * sc + 5;
@@ -2298,7 +2289,7 @@ class Component extends DCLogic {
       // whole cluster there instead of leaving it to linger through the reveal.
       hudOn: playing && !landed,
       hintOn: playing && !landed,
-      hintLabel: mobile ? 'TAP ANYWHERE OR SCROLL' : 'PRESS ANY KEY, PRESS ARROWS, OR SCROLL',
+      hintLabel: mobile ? 'TAP BUTTONS OR SCROLL' : 'PRESS ANY KEY, PRESS ARROWS, OR SCROLL',
       cpLabel: cpLabel,
       panY: panY,
       cardPosts: { pl: j(cardPL), pm: j(cardPM), pr: j(cardPR), pb: j(cardPB) },
