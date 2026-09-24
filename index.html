@@ -112,7 +112,7 @@
       display:block; width:100%; height:100%; object-fit:cover;
     }
     .title{
-      margin:0; font-family:var(--pixel); font-size:clamp(28px,4.8vw,58px); line-height:1.3;
+      margin:0; min-width:0; font-family:var(--pixel); font-size:clamp(28px,4.8vw,58px); line-height:1.3;
       color:var(--cream);
       text-shadow:-3px 0 0 #1b2a4a, 3px 0 0 #1b2a4a, 0 -3px 0 #1b2a4a, 0 3px 0 #1b2a4a, 6px 6px 0 #1b2a4a;
     }
@@ -1588,18 +1588,19 @@ class Component extends DCLogic {
 
     // ---- Rail / stair geometry with a camera that stops descending at the rail end ----
     // Fixed layout: the rail sits low enough that the skater always rides below the tallest card.
-    const cardTop = mobile ? 44 : 84;
+    const cardTop = mobile ? 18 : 84;
     const hs = Object.values(this.state.cardH || {});
     const maxCardH = hs.length ? Math.max.apply(null, hs) : (mobile ? 560 : 420);
     // On a narrow phone the stage-3/4 cards stack into a single tall column and
     // can run taller than the whole viewport. Requiring the rail to clear the
     // full height of the tallest one (as on desktop) would push the skater to
     // the very bottom edge of the screen for the entire ride, so on mobile the
-    // rail only has to clear a bounded share of the viewport instead; the
-    // tallest card's last couple of lines may then sit behind the rail/skater,
-    // which stays fully visible on top of it (z-index), rather than the skater
-    // being crushed off-screen.
-    const railCardH = mobile ? Math.min(maxCardH, H * 0.62) : maxCardH;
+    // rail only has to clear a bounded share of the viewport instead. That
+    // share still has to stay high (not just half the screen) — on short
+    // phones (iPhone SE-class heights) a looser cap left the tallest card's
+    // last line or two sitting behind the rail/skater, which stays fully
+    // visible on top of it (z-index) rather than being crushed off-screen.
+    const railCardH = mobile ? Math.min(maxCardH, H * 0.85) : maxCardH;
     const sBase = Math.min(0.6, (0.4 * H) / W);
     const railBase = 0.95 * H - sBase * (W - cx);
     const railNeed = cardTop + railCardH + 18 + art.pivotY * sc + 5;
@@ -2284,11 +2285,13 @@ class Component extends DCLogic {
       // The progress bar, score and hud-actions are all position:fixed to the
       // viewport now (bottom-left cluster), so unlike the old in-flow HUD they
       // don't naturally scroll out of the way once the footer comes into view —
-      // they'd float on top of it forever. Guidance on how to keep scrolling
-      // stops being useful right as the landing happens anyway, so drop the
-      // whole cluster there instead of leaving it to linger through the reveal.
-      hudOn: playing && !landed,
-      hintOn: playing && !landed,
+      // they'd float on top of it forever. They also need to be gone well
+      // before the footer-peek curtain (above) finishes rising, not just at
+      // the landed instant: the curtain starts climbing the moment stage 4
+      // begins and is already tall/opaque partway through, so waiting for
+      // `landed` leaves this cluster overlapping it for that whole stretch.
+      hudOn: playing && peekT < 0.2,
+      hintOn: playing && peekT < 0.2,
       hintLabel: mobile ? 'TAP BUTTONS OR SCROLL' : 'PRESS ANY KEY, PRESS ARROWS, OR SCROLL',
       cpLabel: cpLabel,
       panY: panY,
