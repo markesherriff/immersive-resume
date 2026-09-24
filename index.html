@@ -58,7 +58,7 @@
       --stain:#2f2019; --stain-2:#241810; --stain-line:#4a2f1e; --wood-muted:#d4c1a6;
     }
     .wood-frame{
-      border:11px solid var(--wood);
+      border:8px solid var(--wood);
       box-shadow:inset 0 0 0 3px var(--wood-dark), 8px 10px 0 rgba(40,28,18,.22);
       clip-path:polygon(
         8px 0, calc(100% - 12px) 0, 100% 10px, 100% calc(100% - 9px),
@@ -71,13 +71,13 @@
         calc(100% - 13px) 100%, 9px 100%, 0 calc(100% - 8px), 0 12px
       );
     }
-    .plank{ background:var(--wood-hi); color:var(--wood-ink); }
+    .plank{ background:var(--stain); color:var(--cream); }
     /* ---------- Title screen ---------- */
     .title-lockup{
       position:absolute; left:50%; top:9%; z-index:8;
-      width:min(92vw, 1000px);
-      display:flex; flex-direction:column; align-items:center; gap:12px;
-      text-align:center;
+      width:min(92vw, 680px);
+      display:flex; flex-direction:column; align-items:stretch; gap:12px;
+      text-align:left;
       will-change:transform, opacity;
     }
     .title-lockup.hidden{ visibility:hidden; pointer-events:none; }
@@ -90,41 +90,51 @@
     .sign{ position:absolute; z-index:5; width:280px; transform:translateY(-100%); pointer-events:none; }
     .sign-board{
       position:relative;
-      display:flex; flex-direction:column; gap:6px; padding:12px 14px;
+      display:flex; flex-direction:column; gap:5px; padding:9px 11px;
       font-family:var(--pixel); text-align:center;
     }
-    .sign-kicker{ font-size:12px; color:#7a1f10; letter-spacing:2px; }
-    .sign-rule{ height:3px; background:var(--wood-lo); margin:2px 0; }
-    .sign-main{ font-size:11px; line-height:1.8; }
-    .sign-board.small{ padding:8px 10px; gap:4px; }
-    .sign-board.small .sign-kicker{ font-size:10px; }
-    .sign-board.small .sign-main{ font-size:8px; }
+    .sign-board.plank{ background:var(--wood-lo); color:var(--wood-muted); }
+    .sign-kicker{ font-size:10px; color:var(--wood-muted); letter-spacing:2px; opacity:.7; }
+    .sign-rule{ height:2px; background:rgba(212,193,166,.35); margin:1px 0; }
+    .sign-main{ font-size:9px; line-height:1.7; opacity:.7; }
+    .sign-board.small{ padding:6px 8px; gap:3px; }
+    .sign-board.small .sign-kicker{ font-size:8px; }
+    .sign-board.small .sign-main{ font-size:7px; }
     .sign-posts{ display:flex; justify-content:space-around; height:70px; }
     .sign-posts span{ width:6px; height:100%; background:linear-gradient(to right, #b3bbc5 0 2px, #8a929d 2px 4px, #5d646e 4px 6px); }
+    .title-row{ display:flex; align-items:center; justify-content:flex-start; gap:22px; }
+    .pixel-circle{ clip-path: polygon(68.75% 0%, 68.75% 6.25%, 81.25% 6.25%, 81.25% 12.5%, 87.5% 12.5%, 87.5% 18.75%, 93.75% 18.75%, 93.75% 25%, 93.75% 31.25%, 100% 31.25%, 100% 37.5%, 100% 43.75%, 100% 50%, 100% 56.25%, 100% 62.5%, 100% 68.75%, 93.75% 68.75%, 93.75% 75%, 93.75% 81.25%, 87.5% 81.25%, 87.5% 87.5%, 81.25% 87.5%, 81.25% 93.75%, 68.75% 93.75%, 68.75% 100%, 31.25% 100%, 31.25% 93.75%, 18.75% 93.75%, 18.75% 87.5%, 12.5% 87.5%, 12.5% 81.25%, 6.25% 81.25%, 6.25% 75%, 6.25% 68.75%, 0% 68.75%, 0% 62.5%, 0% 56.25%, 0% 50%, 0% 43.75%, 0% 37.5%, 0% 31.25%, 6.25% 31.25%, 6.25% 25%, 6.25% 18.75%, 12.5% 18.75%, 12.5% 12.5%, 18.75% 12.5%, 18.75% 6.25%, 31.25% 6.25%, 31.25% 0%); }
+    .portrait-frame{
+      width:clamp(64px,13vw,150px); height:clamp(64px,13vw,150px); flex:0 0 auto;
+      padding:6px; background:#fff; box-shadow:4px 5px 0 rgba(40,28,18,.22);
+    }
+    .portrait{
+      display:block; width:100%; height:100%; object-fit:cover;
+    }
     .title{
-      margin:0; font-family:var(--pixel); font-size:clamp(26px,4.8vw,58px); line-height:1.25;
+      margin:0; font-family:var(--pixel); font-size:clamp(28px,4.8vw,58px); line-height:1.3;
       color:var(--cream);
       text-shadow:-3px 0 0 #1b2a4a, 3px 0 0 #1b2a4a, 0 -3px 0 #1b2a4a, 0 3px 0 #1b2a4a, 6px 6px 0 #1b2a4a;
     }
     .statement{
-      margin:4px 0 0; max-width:680px; padding:16px 20px;
+      margin:0; padding:16px 20px;
       font-size:clamp(14px,1.2vw,17px); line-height:1.55; text-align:left;
       color:var(--cream); background:var(--panel);
     }
     .statement-lead{ font-size:1.18em; font-weight:800; color:var(--cream); }
-    .chips-left{ display:flex; gap:8px; flex-wrap:wrap; }
-    .score-chip{ color:var(--accent); }
+    .title-chips{ display:flex; align-items:center; justify-content:flex-start; flex-wrap:wrap; gap:8px; }
+    .title-chips .chip{ padding:8px 12px; font-size:clamp(12px,1.1vw,15px); background:rgba(12,18,36,.5); color:rgba(238,233,222,.8); }
     .read-chip{ display:flex; align-items:center; gap:8px; color:var(--accent); }
     .read-chip .book{ display:block; }
-    .quick-links{ display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-top:2px; }
-    .qlink{
-      display:flex; align-items:center; min-height:44px; padding:0 14px;
-      font-family:var(--pixel); font-size:clamp(9px,.9vw,11px);
-      color:var(--cream); background:var(--panel); border:2px solid rgba(255,255,255,.18);
+    .start-cta{
+      position:absolute; left:50%; top:85%; z-index:8;
+      width:min(92vw, 1000px);
+      display:flex; flex-direction:column; align-items:center; gap:10px;
+      will-change:transform, opacity;
     }
-    .qlink:hover{ color:var(--accent); border-color:var(--accent); }
+    .start-cta.hidden{ visibility:hidden; pointer-events:none; }
     .start-btn{
-      margin-top:4px; min-height:48px; padding:14px 22px;
+      min-height:48px; padding:14px 22px; max-width:min(90vw, 480px);
       font-family:var(--pixel); font-size:clamp(10px,1.05vw,13px); line-height:1.5;
       color:#17140f; background:var(--accent); border:0; cursor:pointer;
       box-shadow:inset -4px -4px 0 rgba(0,0,0,.22);
@@ -132,24 +142,42 @@
     }
     .start-btn:hover{ filter:brightness(1.08); }
     @keyframes pulse{ 0%,100%{ opacity:1; } 50%{ opacity:.65; } }
+    .skip-btn{
+      min-height:40px; padding:10px 18px; max-width:min(90vw, 480px);
+      font-family:var(--pixel); font-size:clamp(9px,.9vw,11px); line-height:1.5; text-align:center;
+      color:var(--cream); background:var(--wood-lo); border:0; cursor:pointer;
+      box-shadow:inset -3px -3px 0 rgba(0,0,0,.18);
+    }
+    .skip-btn:hover{ filter:brightness(1.1); }
 
     /* ---------- HUD ---------- */
+    /* Shared look for the fixed bottom-left HUD cluster (buttons, progress
+       bar, score, hint): same opacity, same text size, same box padding —
+       the only things that differ are position and whether there's a box. */
     .hud{
-      position:absolute; top:0; left:0; right:0; z-index:9;
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-      padding:16px clamp(12px,3vw,40px);
-      font-family:var(--pixel); font-size:clamp(8px,.85vw,11px);
+      position:fixed; left:24px; bottom:18px; z-index:9;
+      display:flex; align-items:center; gap:16px;
+      font-family:var(--pixel); font-size:9px;
     }
     .chip{ padding:10px 12px; background:var(--panel); color:var(--cream); white-space:nowrap; }
     .chips{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
-    .progress{ flex:1 1 auto; max-width:520px; display:flex; flex-direction:column; gap:8px; }
-    .progress-label{ text-align:center; color:var(--cream); text-shadow:2px 2px 0 #1b2a4a; }
-    .progress-track{ height:16px; padding:3px; background:var(--panel); }
+    .progress{ flex:0 0 auto; width:200px; display:flex; flex-direction:row; align-items:center; gap:8px; opacity:.7; }
+    .progress-label{ text-align:center; color:var(--cream); text-shadow:2px 2px 0 #1b2a4a; font-size:9px; white-space:nowrap; }
+    .progress-track{ flex:1 1 auto; height:16px; padding:2px; background:var(--panel); }
     .progress-fill{ height:100%; background-color:var(--accent); background-image:repeating-linear-gradient(to right, transparent 0 10px, rgba(0,0,0,.2) 10px 12px); }
-    .hud-actions{ display:flex; gap:8px; }
+    /* Plain text to match the stage label beside it, rather than a boxed chip. */
+    .score-chip{
+      padding:0; background:transparent; color:var(--cream);
+      text-shadow:2px 2px 0 #1b2a4a; font-size:9px; opacity:.7; clip-path:none;
+    }
+    .hud-actions{
+      position:fixed; left:12px; bottom:80px; z-index:9;
+      display:flex; gap:8px;
+    }
     .hud-btn{
-      min-height:44px; padding:0 14px; font-family:var(--pixel); font-size:inherit;
-      color:var(--cream); background:var(--panel); border:2px solid rgba(255,255,255,.18); cursor:pointer; white-space:nowrap;
+      padding:8px 12px; font-family:var(--pixel); font-size:9px;
+      color:var(--cream); background:rgb(12,18,36); border:2px solid rgba(255,255,255,.18); cursor:pointer; white-space:nowrap;
+      opacity:.7;
     }
     .hud-btn:hover{ border-color:var(--accent); color:var(--accent); }
     /* Prev/next stage-stepping buttons: a mobile-only convenience, since there
@@ -157,9 +185,10 @@
        fiddly. Hidden on wider screens where the keyboard already does this. */
     .hud-btn.mini{ display:none; }
     .controls-hint{
-      position:absolute; left:50%; bottom:18px; transform:translateX(-50%); z-index:9;
-      padding:10px 14px; font-family:var(--pixel); font-size:10px;
-      color:var(--cream); background:var(--panel); white-space:nowrap;
+      position:fixed; left:12px; bottom:44px; z-index:9;
+      padding:8px 12px; font-family:var(--pixel); font-size:9px;
+      color:var(--cream); background:rgb(12,18,36); white-space:nowrap;
+      opacity:.7;
     }
 
     /* ---------- Stage cards ---------- */
@@ -168,81 +197,29 @@
       background:var(--stain);
       color:var(--cream);
     }
-    .card{ container:stagecard / inline-size; }
     .card.gone{ visibility:hidden; }
     .card-head{ position:relative; display:flex; align-items:center; gap:14px; flex-wrap:wrap; padding:14px 22px; border-bottom:3px solid var(--wood-dark); }
-    .card-head .card-title{ color:var(--wood-ink); text-shadow:1px 1px 0 rgba(255,235,205,.35); }
-    .card-head .card-years{ color:#5a220e; }
-    .card-stage{ padding:6px 8px; font-family:var(--pixel); font-size:10px; color:#17140f; background:var(--accent); }
+    .card-head .card-title{ color:var(--cream); text-shadow:1px 1px 0 rgba(0,0,0,.35); }
     .card-title{ margin:0; flex:1 1 auto; font-family:var(--pixel); font-size:clamp(12px,1.2vw,15px); line-height:1.5; }
     .card-years{ font-family:var(--pixel); font-size:10px; color:var(--accent); }
-    .card-body{ padding:20px 24px 24px; display:flex; flex-direction:column; gap:12px; font-size:16px; line-height:1.5; }
-    .card-grid{ display:grid; grid-template-columns:170px minmax(0,1fr) 190px; gap:24px; align-items:start; }
-    .card-grid.two{ grid-template-columns:170px minmax(0,1fr); }
-    .card-copy{ display:flex; flex-direction:column; gap:10px; min-width:0; }
-    .card-side{ display:flex; flex-direction:column; gap:10px; min-width:0; }
-    .card-side .card-stat{ flex:0 0 auto; }
-    .thumb{
-      width:100%; aspect-ratio:1; padding:10px;
-      display:flex; flex-direction:column; align-items:stretch; gap:10px;
-      color:var(--wood-ink); background:var(--wood); border:0; cursor:pointer;
-      box-shadow:inset 0 0 0 3px var(--wood-dark);
+    .card-body{
+      padding:20px 24px 24px; display:flex; flex-direction:column; gap:12px; font-size:16px; line-height:1.5;
+      background:var(--wood-hi); color:var(--wood-ink);
     }
-    .thumb-screen{
-      flex:1 1 auto; display:flex; align-items:center; justify-content:center;
-      background:repeating-linear-gradient(to bottom, rgba(255,255,255,.05) 0 2px, transparent 2px 5px), #070b17;
-    }
-    .thumb-label{ font-family:var(--pixel); font-size:10px; text-align:center; }
-    .thumb:hover .vs-play, .thumb:focus-visible .vs-play{ transform:scale(1.12); }
-    .thumb:hover .thumb-label{ color:#fff4dc; }
-    .thumb:hover{ background:var(--wood-hi); }
-
-    .lightbox{
-      position:absolute; inset:0; z-index:30;
-      display:flex; align-items:center; justify-content:center; padding:24px;
-      background:rgba(7,11,23,.78);
-    }
-    .lb-panel{ width:min(960px, 100%); background:#10172b; border:3px solid var(--accent); box-shadow:10px 10px 0 rgba(0,0,0,.35); }
-    .lb-head{ display:flex; align-items:center; gap:14px; padding:12px 12px 12px 20px; background:#1d2745; }
-    .lb-title{ flex:1 1 auto; font-family:var(--pixel); font-size:13px; line-height:1.5; }
-    .lb-close{ width:44px; height:44px; font-family:var(--pixel); font-size:14px; color:var(--cream); background:#10172b; border:2px solid rgba(255,255,255,.2); cursor:pointer; }
-    .lb-close:hover{ color:var(--accent); border-color:var(--accent); }
-    .lb-screen{
-      aspect-ratio:16 / 9; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; padding:20px; text-align:center;
-      background:repeating-linear-gradient(to bottom, rgba(255,255,255,.04) 0 2px, transparent 2px 5px), #070b17;
-    }
-    .video-slot{
-      position:relative; width:100%; aspect-ratio:16 / 9;
-      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
-      background:repeating-linear-gradient(to bottom, rgba(255,255,255,.035) 0 2px, transparent 2px 5px), #070b17;
-      border:3px dashed #3a4a75; text-align:center; padding:12px;
-    }
-    .vs-play{
-      width:56px; height:56px; display:flex; align-items:center; justify-content:center;
-      font-family:var(--pixel); font-size:20px; color:#17140f; background:var(--accent);
-    }
-    .vs-label{ font-family:var(--pixel); font-size:10px; color:var(--cream); }
-    .vs-note{ font-size:13px; color:var(--muted); }
     .bring-grid{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:12px; }
     .bring{ display:flex; flex-direction:column; gap:6px; padding:14px 16px; background:var(--stain-2); border:2px solid var(--stain-line); }
     .bring-title{ font-family:var(--pixel); font-size:10px; line-height:1.6; color:var(--accent); }
     .bring p{ margin:0; font-size:15px; line-height:1.5; }
-    .card-role{ margin:0; font-size:21px; font-weight:700; line-height:1.3; color:#ffffff; }
-    .card-meta{ margin:-8px 0 0; font-size:14px; color:var(--wood-muted); }
+    .card-role{ margin:0; font-size:21px; font-weight:700; line-height:1.3; color:var(--wood-ink); }
+    .card-meta{ margin:-8px 0 0; font-size:14px; color:var(--wood-lo); }
     .card-list{ margin:0; padding-left:20px; display:flex; flex-direction:column; gap:6px; }
-    .card-list li::marker{ color:var(--accent); }
-    .card-list strong{ color:#ffffff; }
+    .card-list li::marker{ color:#5a220e; }
+    .card-list strong{ color:var(--wood-ink); }
     .timeline{ margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:14px; }
     .tl-item{ display:grid; grid-template-columns:120px minmax(0,1fr); gap:16px; align-items:baseline; }
-    .tl-when{ font-family:var(--pixel); font-size:10px; line-height:1.7; color:var(--accent); }
+    .tl-when{ font-family:var(--pixel); font-size:10px; line-height:1.7; color:#5a220e; }
     .tl-what{ margin:0; }
-    .tl-what strong{ color:#ffffff; }
-    .card-stats{ display:flex; gap:10px; flex-wrap:wrap; }
-    .card-stat{ flex:1 1 140px; display:flex; flex-direction:column; gap:6px; padding:10px 12px; background:var(--stain-2); border:2px solid var(--stain-line); }
-    .k-v{ font-family:var(--pixel); font-size:15px; color:var(--accent); }
-    .k-l{ font-size:13px; line-height:1.3; color:var(--wood-muted); }
-    .tags{ display:flex; flex-wrap:wrap; gap:6px; }
-    .tag{ padding:6px 8px; font-family:var(--pixel); font-size:9px; color:var(--wood-muted); background:var(--stain-2); border:2px solid var(--stain-line); }
+    .tl-what strong{ color:var(--wood-ink); }
     .land-head{ margin:0; font-family:var(--pixel); font-size:clamp(18px,2vw,24px); line-height:1.4; color:var(--accent); }
     .card-cta{ display:flex; gap:10px; flex-wrap:wrap; margin-top:4px; }
     .cta{ display:inline-flex; align-items:center; min-height:44px; padding:0 16px; font-family:var(--pixel); font-size:11px; border:0; cursor:pointer; }
@@ -321,32 +298,26 @@
     @media (max-width:720px){
       .footer-peek{ padding:0 16px; }
       .chips{ display:none; }
-      .hud-play .chip{ display:none; }
-      .hud-btn{ padding:0 10px; }
-      .hud-btn.mini{ display:inline-flex; padding:0 10px; min-width:0; }
-      .hud-actions{ gap:6px; }
-      .controls-hint{ font-size:8px; }
-      .title-lockup{ top:6%; gap:8px; }
+      .hud-btn.desktop-only{ display:none; }
+      .hud-btn.mini{
+        display:flex; align-items:center; justify-content:center;
+        width:52px; height:52px; padding:0; min-width:0;
+      }
+      .hud-btn.mini .arrow{ width:0; height:0; border-top:9px solid transparent; border-bottom:9px solid transparent; }
+      .hud-btn.mini .arrow.left{ border-right:13px solid currentColor; }
+      .hud-btn.mini .arrow.right{ border-left:13px solid currentColor; }
+      .score-chip{ display:none; }
+      .title-lockup{ top:9%; gap:8px; width:92vw; }
       .start-btn{ font-size:9px; padding:10px 16px; min-height:40px; }
-      .qlink{ font-size:8px; padding:0 10px; min-height:40px; }
-      .chips-left .read-chip{ display:none; }
+      .title{ font-size:clamp(28px,8vw,58px); }
+      .title-row{ gap:14px; }
+      .portrait-frame{ width:100px; height:100px; }
       .statement{ font-size:13px; padding:12px 14px; }
       .tl-item{ grid-template-columns:minmax(0,1fr); gap:4px; }
       .card-head{ padding:12px 16px; }
       .card-body{ padding:14px 16px 18px; font-size:15px; }
       .card-role{ font-size:18px; }
-      .card-grid, .bring-grid{ grid-template-columns:minmax(0,1fr); }
-    }
-    @container stagecard (max-width: 1000px){
-      .card-grid{ grid-template-columns:150px minmax(0,1fr); }
-      .card-side{ grid-column:1 / -1; flex-direction:row; flex-wrap:wrap; }
-      .card-side .card-stat{ flex:1 1 140px; }
-    }
-    @container stagecard (max-width: 560px){
-      .card-grid, .card-grid.two{ grid-template-columns:minmax(0,1fr); gap:14px; }
-      .thumb{ aspect-ratio:auto; flex-direction:row; align-items:center; padding:8px; }
-      .thumb-screen{ flex:0 0 72px; height:48px; }
-      .thumb-screen .vs-play{ width:36px; height:36px; font-size:12px; }
+      .bring-grid{ grid-template-columns:minmax(0,1fr); }
     }
     @media (max-height: 800px){
       .card-head{ padding:10px 20px; }
@@ -360,7 +331,7 @@
 <body>
 <div id="app">
 <div class="page {{motionClass}}" style="--accent: {{accent}};">
-  <div class="scroller" ref="{{setScroller}}" tabIndex="0" onScroll="{{onScroll}}" onKeyDown="{{onKey}}" onPointerEnter="{{focusStage}}" aria-label="Mark Sherriff, immersive resume. Scroll or use the arrow keys to ride through each stage.">
+  <div class="scroller" ref="{{setScroller}}" tabIndex="0" onScroll="{{onScroll}}" onKeyDown="{{onKey}}" onPointerEnter="{{focusStage}}" onClick="{{sceneClick}}" aria-label="Mark Sherriff, immersive resume. Scroll or use the arrow keys to ride through each stage.">
 
     <div class="run" style="height: {{runHeight}}px;">
       <div class="stage">
@@ -397,18 +368,18 @@
           <path d="M0 0" data-b-d="{{cardPosts.pr}}" fill="#5e3a1f"></path>
           <path d="M0 0" data-b-d="{{cardPosts.pb}}" fill="#79838f"></path>
           <g opacity="1" data-b-opacity="{{sign.op}}">
-            <path d="M0 0" data-b-d="{{sign.pl}}" fill="#b07a48"></path>
-            <path d="M0 0" data-b-d="{{sign.pm}}" fill="#8a5a33"></path>
-            <path d="M0 0" data-b-d="{{sign.pr}}" fill="#5e3a1f"></path>
-            <path d="M0 0" data-b-d="{{sign.pb}}" fill="#79838f"></path>
+            <path d="M0 0" data-b-d="{{sign.pl}}" fill="#c99260"></path>
+            <path d="M0 0" data-b-d="{{sign.pm}}" fill="#a8723f"></path>
+            <path d="M0 0" data-b-d="{{sign.pr}}" fill="#8a5a33"></path>
+            <path d="M0 0" data-b-d="{{sign.pb}}" fill="#9aa3ad"></path>
           </g>
         </svg>
         <template data-if="sign.show">
           <div class="sign" style="left: {{sign.left}}px; top: {{sign.top}}px; width: {{sign.w}}px; opacity: {{sign.op}};">
-            <div class="sign-board {{sign.cls}} plank wood-frame">
-              <span class="sign-kicker">IMMERSIVE RESUME</span>
+            <div class="sign-board {{sign.cls}} plank notch">
+              <span class="sign-kicker">MISSION:</span>
               <span class="sign-rule"></span>
-              <span class="sign-main">MISSION:<br>GRIND 1,000 STAIRS ↘<br>LAND THE DREAM JOB</span>
+              <span class="sign-main">GRIND 1,000 STAIRS.<br>LAND THE DREAM JOB!</span>
             </div>
           </div>
         </template>
@@ -416,118 +387,68 @@
         <!-- Stage 1 -->
         <article class="card wood-frame {{pos.c1.cls}}" ref="{{cardRefs.c1}}" style="left: {{pos.c1.left}}px; top: {{pos.c1.top}}px; width: {{cardW}}px; opacity: {{pos.c1.op}};">
           <header class="card-head plank">
-            <span class="card-stage">STAGE 1</span>
             <h3 class="card-title">ORIGIN STORY</h3>
             <span class="card-years">AGE 9 → 2021</span>
           </header>
           <div class="card-body">
-            <div class="card-grid two">
-              <button class="thumb notch" type="button" onClick="{{openV.s1}}" aria-label="Watch the Stage 1 video">
-                <span class="thumb-screen"><span class="vs-play notch">▶</span></span>
-                <span class="thumb-label">WATCH VIDEO</span>
-              </button>
-              <div class="card-copy">
-                <ul class="timeline">
-                  <li class="tl-item"><span class="tl-when">AGE 9</span><p class="tl-what"><strong>Started skateboarding seriously.</strong></p></li>
-                  <li class="tl-item"><span class="tl-when">AGE 14</span><p class="tl-what"><strong>Built my first app.</strong></p></li>
-                  <li class="tl-item"><span class="tl-when">2017–2021</span><p class="tl-what"><strong>Retail Merchandiser, Shoppers Drug Mart</strong> · Toronto. Four years in a fast-paced pharmacy and retail environment while attending high school, then college.</p></li>
-                  <li class="tl-item"><span class="tl-when">2020</span><p class="tl-what"><strong>Computer Programming Diploma</strong> · Humber College, Toronto</p></li>
-                </ul>
-              </div>
-            </div>
+            <ul class="timeline">
+              <li class="tl-item"><span class="tl-when">AGE 9</span><p class="tl-what"><strong>Started skateboarding seriously.</strong></p></li>
+              <li class="tl-item"><span class="tl-when">AGE 14</span><p class="tl-what"><strong>Built my first app.</strong></p></li>
+              <li class="tl-item"><span class="tl-when">2017–2021</span><p class="tl-what"><strong>Retail Merchandiser, Shoppers Drug Mart</strong> · Toronto, while finishing high school and college.</p></li>
+              <li class="tl-item"><span class="tl-when">2020</span><p class="tl-what"><strong>Computer Programming Diploma</strong> · Humber College, Toronto</p></li>
+            </ul>
           </div>
         </article>
 
         <!-- Stage 2 -->
         <article class="card wood-frame {{pos.c2.cls}}" ref="{{cardRefs.c2}}" style="left: {{pos.c2.left}}px; top: {{pos.c2.top}}px; width: {{cardW}}px; opacity: {{pos.c2.op}};">
           <header class="card-head plank">
-            <span class="card-stage">STAGE 2</span>
             <h3 class="card-title">FREELANCE</h3>
             <span class="card-years">2021–2022</span>
           </header>
           <div class="card-body">
-            <div class="card-grid">
-              <button class="thumb notch" type="button" onClick="{{openV.s2}}" aria-label="Watch the Stage 2 app demo">
-                <span class="thumb-screen"><span class="vs-play notch">▶</span></span>
-                <span class="thumb-label">WATCH DEMO</span>
-              </button>
-              <div class="card-copy">
-                <p class="card-role">Freelance Flutter Developer</p>
-                <p class="card-meta">Aspire Perspire Nourish Lodging &amp; Concierge · Remote</p>
-                <ul class="card-list">
-                  <li><strong>Sole developer</strong> of a production mobile app for short-term rental clients, shipped internationally to iOS and Android.</li>
-                  <li>Designed the UI/UX and branding; integrated a NoSQL database and third-party APIs.</li>
-                </ul>
-              </div>
-              <div class="card-side">
-                <div class="card-stat"><span class="k-v">−35%</span><span class="k-l">check-in time</span></div>
-                <div class="card-stat"><span class="k-v">−20%</span><span class="k-l">check-out time</span></div>
-                <div class="card-stat"><span class="k-v">52%+</span><span class="k-l">less admin task time</span></div>
-              </div>
-            </div>
+            <p class="card-role">Freelance Flutter Developer</p>
+            <p class="card-meta">Aspire Perspire Nourish Lodging &amp; Concierge</p>
+            <ul class="card-list">
+              <li><strong>Sole developer</strong> of a production rental-management app, shipped internationally to iOS and Android.</li>
+              <li>Designed the UI/UX and branding, and integrated a NoSQL database with third-party APIs.</li>
+              <li>Cut check-in time by 35%, check-out time by 20%, and admin task time by over half.</li>
+            </ul>
           </div>
         </article>
 
         <!-- Stage 3 -->
         <article class="card wood-frame {{pos.c3.cls}}" ref="{{cardRefs.c3}}" style="left: {{pos.c3.left}}px; top: {{pos.c3.top}}px; width: {{cardW}}px; opacity: {{pos.c3.op}};">
           <header class="card-head plank">
-            <span class="card-stage">STAGE 3</span>
             <h3 class="card-title">GOODKIND · YC S21</h3>
             <span class="card-years">2022–2025</span>
           </header>
           <div class="card-body">
-            <div class="card-grid">
-              <button class="thumb notch" type="button" onClick="{{openV.s3}}" aria-label="Watch the Stage 3 product demo">
-                <span class="thumb-screen"><span class="vs-play notch">▶</span></span>
-                <span class="thumb-label">WATCH DEMO</span>
-              </button>
-              <div class="card-copy">
-                <p class="card-role">Mobile Engineer, AI Engineer</p>
-                <p class="card-meta">20-person Y Combinator (S21)-backed startup · Toronto, ON / Remote</p>
-                <ul class="card-list">
-                  <li>Early engineer, working daily with the CEO, CTO and COO on product direction and system design.</li>
-                  <li><strong>Owned the Flutter app end-to-end</strong>: architecture, features, releases, App Store and Play Store.</li>
-                  <li><strong>Built the AI chat product from zero to production</strong> in Node.js and TypeScript: full RAG with embeddings, Pinecone retrieval and multi-step LLM tool chains, plus BullMQ / Redis jobs indexing millions of embeddings.</li>
-                </ul>
-              </div>
-              <div class="card-side">
-                <div class="card-stat"><span class="k-v">20+</span><span class="k-l">live customer orgs</span></div>
-                <div class="card-stat"><span class="k-v">~1,500</span><span class="k-l">chat messages / week</span></div>
-                <div class="card-stat"><span class="k-v">2</span><span class="k-l">interns led</span></div>
-              </div>
-            </div>
+            <p class="card-role">Mobile Engineer, AI Engineer</p>
+            <p class="card-meta">20-person Y Combinator (S21)-backed startup</p>
+            <ul class="card-list">
+              <li>Early engineer, working daily with the CEO, CTO and COO on product direction and system design.</li>
+              <li><strong>Owned the Flutter app end-to-end</strong>: architecture, features, releases, App Store and Play Store.</li>
+              <li><strong>Built the AI chat product from zero to production</strong> in Node.js and TypeScript, with RAG, embeddings and Pinecone retrieval.</li>
+              <li>Grew it to 20+ live customer orgs and ~1,500 chat messages a week, while mentoring 2 interns.</li>
+            </ul>
           </div>
         </article>
 
         <!-- Stage 4 -->
         <article class="card wood-frame {{pos.c4.cls}}" ref="{{cardRefs.c4}}" style="left: {{pos.c4.left}}px; top: {{pos.c4.top}}px; width: {{cardW}}px; opacity: {{pos.c4.op}};">
           <header class="card-head plank">
-            <span class="card-stage">STAGE 4</span>
             <h3 class="card-title">NICHE (FORMERLY GOODKIND)</h3>
             <span class="card-years">2025–2026</span>
           </header>
           <div class="card-body">
-            <div class="card-grid">
-              <button class="thumb notch" type="button" onClick="{{openV.s4}}" aria-label="Watch the Stage 4 product demo">
-                <span class="thumb-screen"><span class="vs-play notch">▶</span></span>
-                <span class="thumb-label">WATCH DEMO</span>
-              </button>
-              <div class="card-copy">
-                <p class="card-role">Software Engineer, Full-Stack &amp; AI Engineer</p>
-                <p class="card-meta">Toronto, ON / Remote</p>
-                <ul class="card-list">
-                  <li><strong>Carried the AI chat product and mobile app through the acquisition</strong> into Niche's larger, multi-service codebase.</li>
-                  <li>Delivered a personalized product to 2,000 client institutions on a predominantly Go backend.</li>
-                  <li>Instrumented LLM pipelines with Langfuse (tracing, evals, cost / latency), monitored in Grafana, scheduled workflows in Airflow; expanded into full-stack ownership of the chat frontend.</li>
-                </ul>
-              </div>
-              <div class="card-side">
-                <div class="card-stat"><span class="k-v">2,000</span><span class="k-l">client institutions</span></div>
-                <div class="tags">
-                  <span class="tag">GO</span><span class="tag">LANGFUSE</span><span class="tag">GRAFANA</span><span class="tag">AIRFLOW</span>
-                </div>
-              </div>
-            </div>
+            <p class="card-role">Software Engineer, Full-Stack &amp; AI Engineer</p>
+            <ul class="card-list">
+              <li><strong>Carried the AI chat product and mobile app through the acquisition</strong> into Niche's larger, multi-service codebase.</li>
+              <li>Delivered a personalized product to 2,000 client institutions on a predominantly Go backend.</li>
+              <li>Instrumented LLM pipelines with Langfuse, monitored in Grafana, and scheduled workflows in Airflow.</li>
+              <li>Expanded into full-stack ownership of the chat frontend.</li>
+            </ul>
           </div>
         </article>
 
@@ -602,48 +523,47 @@
 
         <!-- Title screen -->
         <div class="title-lockup {{titleClass}}" style="opacity: {{titleOpacity}}; transform: translate(-50%, {{titleShift}}px);">
-          <h1 class="title">MARK SHERRIFF</h1>
-          <p class="statement notch"><strong class="statement-lead">Full-stack engineer with 5+ years across mobile, backend, and applied AI.</strong> Joined a 20-person Y Combinator (S21)-backed startup as an early engineer and ended up owning two products end-to-end: the Flutter application and a generative-AI chat system taken from zero to 20+ live customer organizations. Carried both through an acquisition into a much larger engineering organization, picking up a new language and a multi-service codebase to keep them shipping.</p>
-          <div class="quick-links">
-            <a class="qlink notch" href="assets/mark-sherriff-resume.pdf" target="_blank" rel="noopener" download="mark-sherriff-resume.pdf">RESUME (PDF)</a>
-            <a class="qlink notch" href="mailto:markesherriff@gmail.com">EMAIL</a>
-            <a class="qlink notch" href="https://github.com/markesherriff" target="_blank" rel="noopener">GITHUB</a>
-            <a class="qlink notch" href="https://www.linkedin.com/in/mark-sherriff" target="_blank" rel="noopener">LINKEDIN</a>
-            <a class="qlink notch" href="https://mark-sherriff.com" target="_blank" rel="noopener">SITE</a>
+          <div class="title-row">
+            <div class="portrait-frame pixel-circle">
+              <img class="portrait pixel-circle" src="assets/mark-sherriff-photo.webp" alt="Mark Sherriff" width="96" height="96">
+            </div>
+            <h1 class="title">MARK SHERRIFF</h1>
           </div>
-          <button class="start-btn notch" type="button" onClick="{{start}}">PRESS TO START OR SCROLL</button>
-        </div>
-
-        <template data-if="notPlaying">
-          <div class="hud">
-            <div class="chips-left">
-              <div class="chip notch">PLAYER 1 · READY</div>
+          <template data-if="notPlaying">
+            <div class="title-chips">
+              <div class="chip notch">Immersive Resume</div>
               <div class="chip notch read-chip">
                 <svg class="book" viewBox="0 0 14 12" width="14" height="12" aria-hidden="true"><path d="M1 1h5v1h1v9H7v-1H1z" fill="currentColor"></path><path d="M13 1H8v1H7v9h1v-1h5z" fill="currentColor"></path><path d="M2 3h3v1H2zM2 5h3v1H2zM9 3h3v1H9zM9 5h3v1H9z" fill="#17140f"></path></svg>
-                3 MIN READ
+                3 min
               </div>
+              <div class="chip notch">Last updated: Sep 24th 2026</div>
             </div>
-          </div>
-        </template>
+          </template>
+          <p class="statement notch"><strong class="statement-lead">Full-stack engineer with 5+ years in mobile, backend, and AI.</strong> Joined a 20-person YC startup early and ended up owning two products — our Flutter app and a GenAI chat system I grew from zero to 20+ customers. Stuck with both through an acquisition, picking up a new stack along the way.</p>
+        </div>
 
-        <template data-if="playing">
+        <div class="start-cta {{titleClass}}" style="opacity: {{titleOpacity}}; transform: translate(-50%, {{titleShift}}px);">
+          <button class="start-btn notch" type="button" onClick="{{start}}">{{startLabel}}</button>
+          <button class="skip-btn notch" type="button" onClick="{{skipToContact}}">Skip to Contact, LinkedIn, or GitHub ></button>
+        </div>
+
+        <template data-if="hudOn">
           <div class="hud hud-play">
-            <div class="chip notch">STAIRS {{stairsDone}} / 1000</div>
-            <div class="chip notch score-chip">SCORE {{score}}</div>
             <div class="progress">
               <div class="progress-label">{{cpLabel}}</div>
               <div class="progress-track notch"><div class="progress-fill" style="width: {{pct}}%;"></div></div>
             </div>
+            <div class="chip notch score-chip">SCORE {{score}}</div>
             <div class="hud-actions">
-              <button class="hud-btn mini notch" type="button" onClick="{{prevStage}}" aria-label="Previous stage">◂</button>
-              <button class="hud-btn mini notch" type="button" onClick="{{nextStage}}" aria-label="Next stage">▸</button>
-              <button class="hud-btn notch" type="button" onClick="{{restart}}">↺ RESTART</button>
-              <button class="hud-btn notch" type="button" onClick="{{skip}}">SKIP ▸</button>
+              <button class="hud-btn mini notch" type="button" onClick="{{prevStage}}" aria-label="Previous stage"><span class="arrow left"></span></button>
+              <button class="hud-btn mini notch" type="button" onClick="{{nextStage}}" aria-label="Next stage"><span class="arrow right"></span></button>
+              <button class="hud-btn desktop-only notch" type="button" onClick="{{restart}}">↺ RESTART</button>
+              <button class="hud-btn desktop-only notch" type="button" onClick="{{skip}}">SKIP ▸</button>
             </div>
           </div>
         </template>
         <template data-if="hintOn">
-          <div class="controls-hint notch">PRESS ANY KEY, PRESS ARROWS, OR SCROLL</div>
+          <div class="controls-hint notch">{{hintLabel}}</div>
         </template>
       </div>
     </div>
@@ -678,6 +598,7 @@
 
     <footer class="credits">
       <div class="credits-links">
+        <a href="assets/mark-sherriff-resume.pdf" target="_blank" rel="noopener" download="mark-sherriff-resume.pdf">RESUME (PDF)</a>
         <a href="mailto:markesherriff@gmail.com">EMAIL</a>
         <a href="https://github.com/markesherriff" target="_blank" rel="noopener">GITHUB</a>
         <a href="https://www.linkedin.com/in/mark-sherriff" target="_blank" rel="noopener">LINKEDIN</a>
@@ -686,22 +607,6 @@
       <p class="credits-foot">Toronto, Ontario — open to full-stack and AI engineering roles.</p>
     </footer>
   </div>
-  <template data-if="lb.open">
-    <div class="lightbox" onClick="{{closeVideo}}" onKeyDown="{{onLbKey}}">
-      <div class="lb-panel notch" role="dialog" aria-modal="true" aria-label="{{lb.title}}" onClick="{{stopClick}}">
-        <div class="lb-head">
-          <span class="card-stage">{{lb.stage}}</span>
-          <span class="lb-title">{{lb.title}}</span>
-          <button class="lb-close" type="button" ref="{{lbCloseRef}}" onClick="{{closeVideo}}" aria-label="Close video">✕</button>
-        </div>
-        <div class="lb-screen">
-          <span class="vs-play notch">▶</span>
-          <span class="vs-label">VIDEO COMING SOON</span>
-          <span class="vs-note">{{lb.note}}</span>
-        </div>
-      </div>
-    </div>
-  </template>
   <div class="crt"></div>
 </div>
 
@@ -900,7 +805,7 @@ class DCLogic {
 class Component extends DCLogic {
   constructor(...args) {
     super(...args);
-    this.state = Object.assign({}, this.state, { W: 1440, H: 900, st: 0, moving: false, cardH: {}, video: null });
+    this.state = Object.assign({}, this.state, { W: 1440, H: 900, st: 0, moving: false, cardH: {} });
     this.cardEls = {};
     this.cardRefs = {};
     ['c1', 'c2', 'c3', 'c4', 'c5'].forEach((id) => {
@@ -909,15 +814,6 @@ class Component extends DCLogic {
         if (el && this.ro) this.ro.observe(el);
       };
     });
-    this.openV = {};
-    ['s1', 's2', 's3', 's4'].forEach((id) => { this.openV[id] = () => this.setState({ video: id }); });
-    this.closeVideo = () => {
-      this.setState({ video: null });
-      if (this.scroller) this.scroller.focus({ preventScroll: true });
-    };
-    this.stopClick = (e) => e.stopPropagation();
-    this.onLbKey = (e) => { if (e.key === 'Escape') { e.preventDefault(); this.closeVideo(); } };
-    this.lbCloseRef = (el) => { if (el) el.focus({ preventScroll: true }); };
     this.scroller = null;
     this.raf = null;
     this.mt = null;
@@ -1120,7 +1016,6 @@ class Component extends DCLogic {
     const t = e.target;
     if (t && t !== this.scroller && /^(INPUT|TEXTAREA|SELECT|BUTTON|A)$/.test(t.tagName)) return;
     const k = e.key;
-    if (this.state.video) { if (k === 'Escape') { e.preventDefault(); this.closeVideo(); } return; }
     const st = this.scroller ? this.scroller.scrollTop : 0;
     if (k === 'Home' || k === 'Escape') { e.preventDefault(); this.scrollToY(0); return; }
     if (st > g.camEnd + 4) return;
@@ -2270,11 +2165,8 @@ class Component extends DCLogic {
 
     // ---- HUD ----
     // The full subtitle is also the active stage card's own heading right below,
-    // so on a narrow phone the HUD label just needs the stage number to stay on
-    // one line and clear of the sky graphics.
-    const names = mobile
-      ? ['STAGE 1', 'STAGE 2', 'STAGE 3', 'STAGE 4']
-      : ['STAGE 1 · ORIGIN STORY', 'STAGE 2 · FREELANCE', 'STAGE 3 · GOODKIND (YC S21)', 'STAGE 4 · NICHE'];
+    // so the HUD label just needs the stage number.
+    const names = ['STAGE 1', 'STAGE 2', 'STAGE 3', 'STAGE 4'];
     let cp = -1;
     targets.forEach((t, i) => { if (camX >= t - hold / 2 - fade) cp = i; });
     let cpLabel = cp < 0 ? 'ROLLING IN…' : names[cp];
@@ -2285,7 +2177,7 @@ class Component extends DCLogic {
     // The mission board stays a planted sign on every width — on a narrow phone
     // it just gets narrower and its text smaller, rather than being pulled out
     // of the scene and stacked into the title.
-    const signW = mobile ? 186 : 280;
+    const signW = mobile ? 150 : 220;
     const signAnchor = mobile ? W * 0.66 : W * 0.8;
     const signX = signAnchor - camX * par;
     const signOp = clamp(1 - camX / (W * 0.18), 0, 1);
@@ -2311,14 +2203,6 @@ class Component extends DCLogic {
       cls: mobile ? 'small' : '',
       pl: j(sPL), pm: j(sPM), pr: j(sPR), pb: j(sPB)
     };
-    const VIDEOS = {
-      s1: { stage: 'STAGE 1', title: 'ORIGIN STORY', note: '[Add video: skating and my first app]' },
-      s2: { stage: 'STAGE 2', title: 'FREELANCE · RENTAL APP DEMO', note: '[Add video: rental app walkthrough]' },
-      s3: { stage: 'STAGE 3', title: 'GOODKIND · PRODUCT DEMO', note: '[Add video: Flutter app and AI chat demo]' },
-      s4: { stage: 'STAGE 4', title: 'NICHE · PRODUCT DEMO', note: '[Add video: chat product at Niche]' }
-    };
-    const vid = this.state.video && VIDEOS[this.state.video];
-    const lb = vid ? Object.assign({ open: true }, vid) : { open: false, stage: '', title: '', note: '' };
     const titleOpacity = clamp(1 - camX / (W * 0.15), 0, 1);
 
     return {
@@ -2330,6 +2214,8 @@ class Component extends DCLogic {
       onKey: (e) => this.handleKey(e),
       focusStage: () => this.focusStage(),
       start: () => this.scrollToY(targets[0]),
+      sceneClick: () => { if (!playing) this.scrollToY(targets[0]); },
+      skipToContact: (e) => { e.stopPropagation(); if (this.scroller) this.scrollToY(this.scroller.scrollHeight); },
       restart: () => this.scrollToY(0, 2600),
       skip: () => this.scrollToY(runHeight),
       // Same "jump to the next/previous stop" logic as the arrow keys, exposed
@@ -2401,27 +2287,24 @@ class Component extends DCLogic {
       titleOpacity: Math.round(titleOpacity * 100) / 100,
       titleShift: Math.round(-camX * 0.5),
       titleClass: titleOpacity <= 0 ? 'hidden' : '',
+      startLabel: mobile ? 'Tap anywhere or scroll to start' : 'CLICK ANYTHING, SCROLL, OR PRESS ANY KEY TO START',
       playing: playing,
       notPlaying: !playing,
-      // The controls hint sits 18px above .stage's own bottom edge — once
-      // he's landed and the footer starts peeking out of that same edge,
-      // it ends up sandwiched between the fake heading and the real one.
-      // Guidance on how to keep scrolling stops being useful right as the
-      // landing happens anyway, so drop it there instead of leaving it to
-      // linger through the reveal.
+      // The progress bar, score and hud-actions are all position:fixed to the
+      // viewport now (bottom-left cluster), so unlike the old in-flow HUD they
+      // don't naturally scroll out of the way once the footer comes into view —
+      // they'd float on top of it forever. Guidance on how to keep scrolling
+      // stops being useful right as the landing happens anyway, so drop the
+      // whole cluster there instead of leaving it to linger through the reveal.
+      hudOn: playing && !landed,
       hintOn: playing && !landed,
+      hintLabel: mobile ? 'TAP ANYWHERE OR SCROLL' : 'PRESS ANY KEY, PRESS ARROWS, OR SCROLL',
       cpLabel: cpLabel,
       panY: panY,
       cardPosts: { pl: j(cardPL), pm: j(cardPM), pr: j(cardPR), pb: j(cardPB) },
       panM: Math.round(panY * 0.45),
       panS: Math.round(panY * 0.12),
       cardRefs: this.cardRefs,
-      openV: this.openV,
-      closeVideo: this.closeVideo,
-      stopClick: this.stopClick,
-      onLbKey: this.onLbKey,
-      lbCloseRef: this.lbCloseRef,
-      lb: lb,
       stairsDone: stairsDone,
       score: String(score).padStart(6, '0').replace(/(\d)(?=(\d{3})+$)/g, '$1,'),
       sign: sign,
