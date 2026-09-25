@@ -224,6 +224,7 @@
     .bring p{ margin:0; font-size:15px; line-height:1.5; }
     .card-list{ margin:0; padding-left:20px; display:flex; flex-direction:column; gap:6px; }
     .card-list li::marker{ color:#5a220e; }
+    .card-list ul{ margin:6px 0 0; padding-left:20px; display:flex; flex-direction:column; gap:6px; }
     .card-list strong{ color:var(--wood-ink); }
     .timeline{ margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:14px; }
     .tl-item{ display:grid; grid-template-columns:120px minmax(0,1fr); gap:16px; align-items:baseline; }
@@ -307,7 +308,7 @@
     .lede{ margin:0; max-width:960px; text-align:center; font-size:clamp(17px,1.5vw,20px); line-height:1.5; color:var(--wood-muted); }
     .again-btn{ min-height:48px; padding:14px 20px; font-family:var(--pixel); font-size:12px; color:#17140f; background:var(--accent); border:0; cursor:pointer; box-shadow:inset -4px -4px 0 rgba(0,0,0,.22); }
 
-    .ticker-wrap{ overflow:hidden; background:#070b17; border-top:3px solid var(--accent); border-bottom:3px solid var(--accent); padding:14px 0; }
+    .ticker-wrap{ overflow:hidden; background:#070b17; border-top:3px solid var(--accent); border-bottom:3px solid var(--accent); padding:14px 0; opacity:.5; }
     .ticker-track{ display:flex; width:max-content; animation:scrollX 40s linear infinite; }
     .ticker-seg{ flex:0 0 auto; display:flex; align-items:center; font-family:var(--pixel); font-size:clamp(10px,1.3vw,13px); color:var(--cream); white-space:nowrap; }
     .ticker-seg span{ flex:0 0 auto; display:flex; align-items:center; }
@@ -438,11 +439,11 @@
           </header>
           <div class="card-body">
             <ul class="timeline">
-              <li class="tl-item"><span class="tl-when">AGE 11</span><p class="tl-what"><strong>Got my first computer for Christmas.</strong></p></li>
-              <li class="tl-item"><span class="tl-when">AGE 12</span><p class="tl-what"><strong>Created a minecraft server with my friends.</strong></p></li>
-              <li class="tl-item"><span class="tl-when">AGE 14</span><p class="tl-what"><strong>Built and released my first iOS/Android (native) app.</strong></p></li>
-              <li class="tl-item"><span class="tl-when">2017</span><p class="tl-what"><strong>Grade 12 computer science class</strong></p></li>
-              <li class="tl-item"><span class="tl-when">2020</span><p class="tl-what"><strong>Computer Programming Diploma</strong> · Humber College, Toronto</p></li>
+              <li class="tl-item"><span class="tl-when">AGE 11</span><p class="tl-what">Got my first computer for Christmas.</p></li>
+              <li class="tl-item"><span class="tl-when">AGE 12</span><p class="tl-what">Created a minecraft server with my friends.</p></li>
+              <li class="tl-item"><span class="tl-when">AGE 14</span><p class="tl-what">Built and released my first iOS/Android (native) app.</p></li>
+              <li class="tl-item"><span class="tl-when">2017</span><p class="tl-what">Grade 12 computer science class</p></li>
+              <li class="tl-item"><span class="tl-when">2020</span><p class="tl-what">Computer Programming Diploma · Humber College, Toronto</p></li>
             </ul>
           </div>
         </article>
@@ -480,11 +481,13 @@
               <li>Early hire at Y-Combinator backend startup, working directly with the COO and CTO</li>
               <li>Owned the Flutter app end-to-end</li>
               <li>Led a team of 2 interns</li>
-              <li>Built AI chatbot from zero to production</li>
-              <ul>
-                <li>LLM chain that included RAG with Pinecone, Node, and TypeScript.</li>
-                <li>Grew to ~20 customers with 1,500 chat messages a week</li>
-              </ul>
+              <li>
+                Built AI chatbot from zero to production
+                <ul>
+                  <li>LLM chain that included RAG with Pinecone, Node, and TypeScript.</li>
+                  <li>Grew to ~20 customers with 1,500 chat messages a week</li>
+                </ul>
+              </li>
             </ul>
           </div>
         </article>
