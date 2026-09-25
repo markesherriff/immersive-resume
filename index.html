@@ -1643,7 +1643,7 @@ class Component extends DCLogic {
     const sx = Math.round(cx - art.pivotX * sc);
 
     // ---- Timeline (scroll px == camera px) ----
-    const signCardW = mobile ? W - 24 : Math.round(Math.min(1100, W - 120));
+    const signCardW = mobile ? W - 24 : Math.round(Math.min(900, W - 120));
     const par = mobile ? 0.8 : 0.75;                      // background signs move slower than the stairs
     const spacing = Math.round(mobile ? Math.max(W * 2.2, (signCardW + 140) / par) : Math.max(W * 1.2, (signCardW + 380) / par));
     const hold = spacing * 0.5;
