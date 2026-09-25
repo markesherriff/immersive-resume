@@ -237,6 +237,8 @@
     .cta{ display:inline-flex; align-items:center; min-height:44px; padding:0 16px; font-family:var(--pixel); font-size:11px; border:0; cursor:pointer; }
     .cta.ghost{ color:var(--cream); background:var(--wood-lo); }
     .cta:hover{ filter:brightness(1.1); }
+    .cta:disabled{ opacity:.4; cursor:not-allowed; }
+    .cta:disabled:hover{ filter:none; }
     .restart-cta{ margin-top:4px; color:var(--wood-muted); background:var(--wood-lo); opacity:.7; }
     .restart-cta:hover{ opacity:1; }
 
@@ -636,7 +638,7 @@
           <p>Job specifics in the resume, and get to know me in the cover letter.</p>
           <div class="contact-actions">
             <a class="cta ghost notch" href="assets/mark-sherriff-resume.pdf" target="_blank" rel="noopener">RESUME</a>
-            <a class="cta ghost notch" href="assets/mark-sherriff-resume.pdf" target="_blank" rel="noopener">COVER LETTER</a>
+            <button class="cta ghost notch" type="button" disabled aria-disabled="true">COVER LETTER</button>
           </div>
         </div>
         <div class="bring notch contact-card contact-card-wide">
