@@ -143,12 +143,13 @@
     .start-btn:hover{ filter:brightness(1.08); }
     @keyframes pulse{ 0%,100%{ opacity:1; } 50%{ opacity:.65; } }
     .skip-btn{
-      min-height:40px; padding:10px 18px; max-width:min(90vw, 480px);
+      min-height:36px; padding:8px 16px; max-width:min(90vw, 480px);
       font-family:var(--pixel); font-size:clamp(9px,.9vw,11px); line-height:1.5; text-align:center;
       color:var(--cream); background:var(--wood-lo); border:0; cursor:pointer;
       box-shadow:inset -3px -3px 0 rgba(0,0,0,.18);
     }
     .skip-btn:hover{ filter:brightness(1.1); }
+    .skip-detail{ display:block; margin-top:3px; font-size:.80em; opacity:.75; }
 
     /* ---------- HUD ---------- */
     /* Shared look for the fixed bottom-left HUD cluster (buttons, progress
@@ -161,14 +162,14 @@
     }
     .chip{ padding:10px 12px; background:var(--panel); color:var(--cream); white-space:nowrap; }
     .chips{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
-    .progress{ flex:0 0 auto; width:200px; display:flex; flex-direction:row; align-items:center; gap:8px; opacity:.7; }
+    .progress{ flex:0 0 auto; width:200px; display:flex; flex-direction:row; align-items:center; gap:8px; opacity:.55; }
     .progress-label{ text-align:center; color:var(--cream); text-shadow:2px 2px 0 #1b2a4a; font-size:9px; white-space:nowrap; }
     .progress-track{ flex:1 1 auto; height:16px; padding:2px; background:var(--panel); }
     .progress-fill{ height:100%; background-color:var(--accent); background-image:repeating-linear-gradient(to right, transparent 0 10px, rgba(0,0,0,.2) 10px 12px); }
     /* Plain text to match the stage label beside it, rather than a boxed chip. */
     .score-chip{
       padding:0; background:transparent; color:var(--cream);
-      text-shadow:2px 2px 0 #1b2a4a; font-size:9px; opacity:.7; clip-path:none;
+      text-shadow:2px 2px 0 #1b2a4a; font-size:9px; opacity:.55; clip-path:none;
     }
     .hud-actions{
       position:fixed; left:12px; bottom:80px; z-index:9;
@@ -177,18 +178,25 @@
     .hud-btn{
       padding:8px 12px; font-family:var(--pixel); font-size:9px;
       color:var(--cream); background:rgb(12,18,36); border:2px solid rgba(255,255,255,.18); cursor:pointer; white-space:nowrap;
-      opacity:.7;
+      opacity:.55;
     }
     .hud-btn:hover{ border-color:var(--accent); color:var(--accent); }
-    /* Prev/next stage-stepping buttons: a mobile-only convenience, since there
-       are no arrow keys on a touchscreen and swipe-scrolling stage by stage is
-       fiddly. Hidden on wider screens where the keyboard already does this. */
-    .hud-btn.mini{ display:none; }
+    /* Prev/next stage-stepping buttons, shown at every width. On a
+       touchscreen they're the only way to step stage by stage; on desktop
+       they sit beside restart/skip as a mouse-friendly alternative to the
+       arrow keys. Mobile gets a larger touch target via the media query below. */
+    .hud-btn.mini{
+      display:flex; align-items:center; justify-content:center;
+      width:36px; height:36px; padding:0; min-width:0;
+    }
+    .hud-btn.mini .arrow{ width:0; height:0; border-top:6px solid transparent; border-bottom:6px solid transparent; }
+    .hud-btn.mini .arrow.left{ border-right:9px solid currentColor; }
+    .hud-btn.mini .arrow.right{ border-left:9px solid currentColor; }
     .controls-hint{
       position:fixed; left:12px; bottom:44px; z-index:9;
       padding:8px 12px; font-family:var(--pixel); font-size:9px;
       color:var(--cream); background:rgb(12,18,36); white-space:nowrap;
-      opacity:.7;
+      opacity:.55;
     }
 
     /* ---------- Stage cards ---------- */
@@ -198,20 +206,22 @@
       color:var(--cream);
     }
     .card.gone{ visibility:hidden; }
-    .card-head{ position:relative; display:flex; align-items:center; gap:14px; flex-wrap:wrap; padding:14px 22px; border-bottom:3px solid var(--wood-dark); }
+    .card-head{ position:relative; display:flex; align-items:flex-start; gap:14px; flex-wrap:wrap; padding:14px 22px; border-bottom:3px solid var(--wood-dark); }
     .card-head .card-title{ color:var(--cream); text-shadow:1px 1px 0 rgba(0,0,0,.35); }
     .card-title{ margin:0; flex:1 1 auto; font-family:var(--pixel); font-size:clamp(12px,1.2vw,15px); line-height:1.5; }
     .card-years{ font-family:var(--pixel); font-size:10px; color:var(--accent); }
+    /* Resume-style header: org name sits small and dim above the role,
+       which reads at full size and full opacity, like a resume title block. */
+    .card-title-stack{ display:flex; flex-direction:column; gap:4px; flex:1 1 auto; min-width:0; }
+    .card-org{ margin:0; font-family:var(--pixel); font-size:clamp(10px,1vw,12px); line-height:1.4; color:var(--cream); opacity:.6; text-shadow:1px 1px 0 rgba(0,0,0,.35); }
+    .card-role-head{ margin:0; font-size:18px; font-weight:700; line-height:1.3; color:var(--cream); text-shadow:1px 1px 0 rgba(0,0,0,.35); }
     .card-body{
       padding:20px 24px 24px; display:flex; flex-direction:column; gap:12px; font-size:16px; line-height:1.5;
       background:var(--wood-hi); color:var(--wood-ink);
     }
-    .bring-grid{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:12px; }
     .bring{ display:flex; flex-direction:column; gap:6px; padding:14px 16px; background:var(--stain-2); border:2px solid var(--stain-line); }
     .bring-title{ font-family:var(--pixel); font-size:10px; line-height:1.6; color:var(--accent); }
     .bring p{ margin:0; font-size:15px; line-height:1.5; }
-    .card-role{ margin:0; font-size:21px; font-weight:700; line-height:1.3; color:var(--wood-ink); }
-    .card-meta{ margin:-8px 0 0; font-size:14px; color:var(--wood-lo); }
     .card-list{ margin:0; padding-left:20px; display:flex; flex-direction:column; gap:6px; }
     .card-list li::marker{ color:#5a220e; }
     .card-list strong{ color:var(--wood-ink); }
@@ -225,6 +235,28 @@
     .cta{ display:inline-flex; align-items:center; min-height:44px; padding:0 16px; font-family:var(--pixel); font-size:11px; border:0; cursor:pointer; }
     .cta.ghost{ color:var(--cream); background:var(--wood-lo); }
     .cta:hover{ filter:brightness(1.1); }
+    .restart-cta{ margin-top:4px; color:var(--wood-muted); background:var(--wood-lo); opacity:.7; }
+    .restart-cta:hover{ opacity:1; }
+
+    /* ---------- Footer contact grid ---------- */
+    .contact-grid{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:12px; width:100%; max-width:1100px; }
+    .contact-actions{ display:flex; gap:8px; flex-wrap:wrap; margin-top:auto; padding-top:2px; }
+    .contact-lines{ display:flex; flex-direction:column; gap:8px; margin-top:auto; padding-top:2px; }
+    .contact-line{
+      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+      padding:8px 10px; border:2px solid var(--stain-line); background:var(--stain);
+    }
+    .contact-value{
+      font-family:ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+      font-size:15px; line-height:1.4; color:var(--cream); text-decoration:none; word-break:break-word;
+    }
+    .contact-value:hover{ text-decoration:underline; }
+    .copy-btn{
+      flex:0 0 auto; min-height:32px; padding:0 10px; font-family:var(--pixel); font-size:9px;
+      color:var(--cream); background:var(--wood-lo); border:0; cursor:pointer;
+    }
+    .copy-btn:hover{ filter:brightness(1.1); }
+    .copy-btn.copied{ background:var(--accent); color:#17140f; }
 
     /* ---------- Skater ---------- */
     .rider-wrap{ position:absolute; z-index:7; pointer-events:none; will-change:transform; }
@@ -273,7 +305,6 @@
       display:flex; flex-direction:column; align-items:center; gap:clamp(28px,4vw,44px);
     }
     .lede{ margin:0; max-width:960px; text-align:center; font-size:clamp(17px,1.5vw,20px); line-height:1.5; color:var(--wood-muted); }
-    .bring-grid.wide{ width:100%; max-width:1100px; }
     .again-btn{ min-height:48px; padding:14px 20px; font-family:var(--pixel); font-size:12px; color:#17140f; background:var(--accent); border:0; cursor:pointer; box-shadow:inset -4px -4px 0 rgba(0,0,0,.22); }
 
     .ticker-wrap{ overflow:hidden; background:#070b17; border-top:3px solid var(--accent); border-bottom:3px solid var(--accent); padding:14px 0; }
@@ -309,10 +340,10 @@
       .tl-item{ grid-template-columns:minmax(0,1fr); gap:4px; }
       .card-head{ padding:12px 16px; }
       .card-body{ padding:14px 16px 18px; font-size:15px; }
-      .card-role{ font-size:18px; }
+      .card-role-head{ font-size:16px; }
       .stat-screen{ padding-bottom:28px; gap:16px; }
       .lede{ font-size:14px; }
-      .bring-grid{ gap:8px; }
+      .contact-grid{ grid-template-columns:1fr; }
       .bring{ padding:10px 12px; gap:3px; }
       .bring-title{ font-size:9px; }
       .bring p{ font-size:12px; line-height:1.35; }
@@ -322,7 +353,7 @@
     @media (max-height: 800px){
       .card-head{ padding:10px 20px; }
       .card-body{ padding:14px 20px 16px; font-size:15px; gap:10px; }
-      .card-role{ font-size:19px; }
+      .card-role-head{ font-size:17px; }
       .card-list{ gap:4px; }
     }
   
@@ -388,13 +419,14 @@
         <article class="card wood-frame {{pos.c1.cls}}" ref="{{cardRefs.c1}}" style="left: {{pos.c1.left}}px; top: {{pos.c1.top}}px; width: {{cardW}}px; opacity: {{pos.c1.op}};">
           <header class="card-head plank">
             <h3 class="card-title">ORIGIN STORY</h3>
-            <span class="card-years">AGE 9 → 2021</span>
+            <span class="card-years">AGE 11 → 2020</span>
           </header>
           <div class="card-body">
             <ul class="timeline">
-              <li class="tl-item"><span class="tl-when">AGE 9</span><p class="tl-what"><strong>Started skateboarding seriously.</strong></p></li>
-              <li class="tl-item"><span class="tl-when">AGE 14</span><p class="tl-what"><strong>Built my first app.</strong></p></li>
-              <li class="tl-item"><span class="tl-when">2017–2021</span><p class="tl-what"><strong>Retail Merchandiser, Shoppers Drug Mart</strong> · Toronto, while finishing high school and college.</p></li>
+              <li class="tl-item"><span class="tl-when">AGE 11</span><p class="tl-what"><strong>Got my first computer for Christmas.</strong></p></li>
+              <li class="tl-item"><span class="tl-when">AGE 12</span><p class="tl-what"><strong>Created a minecraft server with my friends.</strong></p></li>
+              <li class="tl-item"><span class="tl-when">AGE 14</span><p class="tl-what"><strong>Built and released my first iOS/Android (native) app.</strong></p></li>
+              <li class="tl-item"><span class="tl-when">2017</span><p class="tl-what"><strong>Grade 12 computer science class</strong></p></li>
               <li class="tl-item"><span class="tl-when">2020</span><p class="tl-what"><strong>Computer Programming Diploma</strong> · Humber College, Toronto</p></li>
             </ul>
           </div>
@@ -403,15 +435,17 @@
         <!-- Stage 2 -->
         <article class="card wood-frame {{pos.c2.cls}}" ref="{{cardRefs.c2}}" style="left: {{pos.c2.left}}px; top: {{pos.c2.top}}px; width: {{cardW}}px; opacity: {{pos.c2.op}};">
           <header class="card-head plank">
-            <h3 class="card-title">FREELANCE</h3>
+            <div class="card-title-stack">
+              <h3 class="card-org">APN Lodging (Hawaii - Remote)</h3>
+              <p class="card-role-head">Freelance Flutter Developer</p>
+            </div>
             <span class="card-years">2021–2022</span>
           </header>
           <div class="card-body">
-            <p class="card-role">Freelance Flutter Developer</p>
-            <p class="card-meta">Aspire Perspire Nourish Lodging &amp; Concierge</p>
             <ul class="card-list">
-              <li><strong>Sole developer</strong> of a production rental-management app, shipped internationally to iOS and Android.</li>
-              <li>Designed the UI/UX and branding, and integrated a NoSQL database with third-party APIs.</li>
+              <li>Sole developer of a production rental-management app</li>
+              <li>10 properties, with 30+ users a month.</li>
+              <li>Co-designed, then built for iOS and Android with Flutter</li>
               <li>Cut check-in time by 35%, check-out time by 20%, and admin task time by over half.</li>
             </ul>
           </div>
@@ -420,17 +454,22 @@
         <!-- Stage 3 -->
         <article class="card wood-frame {{pos.c3.cls}}" ref="{{cardRefs.c3}}" style="left: {{pos.c3.left}}px; top: {{pos.c3.top}}px; width: {{cardW}}px; opacity: {{pos.c3.op}};">
           <header class="card-head plank">
-            <h3 class="card-title">GOODKIND · YC S21</h3>
+            <div class="card-title-stack">
+              <h3 class="card-org">GOODKIND (Toronto)</h3>
+              <p class="card-role-head">Mobile and AI Engineer</p>
+            </div>
             <span class="card-years">2022–2025</span>
           </header>
           <div class="card-body">
-            <p class="card-role">Mobile Engineer, AI Engineer</p>
-            <p class="card-meta">20-person Y Combinator (S21)-backed startup</p>
             <ul class="card-list">
-              <li>Early engineer, working daily with the CEO, CTO and COO on product direction and system design.</li>
-              <li><strong>Owned the Flutter app end-to-end</strong>: architecture, features, releases, App Store and Play Store.</li>
-              <li><strong>Built the AI chat product from zero to production</strong> in Node.js and TypeScript, with RAG, embeddings and Pinecone retrieval.</li>
-              <li>Grew it to 20+ live customer orgs and ~1,500 chat messages a week, while mentoring 2 interns.</li>
+              <li>Early hire at Y-Combinator backend startup, working directly with the COO and CTO</li>
+              <li>Owned the Flutter app end-to-end</li>
+              <li>Led a team of 2 interns</li>
+              <li>Built AI chatbot from zero to production</li>
+              <ul>
+                <li>LLM chain that included RAG with Pinecone, Node, and TypeScript.</li>
+                <li>Grew to ~20 customers with 1,500 chat messages a week</li>
+              </ul>
             </ul>
           </div>
         </article>
@@ -438,16 +477,18 @@
         <!-- Stage 4 -->
         <article class="card wood-frame {{pos.c4.cls}}" ref="{{cardRefs.c4}}" style="left: {{pos.c4.left}}px; top: {{pos.c4.top}}px; width: {{cardW}}px; opacity: {{pos.c4.op}};">
           <header class="card-head plank">
-            <h3 class="card-title">NICHE (FORMERLY GOODKIND)</h3>
+            <div class="card-title-stack">
+              <h3 class="card-org">NICHE (AQUIRED GOODKIND - Pittsburgh)</h3>
+              <p class="card-role-head">Full-Stack and AI Engineer</p>
+            </div>
             <span class="card-years">2025–2026</span>
           </header>
           <div class="card-body">
-            <p class="card-role">Software Engineer, Full-Stack &amp; AI Engineer</p>
             <ul class="card-list">
-              <li><strong>Carried the AI chat product and mobile app through the acquisition</strong> into Niche's larger, multi-service codebase.</li>
-              <li>Delivered a personalized product to 2,000 client institutions on a predominantly Go backend.</li>
-              <li>Instrumented LLM pipelines with Langfuse, monitored in Grafana, and scheduled workflows in Airflow.</li>
-              <li>Expanded into full-stack ownership of the chat frontend.</li>
+              <li>Still soley owned the mobile app through acquisition</li>
+              <li>Handed off AI chatbot I built to a 7-person team</li>
+              <li>Learned Go Lang to help build a new AI messaging product for 2,000 client institutions</li>
+              <li>Expanded frontend skills with React</li>
             </ul>
           </div>
         </article>
@@ -531,20 +572,20 @@
           </div>
           <template data-if="notPlaying">
             <div class="title-chips">
-              <div class="chip notch">Immersive Resume</div>
+              <div class="chip notch">Quick overview of my career</div>
               <div class="chip notch read-chip">
                 <svg class="book" viewBox="0 0 14 12" width="14" height="12" aria-hidden="true"><path d="M1 1h5v1h1v9H7v-1H1z" fill="currentColor"></path><path d="M13 1H8v1H7v9h1v-1h5z" fill="currentColor"></path><path d="M2 3h3v1H2zM2 5h3v1H2zM9 3h3v1H9zM9 5h3v1H9z" fill="#17140f"></path></svg>
                 3 min
               </div>
-              <div class="chip notch">Last updated: Sep 24th 2026</div>
+              <div class="chip notch">Last updated: Sep 25th 2026</div>
             </div>
           </template>
-          <p class="statement notch"><strong class="statement-lead">Full-stack engineer with 5+ years in mobile, backend, and AI.</strong> Joined a 20-person YC startup early and ended up owning two products — our Flutter app and a GenAI chat system I grew from zero to 20+ customers. Stuck with both through an acquisition, picking up a new stack along the way.</p>
+          <p class="statement notch"><strong class="statement-lead">Full-stack engineer with 5+ years shipping mobile and AI products.</strong></p>
         </div>
 
         <div class="start-cta {{titleClass}}" style="opacity: {{titleOpacity}}; transform: translate(-50%, {{titleShift}}px);">
           <button class="start-btn notch" type="button" onClick="{{start}}">{{startLabel}}</button>
-          <button class="skip-btn notch" type="button" onClick="{{skipToContact}}">Skip to Contact, LinkedIn, or GitHub ></button>
+          <button class="skip-btn notch" type="button" onClick="{{skipToContact}}">Skip to<span class="skip-detail">Resume, Cover letter, Contact, LinkedIn, & GitHub</span></button>
         </div>
 
         <template data-if="hudOn">
@@ -557,8 +598,8 @@
             <div class="hud-actions">
               <button class="hud-btn mini notch" type="button" onClick="{{prevStage}}" aria-label="Previous stage"><span class="arrow left"></span></button>
               <button class="hud-btn mini notch" type="button" onClick="{{nextStage}}" aria-label="Next stage"><span class="arrow right"></span></button>
-              <button class="hud-btn desktop-only notch" type="button" onClick="{{restart}}">↺ RESTART</button>
-              <button class="hud-btn desktop-only notch" type="button" onClick="{{skip}}">SKIP ▸</button>
+              <button class="hud-btn desktop-only notch" type="button" onClick="{{restart}}">RESTART</button>
+              <button class="hud-btn desktop-only notch" type="button" onClick="{{skip}}">SKIP TO END</button>
             </div>
           </div>
         </template>
@@ -569,20 +610,46 @@
     </div>
 
     <section class="stat-screen">
-      <p class="lede">I'm a full-stack and AI engineer in Toronto, and I'd like to bring that to {{company}}. I owned a mobile app and an AI chat product end-to-end at a YC-backed startup, carried both through an acquisition, and do my best work in the messy middle — unfamiliar stack, direct line to decision-makers, shipping until it works.</p>
-      <div class="bring-grid wide">
-        <div class="bring notch"><span class="bring-title">END-TO-END OWNERSHIP</span><p>I've taken products from zero to production and kept them shipping: architecture, releases and store distribution.</p></div>
-        <div class="bring notch"><span class="bring-title">APPLIED AI IN PRODUCTION</span><p>RAG, embeddings, vector search and multi-step tool-use chains, with tracing and evaluation built in.</p></div>
-        <div class="bring notch"><span class="bring-title">FAST RAMP-UP</span><p>I picked up Go and a multi-service codebase mid-acquisition and kept delivering.</p></div>
-        <div class="bring notch"><span class="bring-title">CLOSE COLLABORATION</span><p>I've worked daily with founders on product direction and mentored interns through scoping and code review.</p></div>
+      <p class="lede">I'm looking for a company with room for me to grow as an engineer and solve real problems.</p>
+      <div class="contact-grid">
+        <div class="bring notch contact-card">
+          <span class="bring-title">RESUME &amp; COVER LETTER</span>
+          <p>Job specifics in the resume, and get to know me in the cover letter.</p>
+          <div class="contact-actions">
+            <a class="cta ghost notch" href="assets/mark-sherriff-resume.pdf" target="_blank" rel="noopener">RESUME</a>
+            <a class="cta ghost notch" href="assets/mark-sherriff-resume.pdf" target="_blank" rel="noopener">COVER LETTER</a>
+          </div>
+        </div>
+        <div class="bring notch contact-card">
+          <span class="bring-title">CALL, TEXT, OR EMAIL</span>
+          <p>To chat more or schedule an interview.</p>
+          <div class="contact-lines">
+            <div class="contact-line">
+              <a class="contact-value" href="mailto:markesherriff@gmail.com">markesherriff@gmail.com</a>
+              <button class="copy-btn notch" type="button" data-copy="markesherriff@gmail.com" onClick="{{copyContact}}" aria-label="Copy email address">COPY</button>
+            </div>
+            <div class="contact-line">
+              <a class="contact-value" href="tel:+14166718515">+1 416 671 8515</a>
+              <button class="copy-btn notch" type="button" data-copy="+1 416 671 8515" onClick="{{copyContact}}" aria-label="Copy phone number">COPY</button>
+            </div>
+          </div>
+        </div>
+        <div class="bring notch contact-card">
+          <span class="bring-title">GITHUB</span>
+          <p>Screenshots and code from my projects.</p>
+          <div class="contact-actions">
+            <a class="cta ghost notch" href="https://github.com/markesherriff" target="_blank" rel="noopener">VIEW GITHUB</a>
+          </div>
+        </div>
+        <div class="bring notch contact-card">
+          <span class="bring-title">SOCIALS</span>
+          <p>Connect with me on LinkedIn.</p>
+          <div class="contact-actions">
+            <a class="cta ghost notch" href="https://www.linkedin.com/in/mark-sherriff-993435188" target="_blank" rel="noopener">LINKEDIN</a>
+          </div>
+        </div>
       </div>
-      <div class="card-cta">
-        <a class="cta ghost notch" href="assets/mark-sherriff-resume.pdf" target="_blank" rel="noopener" download="mark-sherriff-resume.pdf">RESUME (PDF)</a>
-        <a class="cta ghost notch" href="mailto:markesherriff@gmail.com">EMAIL</a>
-        <a class="cta ghost notch" href="https://github.com/markesherriff" target="_blank" rel="noopener">GITHUB</a>
-        <a class="cta ghost notch" href="https://www.linkedin.com/in/mark-sherriff" target="_blank" rel="noopener">LINKEDIN</a>
-        <button class="cta ghost notch" type="button" onClick="{{restart}}">↺ RIDE IT AGAIN</button>
-      </div>
+      <button class="cta notch restart-cta" type="button" onClick="{{restart}}">RESTART EXPERIENCE</button>
     </section>
 
     <div class="ticker-wrap">
@@ -813,16 +880,26 @@ class Component extends DCLogic {
   }
 
   componentDidMount() {
-    this.measure();
     this.stopGlide = () => this.cancelGlide();
     if (this.scroller) {
       this.scroller.addEventListener('wheel', this.stopGlide, { passive: true });
       this.scroller.addEventListener('touchstart', this.stopGlide, { passive: true });
     }
     if (typeof ResizeObserver !== 'undefined' && this.scroller) {
+      // ResizeObserver fires once immediately for each newly-observed element,
+      // with accurate post-layout dimensions (per spec) — that first callback
+      // is the real initial measurement. A synchronous this.measure() call
+      // here, before layout has necessarily settled for every card, could
+      // read a too-small offsetHeight for the taller stage-3/4 cards; that
+      // undersized value would then feed the rail-clearance math below and
+      // leave the skater standing over the card's last line or two until
+      // something else happened to re-trigger a measurement. Let the
+      // observer be the only source of truth instead of racing it.
       this.ro = new ResizeObserver(() => this.measure());
       this.ro.observe(this.scroller);
       Object.keys(this.cardEls).forEach((id) => { if (this.cardEls[id]) this.ro.observe(this.cardEls[id]); });
+    } else {
+      this.measure();
     }
     this.warmT = setTimeout(() => this.warmBoardFrames(), 60);
   }
@@ -2208,6 +2285,34 @@ class Component extends DCLogic {
       start: () => this.scrollToY(targets[0]),
       sceneClick: () => { if (!playing) this.scrollToY(targets[0]); },
       skipToContact: (e) => { e.stopPropagation(); if (this.scroller) this.scrollToY(this.scroller.scrollHeight); },
+      copyContact: (e) => {
+        e.stopPropagation();
+        const btn = e.currentTarget;
+        const text = btn.dataset.copy;
+        const showCopied = () => {
+          const original = btn.textContent;
+          btn.textContent = 'COPIED';
+          btn.classList.add('copied');
+          clearTimeout(btn._copyResetT);
+          btn._copyResetT = setTimeout(() => { btn.textContent = original; btn.classList.remove('copied'); }, 1500);
+        };
+        const legacyCopy = () => {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand('copy'); } catch (err) {}
+          document.body.removeChild(ta);
+          showCopied();
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(showCopied).catch(legacyCopy);
+        } else {
+          legacyCopy();
+        }
+      },
       restart: () => this.scrollToY(0, 2600),
       skip: () => this.scrollToY(runHeight),
       // Same "jump to the next/previous stop" logic as the arrow keys, exposed
@@ -2279,7 +2384,7 @@ class Component extends DCLogic {
       titleOpacity: Math.round(titleOpacity * 100) / 100,
       titleShift: Math.round(-camX * 0.5),
       titleClass: titleOpacity <= 0 ? 'hidden' : '',
-      startLabel: mobile ? 'Tap anywhere or scroll to start' : 'CLICK ANYTHING, SCROLL, OR PRESS ANY KEY TO START',
+      startLabel: mobile ? 'Tap anywhere or scroll to start' : 'PRESS ANY KEY TO START, OR SCROLL',
       playing: playing,
       notPlaying: !playing,
       // The progress bar, score and hud-actions are all position:fixed to the
