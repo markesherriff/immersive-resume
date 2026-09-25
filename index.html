@@ -332,7 +332,7 @@
       .hud-btn.mini .arrow.left{ border-right:13px solid currentColor; }
       .hud-btn.mini .arrow.right{ border-left:13px solid currentColor; }
       .score-chip{ display:none; }
-      .title-lockup{ top:9%; gap:8px; width:92vw; }
+      .title-lockup{ top:13%; gap:8px; width:92vw; }
       .start-btn{ font-size:9px; padding:10px 16px; min-height:40px; }
       .title{ font-size:clamp(28px,8vw,58px); }
       .title-row{ gap:14px; }
@@ -364,7 +364,7 @@
        buy back room — paired with the matching JS rail/ground adjustment
        (see shortMobile in renderVals). Left alone above this height. */
     @media (max-width:720px) and (max-height:720px){
-      .title-lockup{ top:3%; gap:5px; }
+      .title-lockup{ top:6%; gap:5px; }
       .portrait-frame{ width:76px; height:76px; }
       .title{ font-size:clamp(20px,7vw,58px); }
       .title-row{ gap:10px; }
@@ -588,6 +588,7 @@
             </div>
             <h1 class="title">MARK SHERRIFF</h1>
           </div>
+          <p class="statement notch"><strong class="statement-lead">Full-stack engineer with 5+ years shipping mobile and AI products.</strong></p>
           <template data-if="notPlaying">
             <div class="title-chips">
               <div class="chip notch">Overview of my career</div>
@@ -598,7 +599,6 @@
               <div class="chip notch">Sep 25, 2026</div>
             </div>
           </template>
-          <p class="statement notch"><strong class="statement-lead">Full-stack engineer with 5+ years shipping mobile and AI products.</strong></p>
         </div>
 
         <div class="start-cta {{titleClass}}" style="opacity: {{titleOpacity}}; transform: translate(-50%, {{titleShift}}px);">
