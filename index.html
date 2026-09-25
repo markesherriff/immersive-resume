@@ -147,8 +147,9 @@
       font-family:var(--pixel); font-size:clamp(9px,.9vw,11px); line-height:1.5; text-align:center;
       color:var(--cream); background:var(--wood-lo); border:0; cursor:pointer;
       box-shadow:inset -3px -3px 0 rgba(0,0,0,.18);
+      opacity:.7;
     }
-    .skip-btn:hover{ filter:brightness(1.1); }
+    .skip-btn:hover{ filter:brightness(1.1); opacity:1; }
     .skip-detail{ display:block; margin-top:3px; font-size:.80em; opacity:.75; }
 
     /* ---------- HUD ---------- */
@@ -344,7 +345,7 @@
       .card-role-head{ font-size:16px; }
       .stat-screen{ padding-bottom:28px; gap:16px; }
       .lede{ font-size:14px; }
-      .contact-grid{ grid-template-columns:1fr; }
+      .contact-card-wide{ grid-column:1 / -1; }
       .bring{ padding:10px 12px; gap:3px; }
       .bring-title{ font-size:9px; }
       .bring p{ font-size:12px; line-height:1.35; }
@@ -630,7 +631,7 @@
     <section class="stat-screen">
       <p class="lede">I'm looking for a company with room for me to grow as an engineer and solve real problems.</p>
       <div class="contact-grid">
-        <div class="bring notch contact-card">
+        <div class="bring notch contact-card contact-card-wide">
           <span class="bring-title">RESUME &amp; COVER LETTER</span>
           <p>Job specifics in the resume, and get to know me in the cover letter.</p>
           <div class="contact-actions">
@@ -638,7 +639,7 @@
             <a class="cta ghost notch" href="assets/mark-sherriff-resume.pdf" target="_blank" rel="noopener">COVER LETTER</a>
           </div>
         </div>
-        <div class="bring notch contact-card">
+        <div class="bring notch contact-card contact-card-wide">
           <span class="bring-title">CALL, TEXT, OR EMAIL</span>
           <p>To chat more or schedule an interview.</p>
           <div class="contact-lines">
