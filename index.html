@@ -210,7 +210,7 @@
     .card-head{ position:relative; display:flex; align-items:flex-start; gap:14px; flex-wrap:wrap; padding:14px 22px; border-bottom:3px solid var(--wood-dark); }
     .card-head .card-title{ color:var(--cream); text-shadow:1px 1px 0 rgba(0,0,0,.35); }
     .card-title{ margin:0; flex:1 1 auto; font-family:var(--pixel); font-size:clamp(12px,1.2vw,15px); line-height:1.5; }
-    .card-years{ font-family:var(--pixel); font-size:10px; color:var(--accent); }
+    .card-years{ font-family:var(--pixel); font-size:10px; line-height:1.4; color:var(--accent); }
     /* Resume-style header: org name sits small and dim above the role,
        which reads at full size and full opacity, like a resume title block. */
     .card-title-stack{ display:flex; flex-direction:column; gap:4px; flex:1 1 auto; min-width:0; }
@@ -230,15 +230,15 @@
     /* LinkedIn recommendation teaser: clamped to 2 lines with a native
        ellipsis rather than a hand-truncated string, so it stays correct
        if the quote text, font size or card width ever change. */
-    .rec{ margin-top:4px; padding-top:12px; border-top:2px solid rgba(74,47,30,.35); display:flex; flex-direction:column; gap:6px; }
+    .rec{ margin-top:-4px; padding-top:6px; border-top:2px solid rgba(74,47,30,.35); display:flex; flex-direction:column; gap:6px; }
     .rec-quote{
-      margin:0; font-style:italic; color:var(--wood-lo);
+      margin:0; font-style:italic; color:var(--wood-lo); font-size:14px;
       display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
     }
     .rec-foot{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
     .rec-by{ margin:0; font-size:13px; color:var(--wood-lo); }
-    .rec-more{ font-family:var(--pixel); font-size:9px; color:#5a220e; text-decoration:underline; white-space:nowrap; }
-    .rec-more:hover{ color:var(--wood-ink); }
+    .rec-more{ font-family:var(--pixel); font-size:8px; color:#5a220e; text-decoration:underline; white-space:nowrap; opacity:.55; }
+    .rec-more:hover{ color:var(--wood-ink); opacity:1; }
     .timeline{ margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:14px; }
     .tl-item{ display:grid; grid-template-columns:120px minmax(0,1fr); gap:16px; align-items:baseline; }
     .tl-when{ font-family:var(--pixel); font-size:10px; line-height:1.7; color:#5a220e; }
@@ -386,6 +386,9 @@
       .title-chips{ gap:6px; }
       .title-chips .chip{ padding:6px 10px; font-size:11px; }
       .statement{ padding:8px 10px; font-size:11px; }
+      .card-head{ padding:8px 16px; gap:6px; }
+      .card-title-stack{ gap:2px; }
+      .card-body{ padding-top:8px; }
     }
 
 </style>
@@ -483,7 +486,7 @@
               <p class="rec-quote">"I would highly recommend Mark to any business owner wanting to find ways to leverage technology to improve their processes, or to create an app or platform to expand their reach and impact."</p>
               <div class="rec-foot">
                 <p class="rec-by">— Lia Bosch, client</p>
-                <a class="rec-more" href="https://www.linkedin.com/in/mark-sherriff-993435188/details/recommendations/" target="_blank" rel="noopener">See rec &gt;</a>
+                <a class="rec-more" href="https://www.linkedin.com/in/mark-sherriff-993435188/details/recommendations/" target="_blank" rel="noopener">See full rec &gt;</a>
               </div>
             </div>
           </div>
@@ -515,7 +518,7 @@
               <p class="rec-quote">"Hand Mark a project with little definition and he'll come back with something shipped. I look forward to working with Mark again."</p>
               <div class="rec-foot">
                 <p class="rec-by">— Michael Warshafsky, COO</p>
-                <a class="rec-more" href="https://www.linkedin.com/in/mark-sherriff-993435188/details/recommendations/" target="_blank" rel="noopener">See rec &gt;</a>
+                <a class="rec-more" href="https://www.linkedin.com/in/mark-sherriff-993435188/details/recommendations/" target="_blank" rel="noopener">See full rec &gt;</a>
               </div>
             </div>
           </div>
@@ -538,10 +541,10 @@
               <li>Expanded frontend skills with React</li>
             </ul>
             <div class="rec">
-              <p class="rec-quote">"Mark is very smart, takes pride in his work, is a team player, asks the right questions, and any team would be glad to have him."</p>
+              <p class="rec-quote">"Mark is very smart, takes pride in his work, is a team player, ask the right questions, and any team would be glad to have him."</p>
               <div class="rec-foot">
                 <p class="rec-by">— Tyler McDowell, teammate</p>
-                <a class="rec-more" href="https://www.linkedin.com/in/mark-sherriff-993435188/details/recommendations/" target="_blank" rel="noopener">See rec &gt;</a>
+                <a class="rec-more" href="https://www.linkedin.com/in/mark-sherriff-993435188/details/recommendations/" target="_blank" rel="noopener">See full rec &gt;</a>
               </div>
             </div>
           </div>
@@ -1724,7 +1727,7 @@ class Component extends DCLogic {
 
     // ---- Rail / stair geometry with a camera that stops descending at the rail end ----
     // Fixed layout: the rail sits low enough that the skater always rides below the tallest card.
-    const cardTop = mobile ? 18 : 84;
+    const cardTop = mobile ? (shortMobile ? 8 : 18) : 84;
     const hs = Object.values(this.state.cardH || {});
     const maxCardH = hs.length ? Math.max.apply(null, hs) : (mobile ? 560 : 420);
     // On a narrow phone the stage-3/4 cards stack into a single tall column and
