@@ -14,9 +14,11 @@ npx serve .
 
 ## Deploying to GitHub Pages
 
+This repo is named `markesherriff.github.io`, so GitHub Pages publishes it as the account's root site.
+
 1. Push this repo to GitHub.
 2. In the repo's **Settings → Pages**, set **Source** to "Deploy from a branch", branch `main`, folder `/ (root)`.
-3. GitHub publishes it at `https://<username>.github.io/<repo-name>/` within a minute or two of each push.
+3. GitHub publishes it at `https://markesherriff.github.io/` within a minute or two of each push.
 
 ## Updating the résumé PDF
 
