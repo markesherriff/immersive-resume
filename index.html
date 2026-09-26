@@ -227,6 +227,18 @@
     .card-list li::marker{ color:#5a220e; }
     .card-list ul{ margin:6px 0 0; padding-left:20px; display:flex; flex-direction:column; gap:6px; }
     .card-list strong{ color:var(--wood-ink); }
+    /* LinkedIn recommendation teaser: clamped to 2 lines with a native
+       ellipsis rather than a hand-truncated string, so it stays correct
+       if the quote text, font size or card width ever change. */
+    .rec{ margin-top:4px; padding-top:12px; border-top:2px solid rgba(74,47,30,.35); display:flex; flex-direction:column; gap:6px; }
+    .rec-quote{
+      margin:0; font-style:italic; color:var(--wood-lo);
+      display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+    }
+    .rec-foot{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+    .rec-by{ margin:0; font-size:13px; color:var(--wood-lo); }
+    .rec-more{ font-family:var(--pixel); font-size:9px; color:#5a220e; text-decoration:underline; white-space:nowrap; }
+    .rec-more:hover{ color:var(--wood-ink); }
     .timeline{ margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:14px; }
     .tl-item{ display:grid; grid-template-columns:120px minmax(0,1fr); gap:16px; align-items:baseline; }
     .tl-when{ font-family:var(--pixel); font-size:10px; line-height:1.7; color:#5a220e; }
@@ -465,8 +477,15 @@
               <li>Sole developer of a production rental-management app</li>
               <li>10 properties, with 30+ users a month.</li>
               <li>Co-designed, then built for iOS and Android with Flutter</li>
-              <li>Cut check-in time by 35%, check-out time by 20%, and admin task time by over half.</li>
+              <li>Cut check-in time by 35%, check-out time by 20%, and admin tasks by 50%.</li>
             </ul>
+            <div class="rec">
+              <p class="rec-quote">"I would highly recommend Mark to any business owner wanting to find ways to leverage technology to improve their processes, or to create an app or platform to expand their reach and impact."</p>
+              <div class="rec-foot">
+                <p class="rec-by">— Lia Bosch, client</p>
+                <a class="rec-more" href="https://www.linkedin.com/in/mark-sherriff-993435188/details/recommendations/" target="_blank" rel="noopener">See rec &gt;</a>
+              </div>
+            </div>
           </div>
         </article>
 
@@ -481,7 +500,7 @@
           </header>
           <div class="card-body">
             <ul class="card-list">
-              <li>Early hire at Y-Combinator backend startup, working directly with the COO and CTO</li>
+              <li>Early hire at Y-Combinator backend startup, working directly with the COO</li>
               <li>Owned the Flutter app end-to-end</li>
               <li>Led a team of 2 interns</li>
               <li>
@@ -492,6 +511,13 @@
                 </ul>
               </li>
             </ul>
+            <div class="rec">
+              <p class="rec-quote">"Hand Mark a project with little definition and he'll come back with something shipped. I look forward to working with Mark again."</p>
+              <div class="rec-foot">
+                <p class="rec-by">— Michael Warshafsky, COO</p>
+                <a class="rec-more" href="https://www.linkedin.com/in/mark-sherriff-993435188/details/recommendations/" target="_blank" rel="noopener">See rec &gt;</a>
+              </div>
+            </div>
           </div>
         </article>
 
@@ -506,11 +532,18 @@
           </header>
           <div class="card-body">
             <ul class="card-list">
-              <li>Still soley owned the mobile app through acquisition</li>
+              <li>Owned the mobile app through acquisition</li>
               <li>Handed off AI chatbot I built to a 7-person team</li>
               <li>Learned Go Lang to help build a new AI messaging product for 2,000 client institutions</li>
               <li>Expanded frontend skills with React</li>
             </ul>
+            <div class="rec">
+              <p class="rec-quote">"Mark is very smart, takes pride in his work, is a team player, asks the right questions, and any team would be glad to have him."</p>
+              <div class="rec-foot">
+                <p class="rec-by">— Tyler McDowell, teammate</p>
+                <a class="rec-more" href="https://www.linkedin.com/in/mark-sherriff-993435188/details/recommendations/" target="_blank" rel="noopener">See rec &gt;</a>
+              </div>
+            </div>
           </div>
         </article>
 
@@ -555,7 +588,7 @@
 
         <!-- Footer peek: rises from the ground well before the real footer can show through -->
         <div class="footer-peek" style="height: {{peek.h}}px; transform: translateY({{peek.ty}}px); opacity: {{peek.op}};">
-          <h2>LANDED THE TRICK. NOW THE JOB.</h2>
+          <h2>LANDED IT!</br> WHAT TRICK IS NEXT?</h2>
         </div>
 
         <!-- Skater -->
@@ -591,7 +624,7 @@
             </div>
             <h1 class="title">MARK SHERRIFF</h1>
           </div>
-          <p class="statement notch"><strong class="statement-lead">Full-stack engineer with 5+ years shipping mobile and AI products.</strong></p>
+          <p class="statement notch"><strong class="statement-lead">Entrepreneurial full-stack engineer (5+ years shipping mobile and AI products), skateboarder by night.</strong></p>
           <template data-if="notPlaying">
             <div class="title-chips">
               <div class="chip notch">Overview of my career</div>
@@ -631,11 +664,11 @@
     </div>
 
     <section class="stat-screen">
-      <p class="lede">I'm looking for a company with room for me to grow as an engineer and solve real problems.</p>
+      <p class="lede">I'm always open to new opportunities that will give me room grow and solve real problems.</p>
       <div class="contact-grid">
         <div class="bring notch contact-card contact-card-wide">
           <span class="bring-title">RESUME &amp; COVER LETTER</span>
-          <p>Job specifics in the resume, and get to know me in the cover letter.</p>
+          <p>Job specifics resume, and get to know me in the CV.</p>
           <div class="contact-actions">
             <a class="cta ghost notch" href="assets/mark-sherriff-resume.pdf" target="_blank" rel="noopener">RESUME</a>
             <button class="cta ghost notch" type="button" disabled aria-disabled="true">COVER LETTER</button>
@@ -657,14 +690,14 @@
         </div>
         <div class="bring notch contact-card">
           <span class="bring-title">GITHUB</span>
-          <p>Screenshots and code from my projects.</p>
+          <p>Cool projects and code</p>
           <div class="contact-actions">
             <a class="cta ghost notch" href="https://github.com/markesherriff" target="_blank" rel="noopener">VIEW GITHUB</a>
           </div>
         </div>
         <div class="bring notch contact-card">
           <span class="bring-title">SOCIALS</span>
-          <p>Connect with me on LinkedIn.</p>
+          <p>View my profile</p>
           <div class="contact-actions">
             <a class="cta ghost notch" href="https://www.linkedin.com/in/mark-sherriff-993435188" target="_blank" rel="noopener">LINKEDIN</a>
           </div>
